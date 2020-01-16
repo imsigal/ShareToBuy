@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
-import LoginComponent from './components/LoginComponent';
+import { Switch, Route,HashRouter  } from 'react-router-dom'
+import LoginPage from './pages/LoginPage';
+import ShoppingPage from './pages/ShoppingPage';
 
 export default class App extends React.Component {
   
@@ -28,12 +30,20 @@ export default class App extends React.Component {
   }
 
   render() {
-
+    const { activeUser } = this.state;
       return (
         <div className="App">
-         
-            Hello share2buy
-          <LoginComponent handleLogin={this.handleLogin}/>
+         <HashRouter>
+            <Switch>
+                <Route exact path="/">
+                  <LoginPage  handleLogin={this.handleLogin}></LoginPage>
+                </Route>
+                <Route exact path="/shopping">
+                  <ShoppingPage activeUser={activeUser} ></ShoppingPage>
+                </Route>
+               
+            </Switch>
+          </HashRouter>
           
         </div>
       );

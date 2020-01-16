@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Form, Button, Alert,Container } from 'react-bootstrap';
 import Parse from 'parse';
 import User from '../model/user';
-import './LoginComponent.css';
-export default  class LoginComponent extends Component {
+import './LoginPage.css';
+import { Redirect } from 'react-router-dom';
+export default  class LoginPage extends Component {
     constructor(props) {
         super(props);
 
@@ -34,21 +35,18 @@ export default  class LoginComponent extends Component {
         const { handleLogin } = this.props;
         const { email, pwd } = this.state;
 
-        // Pass the username and password to logIn function
-        Parse.User.logIn(email, pwd).then(parseUser => {
-            // Do stuff after successful login
-            const user = new User(parseUser);
-            console.log('Logged in user', user);
-
-            // 1) Updating App component on the new active user
-            handleLogin(user);
-
-            // 2) navigate to recipes page
-            this.setState({
-                redirectToNextPage: true
-            });
-
-        }).catch(error => {
+        // Pass the email and password to logIn function
+        Parse.User.logIn(email, pwd)
+            .then(parseUser => {
+                // successful login
+                const user = new User(parseUser);
+                handleLogin(user);   // send the user to app,to be passed to all appplication
+                //handle navigation to next page
+                this.setState({
+                    redirectToNextPage: true
+                });
+             })
+            .catch(error => {
             console.error('Error while logging in user', error);
             this.setState({
                 showInvalidLoginError: true,
@@ -60,10 +58,9 @@ export default  class LoginComponent extends Component {
     render() {
         const { email, pwd, showInvalidLoginError, redirectToNextPage } = this.state;
 
-
-        // if (redirectToNextPage) {
-        //     return <Redirect to="/next"/>
-        // }
+         if (redirectToNextPage) {
+             return <Redirect to="/shopping"/>
+         }
         const errorAlert = showInvalidLoginError ? <Alert variant="danger">Invalid email or password!</Alert> : null;
 
         return (
