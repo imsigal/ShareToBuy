@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import Parse from 'parse'
+import Parse from 'parse';
 
 Parse.serverURL = 'https://parseapi.back4app.com'; // This is your Server URL
 Parse.initialize(
