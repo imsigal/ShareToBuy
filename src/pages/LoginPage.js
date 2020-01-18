@@ -31,12 +31,39 @@ export default  class LoginPage extends Component {
     
     }
 
-    login() {
-        const { handleLogin } = this.props;
-        const { email, pwd } = this.state;
+    
+
+    // login() {
+    //     const { handleLogin } = this.props;
+    //     const { email, pwd } = this.state;
+
+
+    //     const newUser = User.login(email, pwd).then
+    //     {   
+    //         if (newUser)
+    //         {
+    //             handleLogin(newUser);   // send the user to app,to be passed to all appplication
+    //                 //handle navigation to next page
+    //                 this.setState({
+    //                     redirectToNextPage: true
+    //                 });
+    //         }
+    //         else
+    //         {
+    //             this.setState({
+    //                 showInvalidLoginError: true,
+    //                 pwd: ""
+    //             });
+    //         }
+    //     }
+
+
+        login() {
+            const { handleLogin } = this.props;
+            const { email, pwd } = this.state;
 
         // Pass the email and password to logIn function
-        Parse.User.logIn(email, pwd)
+            Parse.User.logIn(email, pwd)
             .then(parseUser => {
                 // successful login
                 const user = new User(parseUser);
