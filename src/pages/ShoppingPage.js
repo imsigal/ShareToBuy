@@ -1,21 +1,34 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import SelectActiveGroup from '../components/SelectActiveGroup';
+import SelectActiveGroupModal from '../components/SelectActiveGroupModal';
+import CreateNewGroupModal from '../components/CreateNewGroupModal';
+
+
 export default class ShoppingPage extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-          showSelectActiveGroup: true
+          showSelectActiveGroup: true,
+          showCreateActiveGroup:false
       }
 
     }
     
     handleClose=() =>{
       this.setState({
-        showSelectActiveGroup: false
+        showSelectActiveGroup: false,
+        showCreateActiveGroup:false
       })
   }
+
+    HandleCreateNewGroup=()=>
+    {
+      this.setState({
+        showSelectActiveGroup: false,
+        showCreateActiveGroup:true
+      })
+    }
 
   handleGroupSelection=()=>
   {
@@ -25,7 +38,7 @@ export default class ShoppingPage extends React.Component {
 
   render() {
       const {activeUser,activeGroup}=this.props;
-      const {showSelectActiveGroup}=this.state;
+      const {showSelectActiveGroup, showCreateActiveGroup}=this.state;
       if (!activeUser) {
         return <Redirect to="/"/>
     }
@@ -34,7 +47,8 @@ export default class ShoppingPage extends React.Component {
              <h1>My Shopping</h1> 
              <p>hello {activeUser.email}</p>
              <p> your active group is {activeGroup}</p>
-             <SelectActiveGroup show={showSelectActiveGroup} handleClose={this.handleClose} handleGroupSelection={this.handleGroupSelection} activeUser={activeUser} activeGroup={activeGroup}/>
+             <SelectActiveGroupModal show={showSelectActiveGroup} handleClose={this.handleClose} handleGroupSelection={this.handleGroupSelection} HandleCreateNewGroup= {this.HandleCreateNewGroup} activeUser={activeUser} activeGroup={activeGroup}/>
+             <CreateNewGroupModal show={showCreateActiveGroup} handleClose={this.handleClose} activeUser={activeUser} activeGroup={activeGroup}/>
           </div>
       );
   }

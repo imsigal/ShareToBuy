@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Modal, Button, Form,Dropdown,InputGroup,DropdownButton,FormControl } from 'react-bootstrap';
-import './SelectActiveGroup.css';
-export default class SelectActiveGroup extends Component {
+import { Modal, Button, Form } from 'react-bootstrap';
+import './SelectActiveGroupModal.css';
+
+
+export default class SelectActiveGroupModal extends Component {
     constructor(props) {
         super(props);
 
@@ -16,46 +18,41 @@ export default class SelectActiveGroup extends Component {
     }
     createNewGroup=()=>{
         this.setState({isShowCreateNewGroup:true});
-        console.log ( "in create new group")
+        this.props.HandleCreateNewGroup();
      }
 
     render() {
         const { show, handleClose ,activeUser, activeGroup} = this.props;
 
-        let showThisCompponent={show}
-        if (activeGroup)
-        {
-            showThisCompponent=true;
-        }
-
         return (
             
-            <Modal className="group-settings" show={showThisCompponent} onHide={handleClose}>
+            <Modal show={show} className="group-settings"  onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>here comes the modal title...</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
 
-                     <Form>
-                        <Form.Group>
+                     <Form >
+                        <Form.Group >
                             <Form.Label>current group is {activeGroup} </Form.Label>
-                            <Form.Label>Select other group or create new </Form.Label>
+                            
                         </Form.Group>
 
-                        <Form.Group>
-                            <Form.Label>Available groups are </Form.Label>
+                        <Form.Group >
+                            <Form.Label>Select other group, Available groups are </Form.Label>
                             <Form.Control as="select">
                             <option>1</option>
                             <option>2</option>
                             </Form.Control>
                         </Form.Group>
 
-                        <Form.Group>
+                        <Form.Group >
                             <Form.Label>or, Create new group </Form.Label>
                             <Button variant="info" onClick={this.createNewGroup}>
                                 Create New Group
                             </Button>
                         </Form.Group>
+
                     </Form> 
 
 
