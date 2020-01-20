@@ -1,12 +1,31 @@
 import React, { Component } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import Parse from 'parse';
 
 export default class CreateNewGroupModal extends Component {
     constructor(props) {
         super(props);
+        this.lstUsers=[];
+
+        // the uers is for the textarea
+        this.state={
+            newUserMail:"",
+            newGroupName:"",
+            users:[]
+        }
+        
        
     }
 
+    handleInputChange=(event)=> {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        });
+    }
 
     acceptGroupSelection=()=>{
         this.props.handleClose();
@@ -14,9 +33,32 @@ export default class CreateNewGroupModal extends Component {
     createNewGroup=()=>{
         console.log ( "in create new group")
      }
+     AddUser=()=>{
+            const{newUserMail,users}=this.state
+                // find the user in the database
+            const user   = Parse.Object.extend('User');
+            const query = new Parse.Query(user);
+            query.equalTo("email", newUserMail);
+            query.find().then((result) => {   
+              // since mail is unique, only one user should be
+              if (result!==undefined || result!==null)
+              {
+                this.lstUsers.push(result);
+                // add  the name to the textarea window
+                this.setState({
+                    users: users.concat(newUserMail)
+                })
+              }
+            }, (error) => {
+              console.error('Error while fetching ParseObjects', error);
+            });
+        // if does not exsist, do nothing
+        
+     }
 
     render() {
         const { show, handleClose ,activeUser, activeGroup} = this.props;
+        const{newUserMail,newGroupName,users}=this.state
 
         let showThisCompponent=(show)?"visible":"collapsed";
         showThisCompponent=(activeGroup!=null)?"visible":showThisCompponent;
@@ -32,20 +74,20 @@ export default class CreateNewGroupModal extends Component {
                 
                 <Form.Group  >
                     <Form.Label>group name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter group name" />
-                    <Form.Text className="text-muted"/>
+                    <Form.Control type="text" name="newGroupName" value={newGroupName} placeholder="Enter group name"  onChange={this.handleInputChange}/>
+                    {/* <Form.Text className="text-muted"/> */}
                 </Form.Group>
                 <Form.Group  >
                     <Form.Label>Add user</Form.Label>
-                    <Form.Control type="text" placeholder="Enter user email" />
-                    <Form.Text className="text-muted"/>
+                    <Form.Control type="email" name="newUserMail" value={newUserMail} placeholder="Enter user email"  onChange={this.handleInputChange} />
+                    {/* <Form.Text className="text-muted"/> */}
                 </Form.Group>
-                <Button variant="primary" type="button">
+                <Button variant="primary" type="button" onClick={this.AddUser}>
                     Add user
                 </Button >
                 <Form.Group >
                     <Form.Label>users list</Form.Label>
-                    <Form.Control as="textarea" rows="3" />
+                    <Form.Control as="textarea" rows="3" value={users.join (" ")} />
                 </Form.Group>
                 
                 </Modal.Body>
