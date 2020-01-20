@@ -1,4 +1,4 @@
-import Parse from 'parse';
+// import Parse from 'parse';
 
 export default  class User
 {
@@ -12,18 +12,18 @@ export default  class User
             
         }
 
-        static login=(email, pwd)=> {    
-            // Pass the email and password to logIn function
-            Parse.User.logIn(email, pwd)
-                .then(parseUser => {
-                    // successful login
-                    return (new User(parseUser));
-                 })
-                .catch(error => {
-                console.error('Error while logging in user', error);
-                return null;
-            })
-            return null;
-        }
+        // static login=(email, pwd)=> {    
+        //     // Pass the email and password to logIn function
+        //     Parse.User.logIn(email, pwd)
+        //         .then(parseUser => {
+        //             // successful login
+        //             return (new User(parseUser));
+        //          })
+        //         .catch(error => {
+        //         console.error('Error while logging in user', error);
+        //         return null;
+        //     })
+        //     return null;
+        // }
     
 }

@@ -31,35 +31,9 @@ export default  class LoginPage extends Component {
     
     }
 
-    
-
-    // login() {
-    //     const { handleLogin } = this.props;
-    //     const { email, pwd } = this.state;
-
-
-    //     const newUser = User.login(email, pwd).then
-    //     {   
-    //         if (newUser)
-    //         {
-    //             handleLogin(newUser);   // send the user to app,to be passed to all appplication
-    //                 //handle navigation to next page
-    //                 this.setState({
-    //                     redirectToNextPage: true
-    //                 });
-    //         }
-    //         else
-    //         {
-    //             this.setState({
-    //                 showInvalidLoginError: true,
-    //                 pwd: ""
-    //             });
-    //         }
-    //     }
-
 
         login() {
-            const { handleLogin } = this.props;
+            const { handleLogin,setGroup } = this.props;
             const { email, pwd } = this.state;
 
         // Pass the email and password to logIn function
@@ -68,6 +42,17 @@ export default  class LoginPage extends Component {
                 // successful login
                 const user = new User(parseUser);
                 handleLogin(user);   // send the user to app,to be passed to all appplication
+              
+                this.getGroupName(user).then(group=>
+                {
+                     if (group)
+                     {  
+                       
+                        setGroup(group);
+                     }
+                });
+
+
                 //handle navigation to next page
                 this.setState({
                     redirectToNextPage: true
@@ -80,6 +65,17 @@ export default  class LoginPage extends Component {
                 pwd: ""
             });
         })
+    }
+
+    async getGroupName(user) {
+            const ShoppingGroup = Parse.Object.extend('ShoppingGroup');
+            const query = new Parse.Query(ShoppingGroup);
+                query.equalTo("lstUsers", [1, user]);
+                 query.find().then((results) => {
+                     return results;
+                 }, (error) => {
+                        console.error('Error while fetching ShoppingGroup', error);
+                });
     }
 
     render() {

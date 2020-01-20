@@ -11,6 +11,7 @@ export default class App extends React.Component {
     
     this.state = {
       activeUser: null,
+      activeGroup:null
     }
 
     this.handleLogout = this.handleLogout.bind(this);
@@ -29,23 +30,30 @@ export default class App extends React.Component {
     })
   }
 
+  setGroup=(groupName)=>
+  {
+    this.setState({
+      activeGroup: groupName
+    })
+  }
+
   render() {
-    const { activeUser } = this.state;
+    const { activeUser,activeGroup } = this.state;
       return (
-        <div className="App">
+        // <div className="App">
          <HashRouter>
             <Switch>
                 <Route exact path="/">
-                  <LoginPage  handleLogin={this.handleLogin}></LoginPage>
+                  <LoginPage  handleLogin={this.handleLogin} getGroup={this.getGroup}></LoginPage>
                 </Route>
                 <Route exact path="/shopping">
-                  <ShoppingPage activeUser={activeUser} ></ShoppingPage>
+                  <ShoppingPage activeUser={activeUser} activeGroup={activeGroup}></ShoppingPage>
                 </Route>
                
             </Switch>
           </HashRouter>
           
-        </div>
+        // </div>
       );
   }
 
