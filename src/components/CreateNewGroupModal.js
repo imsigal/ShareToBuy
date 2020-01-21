@@ -63,6 +63,7 @@ export default class CreateNewGroupModal extends Component {
         let showThisCompponent=(show)?"visible":"collapsed";
         showThisCompponent=(activeGroup!=null)?"visible":showThisCompponent;
       
+        const theUsers=users.join (" ");
 
         return (
 
@@ -87,7 +88,7 @@ export default class CreateNewGroupModal extends Component {
                 </Button >
                 <Form.Group >
                     <Form.Label>users list</Form.Label>
-                    <Form.Control as="textarea" rows="3" value={users.join (" ")} />
+                    <Form.Control as="textarea" rows="3" value={theUsers} />
                 </Form.Group>
                 
                 </Modal.Body>
