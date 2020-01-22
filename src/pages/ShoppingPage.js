@@ -1,10 +1,11 @@
-import React from 'react';
+import React,{ Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import SelectActiveGroupModal from '../components/SelectActiveGroupModal';
 import CreateNewGroupModal from '../components/CreateNewGroupModal';
+import {Navbar ,Nav} from 'react-bootstrap';
 
 
-export default class ShoppingPage extends React.Component {
+export default class ShoppingPage extends Component {
 
     constructor(props) {
         super(props);
@@ -51,6 +52,26 @@ export default class ShoppingPage extends React.Component {
 
       return (
           <div>
+            <Navbar bg="light" expand="lg">
+            <Navbar.Brand href="#home">
+                    <img
+                      alt=""
+                      src="../images/ShareToBuy.png"
+                      width="30"
+                      height="30"
+                      className="d-inline-block align-top"
+                    />{' '}
+                    ShareToBuy
+                  </Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="mr-auto">
+                    <Nav.Link href="#link">Add Category</Nav.Link>
+                    <Nav.Link href="#link">Choose From List</Nav.Link>
+                    <Nav.Link href="#link">Add item</Nav.Link>               
+                  </Nav>
+            </Navbar.Collapse>
+          </Navbar>
              <h1>My Shopping</h1> 
              <p>hello {activeUser.email}</p>
              <p> your active group is {activeGroupName}</p>
