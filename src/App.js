@@ -9,7 +9,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     
-    //saving the Parse(!)  group object ,  and not the model one
+    //saving the  objects from the model
     this.state = {
       activeUser: null,
       activeGroup:null
