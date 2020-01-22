@@ -21,13 +21,15 @@ export default class App extends React.Component {
 
   handleLogin(user) {
     this.setState({
-      activeUser: user
+      activeUser: user,
+      activeGroup: null
     });
   }
 
   handleLogout() {
     this.setState({
-      activeUser: null
+      activeUser: null,
+      activeGroup: null
     })
   }
 
