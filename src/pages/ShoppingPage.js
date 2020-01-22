@@ -52,7 +52,7 @@ export default class ShoppingPage extends Component {
 
       return (
           <div>
-            <Navbar bg="light" expand="lg">
+            <Navbar expand="lg">
             <Navbar.Brand href="#home">
                     <img
                       alt=""
@@ -66,7 +66,7 @@ export default class ShoppingPage extends Component {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                    <Nav.Link href="#link">Add Category</Nav.Link>
+                    <Nav.Link  href="#link">Add Category</Nav.Link>
                     <Nav.Link href="#link">Choose From List</Nav.Link>
                     <Nav.Link href="#link">Add item</Nav.Link>               
                   </Nav>

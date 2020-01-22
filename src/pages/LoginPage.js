@@ -104,7 +104,7 @@ export default  class LoginPage extends Component {
                             <Form.Control name="pwd" value={pwd}
                                 type="password" placeholder="Password" onChange={this.handleInputChange} />
                         </Form.Group>
-                        <Button variant="success" type="button" block onClick={this.login}>
+                        <Button variant="info" type="button" block onClick={this.login}>
                             Login
                         </Button>
                     </Form>
