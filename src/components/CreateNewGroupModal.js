@@ -46,7 +46,7 @@ export default class CreateNewGroupModal extends Component {
         }
         this.CreateNewGroupinDB()
         // pass the new group to the app
-        
+        this.props.handleGroupSelection(newGroupName);  // passing only the name 
         this.props.handleClose();
      }
      CreateNewGroupinDB=()=>{

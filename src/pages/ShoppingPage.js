@@ -30,9 +30,10 @@ export default class ShoppingPage extends React.Component {
       })
     }
 
-  handleGroupSelection=()=>
+  handleGroupSelection=(groupName)=>
   {
     // hadle the opening of the select group section
+    this.props.setGroup(groupName);
   }
 
 
@@ -48,7 +49,7 @@ export default class ShoppingPage extends React.Component {
              <p>hello {activeUser.email}</p>
              <p> your active group is {activeGroup}</p>
              <SelectActiveGroupModal show={showSelectActiveGroup} handleClose={this.handleClose} handleGroupSelection={this.handleGroupSelection} HandleCreateNewGroup= {this.HandleCreateNewGroup} activeUser={activeUser} activeGroup={activeGroup}/>
-             <CreateNewGroupModal show={showCreateActiveGroup} handleClose={this.handleClose} activeUser={activeUser} activeGroup={activeGroup}/>
+             <CreateNewGroupModal show={showCreateActiveGroup} handleClose={this.handleClose} activeUser={activeUser} activeGroup={activeGroup}  handleGroupSelection={this.handleGroupSelection} />
           </div>
       );
   }
