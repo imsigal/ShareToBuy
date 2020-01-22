@@ -7,6 +7,8 @@ export default class ShoppingGroup{
         this.lstShoppingLists = parseModel.get("lstShoppingLists");
         this.lstCategories=parseModel.get("lstCategories"); 
         this.groupName = parseModel.get("GroupName");
+        this.id = parseModel.id;
+        
         
     }
 }

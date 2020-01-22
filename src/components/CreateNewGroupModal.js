@@ -31,6 +31,7 @@ export default class CreateNewGroupModal extends Component {
     // acceptGroupSelection=()=>{
     //     this.props.handleClose();
     // }
+
     createNewGroup=()=>{
         console.log ( "in create new group")
         const{newGroupName,users}=this.state;
@@ -44,29 +45,33 @@ export default class CreateNewGroupModal extends Component {
             console.log ( "in create new group:there are no users defined")
             return;
         }
-        this.CreateNewGroupinDB()
-        // pass the new group to the app
-        this.props.handleGroupSelection(newGroupName);  // passing only the name 
-        this.props.handleClose();
-     }
-     CreateNewGroupinDB=()=>{
-        const{newGroupName,users}=this.state;
 
-        const ShoppingGroup = Parse.Object.extend('ShoppingGroup');
-        const myNewObject = new ShoppingGroup(); 
-        myNewObject.set('GroupName', newGroupName);
-        myNewObject.set('lstUsers', this.lstUsers);
-        myNewObject.set('lstShoppingLists', []);   //  create empty list
-        myNewObject.set('lstCategories', []);       // create empty list
-            myNewObject.save().then(
-            (result) => {
-                console.log('ParseObject created', result);
-            },
-            (error) => {
-                console.error('Error while creating ParseObject: ', error);
-            }
-            );
-     }
+            // db connection    ( should be handles saparately)
+            const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
+            const myNewObject = new ParseShoppingGroup(); 
+            myNewObject.set('GroupName', newGroupName);
+            myNewObject.set('lstUsers', this.lstUsers);
+            myNewObject.set('lstShoppingLists', []);   //  create empty list
+            myNewObject.set('lstCategories', []);       // create empty list
+                myNewObject.save().then(
+                    (result) => {
+                        if (result)
+                        {  
+                                let NewGroup = new ShoppingGroup(result); 
+                                this.props.handleGroupSelection(NewGroup);  
+                                this.props.handleClose();
+                        }
+                    },
+                    (error) => {
+                        console.error('Error while creating ParseObject: ', error);
+                        return null;
+                        
+                    }
+                );
+         }
+    
+
+     
 
      AddUser=()=>{
             const{newUserMail,users}=this.state
