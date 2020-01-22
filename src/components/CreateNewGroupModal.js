@@ -28,10 +28,6 @@ export default class CreateNewGroupModal extends Component {
         });
     }
 
-    // acceptGroupSelection=()=>{
-    //     this.props.handleClose();
-    // }
-
     createNewGroup=()=>{
         console.log ( "in create new group")
         const{newGroupName,users}=this.state;
