@@ -1,37 +1,96 @@
 import React, { Component } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import './SelectActiveGroupModal.css';
+import Parse from 'parse';
+import ShoppingGroup from '../model/ShoppingGroup';
 
 
 export default class SelectActiveGroupModal extends Component {
     constructor(props) {
         super(props);
 
+
+        // lst groups are only the names
+        // selected is also the name. 
         this.state = {
-            isShowCreateNewGroup:false
+            isShowCreateNewGroup:false,
+            lstGroups:[],
+            selectedGroup:null
         }
 
+        this.GetGroupByName=this.GetGroupByName.bind(this);
+
     }
 
+    async componentDidMount()
+    {
+        this.GetGroupList();
+    }
+
+    // set in the state the selected item
+    HandleGroupSelection=(event)=>{
+           let selectedGrouName=event.target.value;
+           this.setState({
+                selectedGroup:selectedGrouName
+           })
+    }
+
+    // when ok, look for the group in the db, and send it to the app
     acceptGroupSelection=()=>{
+
+        this.GetGroupByName(this.state.selectedGroup);
         this.props.handleClose();
     }
+    //open the NewGroup Dialog
     createNewGroup=()=>{
         this.setState({isShowCreateNewGroup:true});
         this.props.HandleCreateNewGroup();
-     }
+    }
+
+    // get from the db the group itself, according to the group name, and send it to app 
+    GetGroupByName(theGroupName)
+    {
+        const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
+        const query2 = new Parse.Query(ParseShoppingGroup);
+        query2.equalTo("GroupName", theGroupName);
+        query2.first().then(result => {  
+            console.log(result) ;         
+            let selectedItem= new ShoppingGroup(result);
+            this.props.handleGroupSelection(selectedItem); 
+          })
+          .catch(function(error){
+            console.log("Error: " + error.code + " " + error.message);       
+        });
+    }
+
+    // get the list of the groups as appear in the db
+    async GetGroupList()
+    {
+        const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
+        const query = new Parse.Query(ParseShoppingGroup);
+        query.find().then(results => {         
+            let lstItems=[];
+                results.forEach(
+                    item=>lstItems.push(item.get("GroupName"))
+                )
+                this.setState({lstGroups:lstItems});
+          });
+    }
 
     render() {
-        const { show, handleClose ,activeUser, activeGroup} = this.props;
+        const { show, handleClose , activeGroup} = this.props;
+        const {lstGroups}=this.state
 
-        return (
-            
+         let lstGroupsOption=lstGroups.map((item,index)=>
+         <option>{item} </option>)
+
+        
+        return (        
             <Modal show={show} className="group-settings"  onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>here comes the modal title...</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-
                      <Form >
                         <Form.Group >
                             <Form.Label>current group is {activeGroup} </Form.Label>
@@ -40,9 +99,8 @@ export default class SelectActiveGroupModal extends Component {
 
                         <Form.Group >
                             <Form.Label>Select other group, Available groups are </Form.Label>
-                            <Form.Control as="select">
-                            <option>1</option>
-                            <option>2</option>
+                            <Form.Control as="select" onChange ={this.HandleGroupSelection}>
+                           { lstGroupsOption}
                             </Form.Control>
                         </Form.Group>
 
