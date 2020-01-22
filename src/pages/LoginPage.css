@@ -1,18 +1,13 @@
 .p-login > .main {
-    width: 500px;
-    margin: 40px auto;
+    margin: 40px ;
 }
 
 .p-login button {
     font-weight: bold;
 }
 
-.p-login .form-group{
-    margin: 10px;
 
-}
-
- .container>.p-login{
+.p-login{
     border:2px solid cadetblue;
     border-radius: 10px;
-}
+} 
