@@ -25,19 +25,24 @@ export default class SelectActiveGroupModal extends Component {
     async componentDidMount()
     {
         this.GetGroupList();
+
     }
 
     // set in the state the selected item
     HandleGroupSelection=(event)=>{
-           let selectedGrouName=event.target.value;
+           let selectedGroupName=event.target.value;
            this.setState({
-                selectedGroup:selectedGrouName
+                selectedGroup:selectedGroupName
            })
     }
 
     // when ok, look for the group in the db, and send it to the app
     acceptGroupSelection=()=>{
 
+        if (!this.state.selectedGroup)
+        {
+            console.log("no group was selected");
+        }
         this.GetGroupByName(this.state.selectedGroup);
         this.props.handleClose();
     }
@@ -73,7 +78,11 @@ export default class SelectActiveGroupModal extends Component {
                 results.forEach(
                     item=>lstItems.push(item.get("GroupName"))
                 )
-                this.setState({lstGroups:lstItems});
+                let selected=lstItems.length>0?lstItems[0]:null
+                this.setState({
+                    lstGroups:lstItems,
+                    selectedGroup:selected
+                });
           });
     }
 
