@@ -1,5 +1,5 @@
 .main-base-list{
-    border: 2px solid green;
+    border: 2px solid rgb(23,162,184);
     border-radius: 10px;
     flex-grow: 10000;
     padding: 10px;
@@ -11,7 +11,7 @@
 }
 
 .main-base-list h5.left-items{
-    color: green;
+    color: rgb(23,162,184);
     padding: 5px;
    text-decoration: underline;
 }
