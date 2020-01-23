@@ -42,10 +42,11 @@ export default class ShoppingItemComponent extends Component {
             }
 
             let deleteButtonClass=this.state.showDelete===true?"side-right":"hidden"
+            let itemText=item.count + ' '+ item.name
             return (
             <Container className="main-shopping-item" onMouseOver={this.handleMouseEnter} onMouseLeave={this.HandleMouseLeave}  >
                 <label className={completedClass}>
-                    {item.description}
+                    {itemText}
                     <button className={deleteButtonClass} onClick={this.HandleDeleteItem.bind(this, item.id)}>
                         <img src={imageSource} alt="delete" />
                     </button> 

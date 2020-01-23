@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
 import { FormControl, InputGroup,Button,ListGroup, Container,ButtonToolbar,ToggleButton,ToggleButtonGroup} from 'react-bootstrap';
-import MyListItem from '../model/MyListItem';
 import ShoppingItemComponent from './ShoppingItemComponent';
 import './BaseListComponents.css';
 import CategoryListComponents from './CategoryListComponents';
+import ShoppingItem from '../model/ShoppingItem';
 
 export default class BaseListComponents extends Component {
     constructor(props) {
         super(props);
 
-        this.todoList=[];
-        this.todoList.push(new MyListItem(0, "feed the cat"));
-        this.todoList.push(new MyListItem(1,"buy present"));
+        this.shoppingList=[];
+        this.shoppingList.push(new ShoppingItem(0, "milk"));
+        this.shoppingList.push(new ShoppingItem(1,"bread"));
         this.state = {
             NewItemText: "",
-            theListItems:this.todoList,
+            theListItems:this.shoppingList,
             FilterOptionIndex:1,
             changeItemCount:false
         }
@@ -41,10 +41,10 @@ export default class BaseListComponents extends Component {
     HandleNewItem=(event)=>{    
 
         const {NewItemText}=this.state;
-        let newListItem =new MyListItem(this.todoList[this.todoList.length-1].id+1, NewItemText);
-        this.todoList.push(newListItem);
+        let newShoppingItem =new ShoppingItem(this.shoppingList[this.shoppingList.length-1].id+1, NewItemText);
+        this.shoppingList.push(newShoppingItem);
         this.setState({
-            theListItems: this.todoList.concat(),
+            theListItems: this.shoppingList.concat(),
             NewItemText: "",
             changeItemCount:true
         });
@@ -75,16 +75,16 @@ export default class BaseListComponents extends Component {
         let filteredArray=[];
         switch (this.state.FilterOptionIndex) {
             case 1:
-                filteredArray= this.todoList;
+                filteredArray= this.shoppingList;
                 break;
             case 2:
-                filteredArray=this.todoList.filter(item=>item.isCompleted===false);
+                filteredArray=this.shoppingList.filter(item=>item.isCompleted===false);
                 break;
             case 3:
-                filteredArray=this.todoList.filter(item=>item.isCompleted===true);
+                filteredArray=this.shoppingList.filter(item=>item.isCompleted===true);
                 break;
             default:
-                filteredArray= this.todoList;
+                filteredArray= this.shoppingList;
                 break;
         }
      
