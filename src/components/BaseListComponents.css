@@ -1,0 +1,38 @@
+.main-base-list{
+    border: 2px solid green;
+    border-radius: 10px;
+    flex-grow: 10000;
+    
+}
+
+.container>h1{
+    text-align: center;
+}
+
+.main-base-list h5.left-items{
+    color: green;
+    padding: 5px;
+   text-decoration: underline;
+}
+
+.main-base-list .input
+{
+    background-color: rgb(237,242,242);
+}
+
+.main-base-list .form-control:focus
+{
+    background-color: rgb(237,242,242);
+}
+.container{
+    margin:0px;
+    padding: 0px;
+    display: flex;
+}
+.btn-toolbar>.btn-group {
+   
+    /* writing-mode: vertical-rl;
+    text-orientation: mixed; */
+    writing-mode: vertical-lr; 
+    transform: rotate(180deg);
+}

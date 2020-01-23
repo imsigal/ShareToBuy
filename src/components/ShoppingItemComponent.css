@@ -1,0 +1,34 @@
+.main-shopping-item{
+    font-size: larger;
+    border-bottom: 1px solid lightgray;
+    padding: 5px 20px;
+    position: relative;;
+}
+
+.linethrough-text
+{
+    text-decoration: line-through;
+    color: gray;
+}
+
+.regular-text
+{
+    text-decoration: none;
+    color:black;
+}
+
+.side-right
+{
+    position: absolute;
+    right: 0;
+}
+
+.main-shopping-item button{
+    background-color: transparent;
+    border: none;
+}
+
+.hidden { 
+    display:none; 
+}
+

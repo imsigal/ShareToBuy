@@ -1,8 +1,9 @@
 export default class Category
 {
-    constructor(categoryObj)
+    constructor(parseModel)
     {
-        this.name=categortObj.name;
-        this.img=categortObj.get("image")._url;
+        //this.name=parseModel.get("name");;
+        //this.img=parseModel.get("image")._url;
+        this.name=parseModel;
     }
 }
