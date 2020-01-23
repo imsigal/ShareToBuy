@@ -69,32 +69,6 @@ export default class BaseListComponents extends Component {
         
     }
 
-    DeleteItemHandler=(listIndex)=>
-    {
-        var itemIndex=this.todoList.findIndex(item=>item.id===listIndex)
-        if (itemIndex>=0)
-        {
-            // if the task is not completed, show user a message
-            if (this.todoList[itemIndex].isCompleted===false)
-            {
-                let result=window.confirm("This task was not completed, to delete it anyway??");
-                if (result===false)
-                    {
-                        return;
-                    }
-            }
-            this.todoList.splice(itemIndex,1);
-
-            this.setState({
-                theListItems: this.todoList,
-                changeItemCount:true
-            });
-            
-        }
-        
-
-    }
-
     // Filter the list according to the buttom show all/ show completed/show active
     filterOptions=()=>
     {
@@ -117,23 +91,16 @@ export default class BaseListComponents extends Component {
         return filteredArray;
     }
 
-     getActiveItemCount()
-    {
-        let filteredArray=this.todoList.filter(item=>item.isCompleted===false);
-       return (filteredArray.length);    
-    }
-
-  
+   
     render() {
         const {NewItemText}=this.state;
 
         let filteredArray=this.filterOptions();
         let itemsLists=[];
         filteredArray.forEach(element => {
-            itemsLists.push(<ShoppingItemComponent item={element} OnCompletedTask={this.CompletedTaskHandler} OnDeleteItem={this.DeleteItemHandler}></ShoppingItemComponent>)
+            itemsLists.push(<ShoppingItemComponent item={element} OnCompletedTask={this.CompletedTaskHandler} ></ShoppingItemComponent>)
          }  );
           
-        const activeItemCount= this.getActiveItemCount();
     
         return (
           
@@ -147,7 +114,6 @@ export default class BaseListComponents extends Component {
                 </ButtonToolbar>
                 <CategoryListComponents></CategoryListComponents>
                 <div className="main-base-list">
-                <h5 className="left-items">{activeItemCount} items left </h5>
                 <ListGroup>
                     {itemsLists}
                 </ListGroup>

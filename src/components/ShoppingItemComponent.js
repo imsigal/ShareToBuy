@@ -9,43 +9,16 @@ export default class ShoppingItemComponent extends Component {
     
           this.state = {
             wasChanged:false,
-            showDelete:true
+            showDelete:true, 
         };
 
     }
   
-
-    handleCheckBoxChange = (event) => {
-        if (event.target.checked!==this.props.item.isCompleted)
-            {
-                this.props.item.isCompleted=event.target.checked;
+        HandleDeleteItem=(index)=>{
+            this.props.item.isCompleted=!this.props.item.isCompleted;
                 this.setState({
                     wasChanged:true
                     });
-            }
-          if (this.props.item.isCompleted) 
-          {
-              if (this.props.OnCompletedTask)
-              {
-                this.props.OnCompletedTask(-1);
-              }
-              
-          } else
-          {
-            if (this.props.OnCompletedTask)
-            {
-              this.props.OnCompletedTask(1);
-            }
-          }
-
-        };
-
-        HandleDeleteItem=(index)=>{
-           
-            if (this.props.OnDeleteItem)
-            {
-              this.props.OnDeleteItem(index);
-            }
         }
 
         HandleMouseLeave=(event)=>{
@@ -72,13 +45,6 @@ export default class ShoppingItemComponent extends Component {
             return (
             <Container className="main-shopping-item" onMouseOver={this.handleMouseEnter} onMouseLeave={this.HandleMouseLeave}  >
                 <label className={completedClass}>
-                    <input
-                        type="checkbox"
-                        name={item.id}
-                        checked={item.isCompleted}
-                        onChange={this.handleCheckBoxChange}
-                        className="form-check-input"
-                    />
                     {item.description}
                     <button className={deleteButtonClass} onClick={this.HandleDeleteItem.bind(this, item.id)}>
                         <img src={imageSource} alt="delete" />
