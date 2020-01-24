@@ -91,6 +91,10 @@ export default class BaseListComponents extends Component {
         return filteredArray;
     }
 
+    AddImage=()=>{
+
+    }
+
    
     render() {
         const {NewItemText}=this.state;
@@ -128,7 +132,9 @@ export default class BaseListComponents extends Component {
                          onKeyDown={this.handleKeyDownEvent}
                     />
                     <InputGroup.Append>
-                        <Button variant="outline-secondary"  onClick={this.HandleNewItem}>הוסף</Button>
+                        <Button variant="outline-secondary"  onClick={this.AddImage}>תמונה</Button>
+                        <Button variant="info"  onClick={this.HandleNewItem}>הוסף</Button>
+                       
                     </InputGroup.Append>
                 </InputGroup>
                 </div>
