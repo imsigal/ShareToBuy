@@ -16,11 +16,23 @@ export default class ShoppingPage extends Component {
 
     }
     
-    handleClose=() =>{
-      this.setState({
-        showSelectActiveGroup: false,
-        showCreateActiveGroup:false
-      })
+    handleClose=(isToSelection) =>{
+      if (isToSelection){
+         this.setState({
+          showSelectActiveGroup: true,
+          showCreateActiveGroup:false
+        })
+      }
+      else{
+         this.setState({
+          showSelectActiveGroup: false,
+          showCreateActiveGroup:false
+        })
+      }
+
+     
+      
+      
   }
 
     HandleCreateNewGroup=()=>

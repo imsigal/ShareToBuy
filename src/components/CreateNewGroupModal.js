@@ -12,7 +12,8 @@ export default class CreateNewGroupModal extends Component {
         this.state={
             newUserMail:"",
             newGroupName:"",
-            users:[]
+            users:[],
+            errorMessage:""
         }
         
        
@@ -29,16 +30,24 @@ export default class CreateNewGroupModal extends Component {
     }
 
     createNewGroup=()=>{
-        console.log ( "in create new group")
         const{newGroupName,users}=this.state;
+        this.setState({
+            errorMessage:""
+        })     
         if (!newGroupName)
         {
             console.log ( "in create new group:newGroupName is empty")
+            this.setState({
+                errorMessage:"new Group Name is empty"
+            })     
             return;
         }
         if (users.length===0)
         {
             console.log ( "in create new group:there are no users defined")
+            this.setState({
+                errorMessage:"There are no users defined to the group"
+            })     
             return;
         }
 
@@ -60,6 +69,9 @@ export default class CreateNewGroupModal extends Component {
                     },
                     (error) => {
                         console.error('Error while creating ParseObject: ', error);
+                        this.setState({
+                            errorMessage:"Error in connection to db"
+                        })     
                         return null;
                         
                     }
@@ -71,6 +83,9 @@ export default class CreateNewGroupModal extends Component {
 
      AddUser=()=>{
             const{newUserMail,users}=this.state
+            this.setState({
+                errorMessage:""
+            })     
                 // find the user in the database
             const user   = Parse.Object.extend('User');
             const query = new Parse.Query(user);
@@ -87,17 +102,22 @@ export default class CreateNewGroupModal extends Component {
               }
             }, (error) => {
               console.error('Error while fetching ParseObjects', error);
+              this.setState({
+                errorMessage:"Error in connection to db"
+            })     
             });
         // if does not exsist, do nothing
         
      }
 
-    render() {
-        const { show, handleClose ,activeUser, activeGroup} = this.props;
-        const{newUserMail,newGroupName,users}=this.state
+// should return to select group....
+     CancelSelection=()=>{
+            this.props.handleClose(true);   // this may not work !!!
+    }
 
-        let showThisCompponent=(show)?"visible":"collapsed";
-        showThisCompponent=(activeGroup!=null)?"visible":showThisCompponent;
+    render() {
+        const { show, handleClose} = this.props;
+        const{newUserMail,newGroupName,users,errorMessage}=this.state
       
         const theUsers=users.join (" ");
 
@@ -105,21 +125,19 @@ export default class CreateNewGroupModal extends Component {
 
             <Modal show={show} className="group-settings"  onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>here comes the modal title...</Modal.Title>
+                    <Modal.Title>Create New Group</Modal.Title>
                 </Modal.Header>
             <Modal.Body>
                 
                 <Form.Group  >
                     <Form.Label>group name</Form.Label>
                     <Form.Control type="text" name="newGroupName" value={newGroupName} placeholder="Enter group name"  onChange={this.handleInputChange}/>
-                    {/* <Form.Text className="text-muted"/> */}
                 </Form.Group>
                 <Form.Group  >
                     <Form.Label>Add user</Form.Label>
                     <Form.Control type="email" name="newUserMail" value={newUserMail} placeholder="Enter user email"  onChange={this.handleInputChange} />
-                    {/* <Form.Text className="text-muted"/> */}
                 </Form.Group>
-                <Button variant="primary" type="button" onClick={this.AddUser}>
+                <Button variant="info" type="button" onClick={this.AddUser}>
                     Add user
                 </Button >
                 <Form.Group >
@@ -129,8 +147,10 @@ export default class CreateNewGroupModal extends Component {
                 
                 </Modal.Body>
                 <Modal.Footer>
-                   
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Form.Group>
+                            <Form.Label>{errorMessage}</Form.Label>
+                    </Form.Group>
+                    <Button variant="secondary" onClick={this.CancelSelection}>
                         Cancel
                     </Button>
                     <Button variant="info" onClick={this.createNewGroup}>
