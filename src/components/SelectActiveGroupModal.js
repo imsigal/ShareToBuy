@@ -29,7 +29,6 @@ export default class SelectActiveGroupModal extends Component {
 
     }
     CancelSelection=()=>{
-        const {previousGroupSelection,selectedGroup}=this.state;
         if (this.props.activeGroup)  // the previos group 
         {
             this.props.handleClose();
@@ -40,7 +39,7 @@ export default class SelectActiveGroupModal extends Component {
         else{
             console.log(" initial group was empty , you must select a group");
             this.setState({
-                errorMessage:" initial group was empty , you must select a group"
+                errorMessage:"Initial group was empty, select a group"
             })     
          }
     }
@@ -113,7 +112,7 @@ export default class SelectActiveGroupModal extends Component {
     }
 
     render() {
-        const { show, handleClose , activeGroup} = this.props;
+        const { show, handleClose} = this.props;
         const {lstGroups,errorMessage}=this.state
 
          let lstGroupsOption=lstGroups.map((item,index)=>
