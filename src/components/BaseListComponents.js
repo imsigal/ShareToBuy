@@ -120,15 +120,15 @@ export default class BaseListComponents extends Component {
               
                  <InputGroup className="mb-3" size="lg">
                     <FormControl className="input"
-                        placeholder="Add new item..."
-                        aria-label="Add new Item..."
+                        placeholder="הוסף פריט"
+                        aria-label="הוסף פריט"
                         aria-describedby="basic-addon2"
                         value={NewItemText} 
                          onChange={this.handleInputChange}
                          onKeyDown={this.handleKeyDownEvent}
                     />
                     <InputGroup.Append>
-                        <Button variant="outline-secondary"  onClick={this.HandleNewItem}>Add item</Button>
+                        <Button variant="outline-secondary"  onClick={this.HandleNewItem}>הוסף</Button>
                     </InputGroup.Append>
                 </InputGroup>
                 </div>

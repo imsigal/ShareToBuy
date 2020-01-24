@@ -85,7 +85,7 @@ export default class SelectActiveGroupModal extends Component {
         this.GetGroupByName(this.state.selectedGroup);
         this.props.handleClose();
     }
-    
+
     //open the NewGroup Dialog
     createNewGroup=()=>{
         this.setState({isShowCreateNewGroup:true});
@@ -138,22 +138,22 @@ export default class SelectActiveGroupModal extends Component {
         
         return (        
             <Modal show={show} className="group-settings"  onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Select Group</Modal.Title>          
+                <Modal.Header>
+                    <Modal.Title>בחירת קבוצה</Modal.Title>          
                 </Modal.Header>
                 <Modal.Body>
                      <Form >
                         <Form.Group >
-                            <Form.Label>Select other group, Available groups are </Form.Label>
+                            <Form.Label>בחר קבוצה </Form.Label>
                             <Form.Control as="select" onChange ={this.HandleGroupSelection}>
                            { lstGroupsOption}
                             </Form.Control>
                         </Form.Group>
 
                         <Form.Group >
-                            <Form.Label>or, Create new group        </Form.Label>
+                            <Form.Label> או צור קבוצה חדשה &emsp; &emsp;</Form.Label>
                             <Button variant="info" onClick={this.createNewGroup}>
-                                Create New Group
+                                צור קבוצה
                             </Button>
                         </Form.Group>
                     </Form> 
@@ -163,10 +163,10 @@ export default class SelectActiveGroupModal extends Component {
                             <Form.Label>{errorMessage}</Form.Label>
                     </Form.Group>
                     <Button variant="secondary" onClick={this.CancelSelection}>
-                        Cancel
+                        בטל
                     </Button>
                     <Button variant="info" onClick={this.acceptGroupSelection}>
-                            Ok
+                        בחר
                     </Button>
                 </Modal.Footer>
             </Modal>);

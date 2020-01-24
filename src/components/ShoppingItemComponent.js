@@ -41,7 +41,7 @@ export default class ShoppingItemComponent extends Component {
                 completedClass = "regular-text";
             }
 
-            let deleteButtonClass=this.state.showDelete===true?"side-right":"hidden"
+            let deleteButtonClass=this.state.showDelete===true?"side-left":"hidden"
             let itemText=item.count + ' '+ item.name
             return (
             <Container className="main-shopping-item" onMouseOver={this.handleMouseEnter} onMouseLeave={this.HandleMouseLeave}  >

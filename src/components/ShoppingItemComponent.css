@@ -23,6 +23,12 @@
     right: 0;
 }
 
+.side-left
+{
+    position: absolute;
+    left: 0;
+}
+
 .main-shopping-item button{
     background-color: transparent;
     border: none;

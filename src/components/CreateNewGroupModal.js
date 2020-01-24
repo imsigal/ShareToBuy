@@ -139,24 +139,24 @@ export default class CreateNewGroupModal extends Component {
         return (
 
             <Modal show={show} className="group-settings"  onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Create New Group</Modal.Title>
+                <Modal.Header>
+                    <Modal.Title>יצירת קבוצה חדשה</Modal.Title>
                 </Modal.Header>
             <Modal.Body>
                 
                 <Form.Group  >
-                    <Form.Label>group name</Form.Label>
-                    <Form.Control type="text" name="newGroupName" value={newGroupName} placeholder="Enter group name"  onChange={this.handleInputChange}/>
+                    <Form.Label>שם קבוצה</Form.Label>
+                    <Form.Control type="text" name="newGroupName" value={newGroupName} placeholder="הכנס שם קבוצה"  onChange={this.handleInputChange}/>
                 </Form.Group>
                 <Form.Group  >
-                    <Form.Label>Add user</Form.Label>
-                    <Form.Control type="email" name="newUserMail" value={newUserMail} placeholder="Enter user email"  onChange={this.handleInputChange} />
+                    <Form.Label>הוסף משתמש</Form.Label>
+                    <Form.Control type="email" name="newUserMail" value={newUserMail} placeholder="הכנס דואר אלקטרוני"  onChange={this.handleInputChange} />
                 </Form.Group>
                 <Button variant="info" type="button" onClick={this.AddUser}>
-                    Add user
+                    הוסף משתמש
                 </Button >
                 <Form.Group >
-                    <Form.Label>users list</Form.Label>
+                    <Form.Label>רשימת משתמשים</Form.Label>
                     <Form.Control as="textarea" rows="3" value={theUsers} />
                 </Form.Group>
                 
@@ -166,10 +166,10 @@ export default class CreateNewGroupModal extends Component {
                             <Form.Label>{errorMessage}</Form.Label>
                     </Form.Group>
                     <Button variant="secondary" onClick={this.CancelSelection}>
-                        Cancel
+                        בטל
                     </Button>
                     <Button variant="info" onClick={this.createNewGroup}>
-                            Ok
+                        צור
                     </Button>
 
                 </Modal.Footer>

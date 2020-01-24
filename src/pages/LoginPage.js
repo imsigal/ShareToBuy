@@ -90,22 +90,22 @@ export default  class LoginPage extends Component {
             <Container>
             <div className="p-login">
                 <div className="main">
-                    <h1>Login to ShareToBuy</h1>
+                    <h1>ShareToBuy</h1>
                     {errorAlert}
                     <Form>
                         <Form.Group controlId="formBasicEmail">
                             <Form.Label>Email address</Form.Label>
                             <Form.Control name="email" value={email}
-                                type="email" placeholder="Enter email" onChange={this.handleInputChange} />
+                                type="email" placeholder="הכנס דואר אלקטרוני" onChange={this.handleInputChange} />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicPassword">
                             <Form.Label>Password</Form.Label>
                             <Form.Control name="pwd" value={pwd}
-                                type="password" placeholder="Password" onChange={this.handleInputChange} />
+                                type="password" placeholder="ססמא" onChange={this.handleInputChange} />
                         </Form.Group>
                         <Button variant="info" type="button" block onClick={this.login}>
-                            Login
+                            כניסה
                         </Button>
                     </Form>
                 </div>
