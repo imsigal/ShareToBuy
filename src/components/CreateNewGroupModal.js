@@ -3,6 +3,18 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import Parse from 'parse';
 import ShoppingGroup from '../model/ShoppingGroup';
 
+//CreateNewGroupModal
+// used to create new group in the DB , and select this group as active
+// props:
+//    -activeUser- who is the active user
+//    -activeGroup- who is the current active group ( the one before this dialog was opened)
+//    -handleClose- the function that will be handling close this dialog
+//    -handleGroupSelection- the function that is responsible for the selection of the new created group 
+//state: 
+//   - newUserMail,newGroupName- the new values that the user has entered
+//   -users- the list of users , that was selected for the new group. will be sent to db
+//   - errorMessage- messages that will be shown to the user on the dialog footer
+
 export default class CreateNewGroupModal extends Component {
     constructor(props) {
         super(props);
@@ -18,7 +30,7 @@ export default class CreateNewGroupModal extends Component {
         
        
     }
-
+    //general function to handle all input changes
     handleInputChange=(event)=> {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -29,6 +41,8 @@ export default class CreateNewGroupModal extends Component {
         });
     }
 
+    // this function checks if all mandatory fields are filled 
+    //and creates a new group in the db
     createNewGroup=()=>{
         const{newGroupName,users}=this.state;
         this.setState({
@@ -80,7 +94,8 @@ export default class CreateNewGroupModal extends Component {
     
 
      
-
+    // this function adds a user to the users list
+    // the user should be in the db in order to add it to the group
      AddUser=()=>{
             const{newUserMail,users}=this.state
             this.setState({
@@ -110,7 +125,7 @@ export default class CreateNewGroupModal extends Component {
         
      }
 
-// should return to select group....
+    //return to select group....
      CancelSelection=()=>{
             this.props.handleClose(true);   // this may not work !!!
     }

@@ -5,6 +5,21 @@ import Parse from 'parse';
 import ShoppingGroup from '../model/ShoppingGroup';
 
 
+//SelectActiveGroupModal
+// used to select a group , from the groups that are found in the DB 
+// props:
+//    -activeUser- who is the active user
+//    -activeGroup- who is the current active group ( the one before this dialog was opened)
+//    -handleClose- the function that will be handling close this dialog
+//    -handleGroupSelection- the function that is responsible for the selection of the new created group 
+//    -HandleCreateNewGroup- is called when new group creation was chosen
+//state: 
+//   - isShowCreateNewGroup- if need to open the createNewGroup dialog
+//   - lstGroups- the list of existing groups , from the db (only name)
+//   - selectedGroup- the group that was selected (only name)
+//   - errorMessage- messages that will be shown to the user on the dialog footer
+
+
 export default class SelectActiveGroupModal extends Component {
     constructor(props) {
         super(props);
@@ -28,6 +43,7 @@ export default class SelectActiveGroupModal extends Component {
         this.GetGroupList();
 
     }
+    // on pressing on the cancel button
     CancelSelection=()=>{
         if (this.props.activeGroup)  // the previos group 
         {
@@ -69,6 +85,7 @@ export default class SelectActiveGroupModal extends Component {
         this.GetGroupByName(this.state.selectedGroup);
         this.props.handleClose();
     }
+    
     //open the NewGroup Dialog
     createNewGroup=()=>{
         this.setState({isShowCreateNewGroup:true});
