@@ -15,7 +15,8 @@ export default class SelectActiveGroupModal extends Component {
         this.state = {
             isShowCreateNewGroup:false,
             lstGroups:[],
-            selectedGroup:null
+            selectedGroup:null,
+            errorMessage:""
         }
 
         this.GetGroupByName=this.GetGroupByName.bind(this);
@@ -27,12 +28,29 @@ export default class SelectActiveGroupModal extends Component {
         this.GetGroupList();
 
     }
+    CancelSelection=()=>{
+        const {previousGroupSelection,selectedGroup}=this.state;
+        if (this.props.activeGroup)  // the previos group 
+        {
+            this.props.handleClose();
+            this.setState({
+                errorMessage:""
+            })    
+        }
+        else{
+            console.log(" initial group was empty , you must select a group");
+            this.setState({
+                errorMessage:" initial group was empty , you must select a group"
+            })     
+         }
+    }
 
     // set in the state the selected item
-    HandleGroupSelection=(event)=>{
+    HandleGroupSelection=(event)=>{   
            let selectedGroupName=event.target.value;
            this.setState({
-                selectedGroup:selectedGroupName
+                selectedGroup:selectedGroupName,
+                errorMessage:""
            })
     }
 
@@ -42,7 +60,13 @@ export default class SelectActiveGroupModal extends Component {
         if (!this.state.selectedGroup)
         {
             console.log("no group was selected");
+            this.setState({
+                errorMessage:"no group was selected"
+            })     
         }
+        this.setState({
+            errorMessage:""
+        })     
         this.GetGroupByName(this.state.selectedGroup);
         this.props.handleClose();
     }
@@ -58,13 +82,15 @@ export default class SelectActiveGroupModal extends Component {
         const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
         const query2 = new Parse.Query(ParseShoppingGroup);
         query2.equalTo("GroupName", theGroupName);
-        query2.first().then(result => {  
-            console.log(result) ;         
+        query2.first().then(result => {           
             let selectedItem= new ShoppingGroup(result);
             this.props.handleGroupSelection(selectedItem); 
           })
           .catch(function(error){
-            console.log("Error: " + error.code + " " + error.message);       
+            console.log("Error: " + error.code + " " + error.message); 
+            this.setState({
+                errorMessage:"Error Getting Group"
+            })      
         });
     }
 
@@ -88,7 +114,7 @@ export default class SelectActiveGroupModal extends Component {
 
     render() {
         const { show, handleClose , activeGroup} = this.props;
-        const {lstGroups}=this.state
+        const {lstGroups,errorMessage}=this.state
 
          let lstGroupsOption=lstGroups.map((item,index)=>
          <option>{item} </option>)
@@ -97,15 +123,10 @@ export default class SelectActiveGroupModal extends Component {
         return (        
             <Modal show={show} className="group-settings"  onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>here comes the modal title...</Modal.Title>
+                    <Modal.Title>Select Group</Modal.Title>          
                 </Modal.Header>
                 <Modal.Body>
                      <Form >
-                        <Form.Group >
-                            <Form.Label>current group is {activeGroup} </Form.Label>
-                            
-                        </Form.Group>
-
                         <Form.Group >
                             <Form.Label>Select other group, Available groups are </Form.Label>
                             <Form.Control as="select" onChange ={this.HandleGroupSelection}>
@@ -114,25 +135,23 @@ export default class SelectActiveGroupModal extends Component {
                         </Form.Group>
 
                         <Form.Group >
-                            <Form.Label>or, Create new group </Form.Label>
+                            <Form.Label>or, Create new group        </Form.Label>
                             <Button variant="info" onClick={this.createNewGroup}>
                                 Create New Group
                             </Button>
                         </Form.Group>
-
                     </Form> 
-
-
                     </Modal.Body>
                 <Modal.Footer>
-                   
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Form.Group>
+                            <Form.Label>{errorMessage}</Form.Label>
+                    </Form.Group>
+                    <Button variant="secondary" onClick={this.CancelSelection}>
                         Cancel
                     </Button>
                     <Button variant="info" onClick={this.acceptGroupSelection}>
                             Ok
                     </Button>
-
                 </Modal.Footer>
             </Modal>);
     }
