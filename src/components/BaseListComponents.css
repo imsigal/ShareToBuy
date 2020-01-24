@@ -1,6 +1,5 @@
 .main-base-list{
-    border: 2px solid rgb(23,162,184);
-    border-radius: 10px;
+    border-right: 2px solid rgb(23,162,184);
     flex-grow: 10000;
     padding: 10px;
     
