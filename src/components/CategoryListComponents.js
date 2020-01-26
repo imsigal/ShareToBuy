@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import {Tabs,Tab,Image} from 'react-bootstrap';
-import Category from '../model/Category';
 import './CategoryListComponents.css';
-import Parse from 'parse';
 
 export default class CategoryListComponents extends Component {
     constructor(props) {
@@ -11,33 +9,12 @@ export default class CategoryListComponents extends Component {
         this.state={
             categoryArray:[],
             selectedCategoryItem:null
-        }
-        this.readCategoryList=this.readCategoryList.bind(this);
+        }   
     }
 
-    componentDidMount()
-    {
-        this.readCategoryList();
-    }
-     
-    async readCategoryList(){
-        const ParseCategory = Parse.Object.extend('Category');
-        const query = new Parse.Query(ParseCategory);
-        query.find().then(results => {         
-            let lstItems=[];
-                results.forEach(
-                    item=>lstItems.push(new Category(item))
-                )
-                let selected=lstItems.length>0?lstItems[0]:null
-                this.setState({
-                    categoryArray:lstItems,
-                    selectedItem:selected
-                });
-          });
-    }
 
     render() {
-        const {categoryArray,selectedItem}=this.state;
+        const {categoryArray,selectedItem}=this.props;
       
         let selected=selectedItem?selectedItem.name:""
         let itemsLists=[];

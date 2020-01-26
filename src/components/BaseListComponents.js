@@ -17,8 +17,9 @@ export default class BaseListComponents extends Component {
             theListItems:this.shoppingList,
             FilterOptionIndex:1,
             changeItemCount:false,
+           
         }
-
+       
     }
 
 
@@ -57,9 +58,7 @@ export default class BaseListComponents extends Component {
         this.setState({
             FilterOptionIndex:event
         })
-        
-
-        
+            
     }
     //actions to do when a task is completed
     CompletedTaskHandler=(count)=>{
@@ -84,6 +83,7 @@ export default class BaseListComponents extends Component {
    
     render() {
         const {NewItemText}=this.state;
+        const {categoryArray,selectedCategoryItem}=this.props;
         
         //list
        let filteredArray=this.filterOptions();
@@ -97,8 +97,10 @@ export default class BaseListComponents extends Component {
     
         return (
           
-               <Container>  
-                <CategoryListComponents></CategoryListComponents>
+            <Container>  
+                <CategoryListComponents categoryArray={categoryArray} 
+                    selectedCategoryItem={selectedCategoryItem}>
+                </CategoryListComponents>
                 <div className="main-base-list">
                 <ListGroup>
                     {itemsLists}

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Category from '../model/Category';
 import { Modal, Button, Form,Row,Col } from 'react-bootstrap';
 import Parse from 'parse';
 
@@ -54,9 +53,8 @@ export default class CategoryNewModal extends Component {
                     (result) => {
                         if (result)
                         {  
-                                let category = new Category(result);
                                 this.ClearCategoryDialog();
-                                this.props.handleCategoryClose();
+                                this.props.handleCategoryClose(true);
                         }
                     },
                     (error) => {
@@ -97,7 +95,7 @@ export default class CategoryNewModal extends Component {
     //return to select group....
      CancelSelection=()=>{
             this.ClearCategoryDialog();
-            this.props.handleCategoryClose(true);   
+            this.props.handleCategoryClose(false);   
     }
   
     render() {
