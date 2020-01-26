@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Tabs,Tab} from 'react-bootstrap';
+import {Tabs,Tab,Image} from 'react-bootstrap';
 import Category from '../model/Category';
 import './CategoryListComponents.css';
 import Parse from 'parse';
@@ -41,11 +41,23 @@ export default class CategoryListComponents extends Component {
       
         let selected=selectedItem?selectedItem.name:""
         let itemsLists=[];
+        
         if (categoryArray && categoryArray.length>0)
         {
+            // let imgUrl="";
             categoryArray.forEach((element,index) => {
+                // if (element.imgFile)
+                // {
+                //     console.log(element);
+                //     imgUrl=URL.createObjectURL(element.imgFile._url);//element.imgFile._url
+                // }
+                // else{
+                //     imgUrl=""
+                // }
                 itemsLists.push(
                 <Tab className="vertical" eventKey={element.name} title={element.name}>
+                    {/* <Image src={imgUrl}/> */}
+                    {/* <img border="0" alt={element.name} src={imgUrl} width="10" height="10"></img> */}
                 </Tab>)
             });
         }
@@ -54,9 +66,9 @@ export default class CategoryListComponents extends Component {
             itemsLists.push(
                 <Tab ></Tab>);
         }
-        
+
         return (           
-            <div class="category-list-main">
+            <div className="category-list-main">
                 <Tabs defaultActiveKey={selected}>
                     {itemsLists}
                 </Tabs> 
