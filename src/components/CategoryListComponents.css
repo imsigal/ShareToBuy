@@ -3,3 +3,19 @@
     transform: rotate(180deg); 
     writing-mode: vertical-rl;   
 }
+
+.category-list-main .nav-tabs>a{
+    text-decoration: none; 
+    color: inherit;
+  }
+
+  .category-list-main .nav-tabs>a:hover{
+    color:rgb(23,162,184);
+    background-color: rgb(237,242,242);
+  }
+
+  .category-list-main .nav-tabs>a.active{
+    background-color:rgb(23,162,184);
+    color: rgb(237,242,242);
+
+  }
