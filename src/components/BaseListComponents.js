@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FormControl, InputGroup,Button,ListGroup, Container,ButtonToolbar,ToggleButton,ToggleButtonGroup} from 'react-bootstrap';
+import { FormControl, InputGroup,Button,ListGroup, Container} from 'react-bootstrap';
 import ShoppingItemComponent from './ShoppingItemComponent';
 import './BaseListComponents.css';
 import CategoryListComponents from './CategoryListComponents';
@@ -16,12 +16,12 @@ export default class BaseListComponents extends Component {
             NewItemText: "",
             theListItems:this.shoppingList,
             FilterOptionIndex:1,
-            changeItemCount:false
+            changeItemCount:false,
         }
 
     }
 
-    
+
     // handle input text change
     handleInputChange=(event)=> {
         const newText = event.target.value
@@ -73,21 +73,7 @@ export default class BaseListComponents extends Component {
     filterOptions=()=>
     {
         let filteredArray=[];
-        switch (this.state.FilterOptionIndex) {
-            case 1:
-                filteredArray= this.shoppingList;
-                break;
-            case 2:
-                filteredArray=this.shoppingList.filter(item=>item.isCompleted===false);
-                break;
-            case 3:
-                filteredArray=this.shoppingList.filter(item=>item.isCompleted===true);
-                break;
-            default:
-                filteredArray= this.shoppingList;
-                break;
-        }
-     
+        filteredArray= this.shoppingList;  // currently no filter
         return filteredArray;
     }
 
@@ -98,24 +84,20 @@ export default class BaseListComponents extends Component {
    
     render() {
         const {NewItemText}=this.state;
-
-        let filteredArray=this.filterOptions();
+        
+        //list
+       let filteredArray=this.filterOptions();
         let itemsLists=[];
         filteredArray.forEach(element => {
             itemsLists.push(<ShoppingItemComponent item={element} OnCompletedTask={this.CompletedTaskHandler} ></ShoppingItemComponent>)
          }  );
           
+
+
     
         return (
           
-               <Container>              
-                   <ButtonToolbar >
-                        <ToggleButtonGroup type="radio" name="options" defaultValue={1} onChange={this.FilterResults}>
-                            <ToggleButton variant="light" value={1}>Show All</ToggleButton>
-                            <ToggleButton variant="light" value={2}>Show Active</ToggleButton>
-                            <ToggleButton variant="light" value={3}>Show completed</ToggleButton>
-                        </ToggleButtonGroup>
-                </ButtonToolbar>
+               <Container>  
                 <CategoryListComponents></CategoryListComponents>
                 <div className="main-base-list">
                 <ListGroup>
