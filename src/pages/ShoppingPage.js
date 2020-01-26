@@ -4,14 +4,15 @@ import SelectActiveGroupModal from '../components/SelectActiveGroupModal';
 import CreateNewGroupModal from '../components/CreateNewGroupModal';
 import {Navbar ,Nav} from 'react-bootstrap';
 import BaseListComponents from '../components/BaseListComponents';
-
+import CategoryNewModal from '../components/CategoryNewModal';
 export default class ShoppingPage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
           showSelectActiveGroup: true,
-          showCreateActiveGroup:false
+          showCreateActiveGroup:false,
+          showCategoryNew:false
       }
 
     }
@@ -28,11 +29,19 @@ export default class ShoppingPage extends Component {
           showSelectActiveGroup: false,
           showCreateActiveGroup:false
         })
-      }
+      } 
+  }
 
-     
-      
-      
+  handleCategoryClose=()=>{
+    this.setState({
+     showCategoryNew:false
+    })
+  }
+
+  HandleCategoryOpen=()=>{
+    this.setState({
+      showCategoryNew:true
+     })
   }
 
     HandleCreateNewGroup=()=>
@@ -52,7 +61,7 @@ export default class ShoppingPage extends Component {
 
   render() {
       const {activeUser,activeGroup}=this.props;
-      const {showSelectActiveGroup, showCreateActiveGroup}=this.state;
+      const {showSelectActiveGroup, showCreateActiveGroup,showCategoryNew}=this.state;
       if (!activeUser) {
         return <Redirect to="/"/>
       }
@@ -78,7 +87,7 @@ export default class ShoppingPage extends Component {
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                      <Nav.Link  href="#link">הוסף קטגוריה</Nav.Link>
+                      <Nav.Link  onClick={this.HandleCategoryOpen}>הוסף קטגוריה</Nav.Link>
                       <Nav.Link href="#link">בחירת מוצר מרשימה</Nav.Link>              
                     </Nav>
               </Navbar.Collapse>
@@ -91,6 +100,7 @@ export default class ShoppingPage extends Component {
                 <BaseListComponents></BaseListComponents>
                 <SelectActiveGroupModal show={showSelectActiveGroup} handleClose={this.handleClose} handleGroupSelection={this.handleGroupSelection} HandleCreateNewGroup= {this.HandleCreateNewGroup} activeUser={activeUser} activeGroup={activeGroup}/>
                 <CreateNewGroupModal show={showCreateActiveGroup} handleClose={this.handleClose} activeUser={activeUser} activeGroup={activeGroup}  handleGroupSelection={this.handleGroupSelection} />
+                <CategoryNewModal show={showCategoryNew} handleCategoryClose={this.handleCategoryClose} activeGroup={activeGroup}  handleGroupSelection={this.handleGroupSelection} />
             </div>
           </div>
 

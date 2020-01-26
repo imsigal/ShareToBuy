@@ -9,8 +9,8 @@ export default class CategoryListComponents extends Component {
         super(props);
 
         this.tempCategoryList=[];
-        this.tempCategoryList.push(new Category( "super"));
-        this.tempCategoryList.push(new Category("pharm"));
+        // this.tempCategoryList.push(new Category( "super",undefined));
+        // this.tempCategoryList.push(new Category("pharm",undefined));
         this.state={
             categoryArray:this.tempCategoryList
         }
