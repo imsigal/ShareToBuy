@@ -45,15 +45,16 @@ export default class CategoryNewModal extends Component {
             const ParseCategory = Parse.Object.extend('Category');
             const myNewObject = new ParseCategory(); 
             myNewObject.set('categoryName', name);
-            var parseFile = new Parse.File(imgFile.name, imgFile);
-            console.log(parseFile);
-            myNewObject.set('categoryImageSrc', parseFile); 
+            if (imgFile){
+                var parseFile = new Parse.File(imgFile.name, imgFile);
+                myNewObject.set('categoryImageSrc', parseFile); 
+            }
+            
                 myNewObject.save().then(
                     (result) => {
                         if (result)
                         {  
                                 let category = new Category(result);
-                                console.log(category);
                                 this.ClearCategoryDialog();
                                 this.props.handleCategoryClose();
                         }
