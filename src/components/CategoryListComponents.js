@@ -8,15 +8,14 @@ export default class CategoryListComponents extends Component {
 
         this.state={
             categoryArray:[],
-            selectedCategoryItem:null
         }   
     }
 
 
     render() {
-        const {categoryArray,selectedItem}=this.props;
+        const {categoryArray,selectedCategoryItem}=this.props;
       
-        let selected=selectedItem?selectedItem.name:""
+        let selected=selectedCategoryItem?selectedCategoryItem.name:""   // currently the first
         let itemsLists=[];
         
         if (categoryArray && categoryArray.length>0)
@@ -46,7 +45,7 @@ export default class CategoryListComponents extends Component {
 
         return (           
             <div className="category-list-main">
-                <Tabs defaultActiveKey={selected}>
+                <Tabs activeKey={selected}>
                     {itemsLists}
                 </Tabs> 
             </div>
