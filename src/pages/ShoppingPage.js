@@ -39,7 +39,6 @@ export default class ShoppingPage extends Component {
       const ParseShoppingItem = Parse.Object.extend('ShoppingItem');
       const query = new Parse.Query(ParseShoppingItem);
       query.find().then(results => {        
-          let lstItems=[];
               results.forEach(
                   //item=>lstItems.push(new ShoppingItem(item))
                   

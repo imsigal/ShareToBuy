@@ -4,7 +4,6 @@ import ShoppingItemComponent from './ShoppingItemComponent';
 import './BaseListComponents.css';
 import CategoryListComponents from './CategoryListComponents';
 import ShoppingItem from '../model/ShoppingItem';
-import Parse from 'parse';
 
 export default class BaseListComponents extends Component {
     constructor(props) {

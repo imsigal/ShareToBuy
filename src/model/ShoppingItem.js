@@ -1,4 +1,3 @@
-import ProductItem from "./ProductItem";
 
 export default class ShoppingItem
 {
