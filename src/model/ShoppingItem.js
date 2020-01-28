@@ -1,26 +1,15 @@
 import ProductItem from "./ProductItem";
 
-export default class ShoppingItem extends ProductItem
+export default class ShoppingItem
 {
     // img is optional
-    // when building new item, the count is always 1
-    constructor(shoppingItemObj,name,img)
+    // shoppingItemId is the id of the object from the db
+    constructor(shoppingItemId,name,img,count)
     {
-        if (arguments.length === 1)
-        {
-            super(shoppingItemObj);
-            this.count=shoppingItemObj.count;
-        }
-        else{
-            super(shoppingItemObj,name,img);
-            this.id=shoppingItemObj; //first item is id
-            this.name=name;
-            this.img=img;  // optional
-            this.count=1;
-        }
-
-        
+        this.shoppingItemId=shoppingItemId;
+        this.name=name;
+        this.img=img;  // optional
+        this.count=count;
+          
     }
-    
-
 }

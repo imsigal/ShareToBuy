@@ -7,6 +7,7 @@ import BaseListComponents from '../components/BaseListComponents';
 import CategoryNewModal from '../components/CategoryNewModal';
 import Parse from 'parse';
 import Category from '../model/Category';
+import ShoppingItem from '../model/ShoppingItem';
 
 
 export default class ShoppingPage extends Component {
@@ -19,15 +20,85 @@ export default class ShoppingPage extends Component {
           showCategoryNew:false,
           categoryArray:[],
           selectedCategoryItem:null,
-          isNewCategory:false
+          isNewCategory:false,
+          shoppingItemsArray:[]
       }
       this.readCategoryList=this.readCategoryList.bind(this);
+      this.getShoppingItemsParams=this.getShoppingItemsParams.bind(this);
+      this.addShoppingItem=this.addShoppingItem.bind(this);
     }
     componentDidMount()
     {
         this.readCategoryList();
+        this.readShoppingItemList();
     }
 
+    //******************************************************************** */
+    // Shopping list functions
+    async readShoppingItemList(){
+      const ParseShoppingItem = Parse.Object.extend('ShoppingItem');
+      const query = new Parse.Query(ParseShoppingItem);
+      query.find().then(results => {        
+          let lstItems=[];
+              results.forEach(
+                  //item=>lstItems.push(new ShoppingItem(item))
+                  
+                  (item,index)=>
+                  {
+                    this.getShoppingItemsParams(item);
+                  }
+              )
+
+        });
+  }
+
+  async getShoppingItemsParams(shoppingItem)
+  {   
+      let count=shoppingItem.get("count");
+      let shoppingItemId=shoppingItem.id;
+      let product=shoppingItem.get("productItemPointer");
+      await product.fetch();
+      let productName=product.get("productName");
+      let productImageSrc=product.get("productImageSrc");
+      let newItem=new ShoppingItem(shoppingItemId,productName,productImageSrc,count);
+      this.setState({
+        shoppingItemsArray:this.state.shoppingItemsArray.concat(newItem)
+      });
+
+  }
+
+  addShoppingItem(newShoppingItem)
+  {
+    const ShoppingItem=Parse.Object.extend('ShoppingItem');
+    const newShoppingItemObject=new ShoppingItem();
+
+    const ProductItem=Parse.Object.extend('productItem');
+    const newProductItemObject=new ProductItem();
+    newProductItemObject.set('productName',newShoppingItem.name);
+
+    var parseFile=(newShoppingItem.img)? new Parse.File(newShoppingItem.img.name,newShoppingItem.img):undefined;
+    if (parseFile)
+    {
+        newProductItemObject.set('productImageSrc',parseFile);
+    }
+    newShoppingItemObject.set("productItemPointer",newProductItemObject);
+    newShoppingItemObject.set('count',newShoppingItem.count);
+
+    newShoppingItemObject.save().then(
+        (result)=>{
+           newShoppingItem.id=result.id; // update the id
+           this.setState({
+            shoppingItemsArray:this.state.shoppingItemsArray.concat(newShoppingItem)
+          });
+        },
+        (error)=>{
+            console.error("error while creating New Shopping item",error);
+        }
+    );
+
+  }
+//******************************************************************** */
+    // Category list functions
     async readCategoryList(){
       const ParseCategory = Parse.Object.extend('Category');
       const query = new Parse.Query(ParseCategory);
@@ -74,7 +145,8 @@ export default class ShoppingPage extends Component {
       showCategoryNew:true
      })
   }
-
+  //******************************************************************** */
+  // Group functions
     HandleCreateNewGroup=()=>
     {
       this.setState({
@@ -89,11 +161,12 @@ export default class ShoppingPage extends Component {
     this.props.setGroup(group);
   }
 
-
+//******************************************************************** */
+    // render
   render() {
       const {activeUser,activeGroup}=this.props;
       const {showSelectActiveGroup, showCreateActiveGroup,showCategoryNew,
-        categoryArray,selectedCategoryItem}=this.state;
+        categoryArray,selectedCategoryItem,shoppingItemsArray}=this.state;
       if (!activeUser) {
         return <Redirect to="/"/>
       }
@@ -130,7 +203,7 @@ export default class ShoppingPage extends Component {
              <p> קבוצתך היא {activeGroupName}</p>
              <div class="main-shopping-page">           
                 <BaseListComponents categoryArray={categoryArray} 
-                        selectedCategoryItem={selectedCategoryItem}>
+                        selectedCategoryItem={selectedCategoryItem} shoppingItemsArray={shoppingItemsArray} addShoppingItem={this.addShoppingItem} >
                  </BaseListComponents>
                 <SelectActiveGroupModal show={showSelectActiveGroup} handleClose={this.handleClose} handleGroupSelection={this.handleGroupSelection} HandleCreateNewGroup= {this.HandleCreateNewGroup} activeUser={activeUser} activeGroup={activeGroup}/>
                 <CreateNewGroupModal show={showCreateActiveGroup} handleClose={this.handleClose} activeUser={activeUser} activeGroup={activeGroup}  handleGroupSelection={this.handleGroupSelection} />

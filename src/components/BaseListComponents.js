@@ -4,17 +4,15 @@ import ShoppingItemComponent from './ShoppingItemComponent';
 import './BaseListComponents.css';
 import CategoryListComponents from './CategoryListComponents';
 import ShoppingItem from '../model/ShoppingItem';
+import Parse from 'parse';
 
 export default class BaseListComponents extends Component {
     constructor(props) {
         super(props);
 
-        this.shoppingList=[];
-        this.shoppingList.push(new ShoppingItem(0, "milk"));
-        this.shoppingList.push(new ShoppingItem(1,"bread"));
         this.state = {
-            NewItemText: "",
-            theListItems:this.shoppingList,
+            newItemText: "",
+            imgFile:undefined,
             FilterOptionIndex:1,
             changeItemCount:false,
            
@@ -27,7 +25,7 @@ export default class BaseListComponents extends Component {
     handleInputChange=(event)=> {
         const newText = event.target.value
         this.setState({
-            NewItemText: newText
+            newItemText: newText
         });
     }
 
@@ -41,16 +39,22 @@ export default class BaseListComponents extends Component {
      // handle New item is added to the list
     HandleNewItem=(event)=>{    
 
-        const {NewItemText}=this.state;
-        let newShoppingItem =new ShoppingItem(this.shoppingList[this.shoppingList.length-1].id+1, NewItemText);
-        this.shoppingList.push(newShoppingItem);
+        const {newItemText,imgFile}=this.state;
+        if (!newItemText)
+        {
+            console.log("new shopping item text cannot be empty");
+            return;
+        }
+        let initialCount=1;
+        let newShoppingItem=new ShoppingItem(0,newItemText,imgFile,initialCount);
+        // call adding the item
+        this.props.addShoppingItem(newShoppingItem);
+        // clean the fields
         this.setState({
-            theListItems: this.shoppingList.concat(),
-            NewItemText: "",
-            changeItemCount:true
-        });
+                newItemText:"",
+                changeItemCount:true
+            })
         
-
     }
 
     // set the index according to the button pressed ( handler to the button click)
@@ -72,7 +76,7 @@ export default class BaseListComponents extends Component {
     filterOptions=()=>
     {
         let filteredArray=[];
-        filteredArray= this.shoppingList;  // currently no filter
+        filteredArray= this.props.shoppingItemsArray;  // currently no filter
         return filteredArray;
     }
 
@@ -80,9 +84,8 @@ export default class BaseListComponents extends Component {
 
     }
 
-   
     render() {
-        const {NewItemText}=this.state;
+        const {newItemText}=this.state;
         const {categoryArray,selectedCategoryItem}=this.props;
         
         //list
@@ -92,9 +95,7 @@ export default class BaseListComponents extends Component {
             itemsLists.push(<ShoppingItemComponent item={element} OnCompletedTask={this.CompletedTaskHandler} ></ShoppingItemComponent>)
          }  );
           
-
-
-    
+  
         return (
           
             <Container>  
@@ -111,7 +112,7 @@ export default class BaseListComponents extends Component {
                         placeholder="הוסף פריט"
                         aria-label="הוסף פריט"
                         aria-describedby="basic-addon2"
-                        value={NewItemText} 
+                        value={newItemText} 
                          onChange={this.handleInputChange}
                          onKeyDown={this.handleKeyDownEvent}
                     />
