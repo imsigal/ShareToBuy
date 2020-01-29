@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './ShoppingItemComponent.css';
 import { Container } from 'react-bootstrap';
-import imageSource from '../images/delete.png'
+import imageDeleteSource from '../images/delete.png'
+import imageAddSource from '../images/Add.png'
 
 export default class ShoppingItemComponent extends Component {
     constructor(props) {
@@ -19,6 +20,10 @@ export default class ShoppingItemComponent extends Component {
                 this.setState({
                     wasChanged:true
                     });
+        }
+
+        HandlePropertiesItem=(index)=>{
+            console.log ("HandleButtonItem ",index);
         }
 
         HandleMouseLeave=(event)=>{
@@ -45,12 +50,14 @@ export default class ShoppingItemComponent extends Component {
             let itemText=item.count + ' '+ item.name
             return (
             <Container className="main-shopping-item" onMouseOver={this.handleMouseEnter} onMouseLeave={this.HandleMouseLeave}  >
-                <label className={completedClass}>
-                    {itemText}
-                    <button className={deleteButtonClass} onClick={this.HandleDeleteItem.bind(this, item.id)}>
-                        <img src={imageSource} alt="delete" />
-                    </button> 
+                <p>
+                <label className={completedClass} onClick={this.HandleDeleteItem.bind(this, item.id)}>
+                    {itemText}                
                 </label>
+                <button className={deleteButtonClass} onClick={this.HandlePropertiesItem.bind(this, item.id)} >
+                        <img src={imageAddSource} alt="Add" />
+                    </button> 
+                </p>
             </Container>
            
             );
