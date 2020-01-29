@@ -107,9 +107,9 @@ export default class CreateNewGroupModal extends Component {
             query.equalTo("email", newUserMail);
             query.find().then((result) => {   
               // since mail is unique, only one user should be
-              if (result!==undefined || result!==null)
+              if (result!==undefined && result!==null && result.length>0) //should be only one user
               {
-                this.lstUsers.push(result);
+                this.lstUsers.push(result[0].id);  //enter the id of the user
                 // add  the name to the textarea window
                 this.setState({
                     users: users.concat(newUserMail)
@@ -134,8 +134,8 @@ export default class CreateNewGroupModal extends Component {
         const { show, handleClose} = this.props;
         const{newUserMail,newGroupName,users,errorMessage}=this.state
       
-        const theUsers=users.join (" ");
-
+        const theUsers=users.join ("\n");
+        
         return (
 
             <Modal show={show} className="group-settings"  onHide={handleClose}>
