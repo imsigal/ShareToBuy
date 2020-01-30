@@ -6,7 +6,7 @@ import ShoppingGroup from '../model/ShoppingGroup';
 
 
 //SelectActiveGroupModal
-// used to select a group , from the groups that are found in the DB 
+// used to select a group , from the groups that are found in the DB and the active user is a member
 // props:
 //    -activeUser- who is the active user
 //    -activeGroup- who is the current active group ( the one before this dialog was opened)
@@ -79,11 +79,13 @@ export default class SelectActiveGroupModal extends Component {
                 errorMessage:"no group was selected"
             })     
         }
+        else{
         this.setState({
             errorMessage:""
         })     
         this.GetGroupByName(this.state.selectedGroup);
         this.props.handleClose();
+        }
     }
 
     //open the NewGroup Dialog
@@ -110,32 +112,36 @@ export default class SelectActiveGroupModal extends Component {
         });
     }
 
-    // get the list of the groups as appear in the db
+    // get the list of the groups that the user is member of
     async GetGroupList()
     {
+        var currentUser=Parse.User.current();
         const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
         const query = new Parse.Query(ParseShoppingGroup);
+        query.equalTo("lstUsers", currentUser.id);
         query.find().then(results => {         
             let lstItems=[];
                 results.forEach(
                     item=>lstItems.push(item.get("GroupName"))
                 )
-                let selected=lstItems.length>0?lstItems[0]:null
+                let selected=lstItems.length>0?lstItems[0]:null ;   // set as selected the firzst item
                 this.setState({
                     lstGroups:lstItems,
                     selectedGroup:selected
                 });
-          });
+        },(error) => {
+            console.error('Error while fetching ShoppingGroup for the current user', error);
+        });
+        
     }
-
+ 
     render() {
         const { show, handleClose} = this.props;
-        const {lstGroups,errorMessage}=this.state
+        const {lstGroups,errorMessage,selectedGroup}=this.state
 
          let lstGroupsOption=lstGroups.map((item,index)=>
          <option>{item} </option>)
-
-        
+               
         return (        
             <Modal show={show} className="group-settings"  onHide={handleClose}>
                 <Modal.Header>
@@ -145,7 +151,7 @@ export default class SelectActiveGroupModal extends Component {
                      <Form >
                         <Form.Group >
                             <Form.Label>בחר קבוצה </Form.Label>
-                            <Form.Control as="select" onChange ={this.HandleGroupSelection}>
+                            <Form.Control as="select"  value={selectedGroup} onChange ={this.HandleGroupSelection}>
                            { lstGroupsOption}
                             </Form.Control>
                         </Form.Group>
