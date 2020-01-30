@@ -99,19 +99,22 @@ export default class ShoppingPage extends Component {
 //******************************************************************** */
     // Category list functions
     async readCategoryList(){
-      const ParseCategory = Parse.Object.extend('Category');
-      const query = new Parse.Query(ParseCategory);
-      query.find().then(results => {         
-          let lstItems=[];
-              results.forEach(
-                  item=>lstItems.push(new Category(item))
-              )
-              let selected=lstItems.length>0?lstItems[0]:null
-              this.setState({
-                  categoryArray:lstItems,
-                  selectedCategoryItem:selected,
-              });
+      Category.readCategoryList().then(lstItems=>{
+        let selected=lstItems && lstItems.length>0?lstItems[0]:null;
+        this.setState({
+            categoryArray:lstItems,
+            selectedCategoryItem:selected,
         });
+      })
+      .catch(error => {
+        console.error('error getting the shopping groups', error);
+        this.setState({
+          categoryArray:[],
+          selectedCategoryItem:null,
+                });
+    });
+      
+    
   }
     
     handleClose=(isToSelection) =>{
