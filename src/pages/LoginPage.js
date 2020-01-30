@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Form, Button, Alert,Container } from 'react-bootstrap';
-import Parse from 'parse';
 import User from '../model/user';
 import './LoginPage.css';
 import { Redirect } from 'react-router-dom';
@@ -32,29 +31,24 @@ export default  class LoginPage extends Component {
     }
 
 
-        login() {
+         login() {
             const { handleLogin } = this.props;
             const { email, pwd } = this.state;
 
-        // Pass the email and password to logIn function
-            Parse.User.logIn(email, pwd)
-            .then(parseUser => {
-                // successful login
-                const user = new User(parseUser);
-                handleLogin(user);   // send the user to app,to be passed to all appplication
-              
-                //handle navigation to next page
+            User.login(email, pwd).then(user => {
+                handleLogin(user);
                 this.setState({
                     redirectToNextPage: true
                 });
-             })
+            })
             .catch(error => {
-            console.error('Error while logging in user', error);
-            this.setState({
-                showInvalidLoginError: true,
-                pwd: ""
+                console.error('Error while logging in user', error);
+                this.setState({
+                            showInvalidLoginError: true,
+                            pwd: ""
+                        });
             });
-        })
+
     }
 
     render() {
