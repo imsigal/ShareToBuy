@@ -3,6 +3,7 @@ import './App.css';
 import { Switch, Route,HashRouter  } from 'react-router-dom'
 import LoginPage from './pages/LoginPage';
 import ShoppingPage from './pages/ShoppingPage';
+import Parse from 'parse'
 
 export default class App extends React.Component {
   
@@ -11,7 +12,7 @@ export default class App extends React.Component {
     
     //saving the  objects from the model
     this.state = {
-      activeUser: null,
+      activeUser: Parse.User.current(),
       activeGroup:null
     }
 
@@ -31,6 +32,7 @@ export default class App extends React.Component {
       activeUser: null,
       activeGroup: null
     })
+    Parse.User.logOut();
   }
 
   setGroup=(group)=>
