@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './ShoppingItemComponent.css';
-import { Container } from 'react-bootstrap';
-import imageDeleteSource from '../images/delete.png'
+import { Container ,Popover,OverlayTrigger} from 'react-bootstrap';
 import imageAddSource from '../images/Add.png'
 
 export default class ShoppingItemComponent extends Component {
@@ -10,29 +9,40 @@ export default class ShoppingItemComponent extends Component {
     
           this.state = {
             wasChanged:false,
-            showDelete:true, 
+            showChangeItemIcon:false, 
         };
 
     }
-  
+        HandleClosePopup=(event)=>{
+            this.refs.overlay.handleHide();
+        
+        }
+
+     
+
+        HandlePropertiesItem=(event)=>{
+            if (this.state.showUpdateProperties===true)
+            {
+                return;
+            }
+            console.log ("HandleButtonItem ",event.target);
+        }
+
         HandleDeleteItem=(index)=>{
             this.props.item.isCompleted=!this.props.item.isCompleted;
                 this.setState({
-                    wasChanged:true
+                    wasChanged:true,
                     });
         }
 
-        HandlePropertiesItem=(index)=>{
-            console.log ("HandleButtonItem ",index);
-        }
-
+      
         HandleMouseLeave=(event)=>{
             
-            this.setState({showDelete:false})
+            this.setState({showChangeItemIcon:false})
         }
         handleMouseEnter=(event)=>{
            
-            this.setState({showDelete:true})
+            this.setState({showChangeItemIcon:true})
         }
 
         render()
@@ -46,7 +56,22 @@ export default class ShoppingItemComponent extends Component {
                 completedClass = "regular-text";
             }
 
-            let deleteButtonClass=this.state.showDelete===true?"side-left":"hidden"
+            const popover = 
+            (
+                <Popover id="popover-basic" >
+                  <Popover.Title as="h3">עדכון פריט
+                        <button onClick={this.HandleClosePopup}>X</button>
+                  </Popover.Title>
+                  <Popover.Content>
+                    <button>Add image</button>
+                    <button>count</button>
+                    <button onClick={this.HandleClosePopup}>close</button>
+                  </Popover.Content>
+          
+                </Popover>
+              );
+
+            let deleteButtonClass=this.state.showChangeItemIcon===true?"side-left":"hidden"
             let itemText=item.count + ' '+ item.name
             return (
             <Container className="main-shopping-item" onMouseOver={this.handleMouseEnter} onMouseLeave={this.HandleMouseLeave}  >
@@ -54,10 +79,13 @@ export default class ShoppingItemComponent extends Component {
                 <label className={completedClass} onClick={this.HandleDeleteItem.bind(this, item.id)}>
                     {itemText}                
                 </label>
-                <button className={deleteButtonClass} onClick={this.HandlePropertiesItem.bind(this, item.id)} >
+                <OverlayTrigger trigger="click" placement="bottom" overlay={popover} rootClose ref="overlay">
+                    <button className={deleteButtonClass} onClick={this.HandlePropertiesItem} >
                         <img src={imageAddSource} alt="Add" />
                     </button> 
+                </OverlayTrigger>
                 </p>
+
             </Container>
            
             );
