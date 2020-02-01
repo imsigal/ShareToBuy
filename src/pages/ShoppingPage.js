@@ -27,11 +27,7 @@ export default class ShoppingPage extends Component {
       this.getShoppingItemsParams=this.getShoppingItemsParams.bind(this);
       this.addShoppingItem=this.addShoppingItem.bind(this);
     }
-    componentDidMount()
-    {
-        this.readCategoryList();
-        this.readShoppingItemList();
-    }
+
 
     //******************************************************************** */
     // Shopping list functions
@@ -97,7 +93,8 @@ export default class ShoppingPage extends Component {
 
   }
 //******************************************************************** */
-    // Category list functions
+   
+// Category list functions
     async readCategoryList(){
       Category.readCategoryList().then(lstItems=>{
         let selected=lstItems && lstItems.length>0?lstItems[0]:null;
@@ -107,7 +104,7 @@ export default class ShoppingPage extends Component {
         });
       })
       .catch(error => {
-        console.error('error getting the shopping groups', error);
+        console.error('error getting the categories', error);
         this.setState({
           categoryArray:[],
           selectedCategoryItem:null,
@@ -161,6 +158,9 @@ export default class ShoppingPage extends Component {
   {
     // hadle the opening of the select group section
     this.props.setGroup(group);
+    // read the lists according to the selected group
+    this.readCategoryList();
+    this.readShoppingItemList();
   }
 
 //******************************************************************** */
