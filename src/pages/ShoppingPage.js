@@ -15,6 +15,7 @@ export default class ShoppingPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+          redirectToLogin:false,
           showSelectActiveGroup: true,
           showCreateActiveGroup:false,
           showCategoryNew:false,
@@ -28,6 +29,15 @@ export default class ShoppingPage extends Component {
       this.addShoppingItem=this.addShoppingItem.bind(this);
     }
 
+    //************************************************************* */
+    logout=()=> {
+      // This eventually calls the handleLogout method of the App component
+      this.props.handleLogout();
+
+      this.setState({
+          redirectToLogin: true
+      })
+  }
 
     //******************************************************************** */
     // Shopping list functions
@@ -167,8 +177,15 @@ export default class ShoppingPage extends Component {
     // render
   render() {
       const {activeUser,activeGroup}=this.props;
-      const {showSelectActiveGroup, showCreateActiveGroup,showCategoryNew,
+      const {redirectToLogin,showSelectActiveGroup, showCreateActiveGroup,showCategoryNew,
         categoryArray,selectedCategoryItem,shoppingItemsArray}=this.state;
+
+      const logoutLink = activeUser ? <Nav.Link onClick={this.logout}>יציאה</Nav.Link> : null;  //should not be situation whenre there is no active user
+
+      if (redirectToLogin) {
+        return <Redirect to="/"/>
+    }
+
       if (!activeUser) {
         return <Redirect to="/"/>
       }
@@ -195,7 +212,8 @@ export default class ShoppingPage extends Component {
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
                       <Nav.Link  onClick={this.HandleCategoryOpen}>הוסף קטגוריה</Nav.Link>
-                      <Nav.Link href="#link">בחירת מוצר מרשימה</Nav.Link>              
+                      <Nav.Link href="#link">בחירת מוצר מרשימה</Nav.Link>   
+                      {logoutLink}          
                     </Nav>
               </Navbar.Collapse>
             </Navbar>

@@ -52,7 +52,7 @@ export default class App extends React.Component {
                   <LoginPage  handleLogin={this.handleLogin} getGroup={this.getGroup}></LoginPage>
                 </Route>
                 <Route exact path="/shopping">
-                  <ShoppingPage activeUser={activeUser} activeGroup={activeGroup} setGroup={this.setGroup} ></ShoppingPage>
+                  <ShoppingPage handleLogout={this.handleLogout} activeUser={activeUser} activeGroup={activeGroup} setGroup={this.setGroup} ></ShoppingPage>
                 </Route>
                
             </Switch>
