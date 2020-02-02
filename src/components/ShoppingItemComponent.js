@@ -13,13 +13,18 @@ export default class ShoppingItemComponent extends Component {
             fileImg: {
                 file: undefined,
                 URL:undefined
-            }
+            },
+            newCount:0
         };
-
+        this.HandleOkPopup=this.HandleOkPopup.bind(this);
     }
 
     componentDidMount()
-    { const {item}=this.props;
+    {   
+        const {item}=this.props;
+        this.setState({
+            newCount:item.count,
+        })
         if (item.imgFile)
         {
             console.log(item);
@@ -39,8 +44,39 @@ export default class ShoppingItemComponent extends Component {
         this.refs.overlay.handleHide();
     
     }
-    HandleOkPopup=(event)=>{
-        console.log ("HandleOkPopup ",event.target);
+   async HandleOkPopup(event)
+   {
+        const {fileImg,newCount}=this.state;
+        const{item}=this.props;
+
+        if (item.count!==newCount)
+        {
+            await item.UpdateShoppingItemCount(newCount).then(result=>{
+                    item.count=newCount;
+                })
+                .catch(error => {
+                    console.error("error while updating Shopping item",error);
+                });
+                this.setState({
+                    wasChanged:true,
+                    });
+
+        }
+        if (item.fileImg!==fileImg.file)
+        {
+            item.UpdateShoppingItemImage(fileImg.file).then(result=>{
+                item.img=fileImg.file;
+                })
+                .catch(error => {
+                console.error("error while updating Shopping item",error);
+                    
+            });
+            this.setState({
+                wasChanged:true,
+                });
+
+        }
+
         this.refs.overlay.handleHide();
         
     }
@@ -51,6 +87,13 @@ export default class ShoppingItemComponent extends Component {
             return;
         }
     }
+    handleCountChange=(event)=>{
+        this.setState({
+            newCount:event.target.valueAsNumber
+        })
+
+    }
+
 
     handleFileChange=(event)=> {
         let newFileImg;
@@ -113,7 +156,7 @@ export default class ShoppingItemComponent extends Component {
                                     <Form.Label>כמות</Form.Label>
                                 </Col>
                                 <Col>
-                                    <Form.Control type="number" placeholder={item.count} min="1"  />
+                                    <Form.Control type="number" placeholder={item.count} min="1" onChange={this.handleCountChange} />
                                 </Col>
                             </Row>
                         </Form.Group>
