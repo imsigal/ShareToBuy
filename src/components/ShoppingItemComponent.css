@@ -37,4 +37,20 @@
 .hidden { 
     display:none; 
 }
+.popover-header{
+    background-color: rgb(23,162,184);
+    color: rgb(237,242,242);
+    display: flex;
+} 
+.popover-header>button{
+   margin-right: auto;
+
+
+} 
+
+.popover-body button{
+    background-color: rgb(23,162,184);
+    color: rgb(237,242,242);
+    border-radius: 5px;
+} 
 

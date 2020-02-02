@@ -166,14 +166,16 @@ export default class ShoppingItemComponent extends Component {
                                 <Col>
                                     <Form.Control type="file" onChange={this.handleFileChange} />
                                 </Col>
+                            </Row> 
+                            <Row>
                                 <Col>
                                     <Image src={fileImg.URL} fluid/>
                                 </Col>
-
                             </Row>
+
                         </Form.Group>
 
-                        <button onClick={this.HandleOkPopup}>שנה</button>
+                        <button variant="info" onClick={this.HandleOkPopup}>שנה</button>
                         <button onClick={this.HandleClosePopup}>סגור</button>
                   </Popover.Content>
           
