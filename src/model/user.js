@@ -1,16 +1,9 @@
 import Parse from 'parse';
 
-// login in parse
-async function login(email, pwd) {
 
-    const parseUser = await Parse.User.logIn(email, pwd);
-    const user = new User(parseUser);
-    return user;
-
-}
 
 //class user
-class User {
+export default class User {
     constructor(parseModel) {
 
         this.id = parseModel.id;
@@ -20,7 +13,24 @@ class User {
         this.isManager = parseModel.get("isManager");
 
     }
+    // login in parse
+    static async login(email, pwd) {
+
+    const parseUser = await Parse.User.logIn(email, pwd);
+    const user = new User(parseUser);
+    return user;
+
+    }
+
+    static async findUserbyEmail(newUserMail){
+
+        const user   = Parse.Object.extend('User');
+        const query = new Parse.Query(user);
+        query.equalTo("email", newUserMail);
+        const result=await query.find();
+        return result;
+
+    }
 
 }
 
-export default {login};

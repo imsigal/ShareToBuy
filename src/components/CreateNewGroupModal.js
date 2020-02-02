@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import Parse from 'parse';
+import User from '../model/user';
 import ShoppingGroup from '../model/ShoppingGroup';
 
 //CreateNewGroupModal
@@ -65,32 +65,22 @@ export default class CreateNewGroupModal extends Component {
             return;
         }
 
-            // db connection    ( should be handles saparately)
-            const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
-            const myNewObject = new ParseShoppingGroup(); 
-            myNewObject.set('GroupName', newGroupName);
-            myNewObject.set('lstUsers', this.lstUsers);
-            myNewObject.set('lstShoppingLists', []);   //  create empty list
-            myNewObject.set('lstCategories', []);       // create empty list
-                myNewObject.save().then(
-                    (result) => {
-                        if (result)
-                        {  
-                                let NewGroup = new ShoppingGroup(result); 
-                                this.props.handleGroupSelection(NewGroup);  
-                                this.props.handleClose();
-                        }
-                    },
-                    (error) => {
-                        console.error('Error while creating ParseObject: ', error);
-                        this.setState({
-                            errorMessage:"Error in connection to db"
-                        })     
-                        return null;
-                        
-                    }
-                );
-         }
+        ShoppingGroup.CreateNewGroup(newGroupName, this.lstUsers).then(result=>{
+        
+                let NewGroup = new ShoppingGroup(result); 
+                this.props.handleGroupSelection(NewGroup);  
+                this.props.handleClose();
+        
+        })
+      
+        .catch(error => {
+            console.error("error while Creating New Group",error);
+            this.setState({
+                errorMessage:"error while Creating New Group"
+            })     
+        });
+                  
+    }
     
 
      
@@ -101,27 +91,33 @@ export default class CreateNewGroupModal extends Component {
             this.setState({
                 errorMessage:""
             })     
-                // find the user in the database
-            const user   = Parse.Object.extend('User');
-            const query = new Parse.Query(user);
-            query.equalTo("email", newUserMail);
-            query.find().then((result) => {   
-              // since mail is unique, only one user should be
-              if (result!==undefined && result!==null && result.length>0) //should be only one user
-              {
-                this.lstUsers.push(result[0].id);  //enter the id of the user
-                // add  the name to the textarea window
+            // find the user in the database  
+            // since mail is unique, only one user should be
+            User.findUserbyEmail(newUserMail).then(result=>{
                 this.setState({
-                    users: users.concat(newUserMail)
-                })
-              }
-            }, (error) => {
+                    errorMessage:""
+                })     
+                if (result!==undefined && result!==null && result.length>0) //should be only one user,// if does not exsist, do nothing
+                {
+                  this.lstUsers.push(result[0].id);  //enter the id of the user
+                  // add  the name to the textarea window
+                  this.setState({
+                      users: users.concat(newUserMail)
+                  })
+                }
+                else{
+                    this.setState({
+                        errorMessage:"could not find this user"
+                        })     
+                }
+            })
+              
+            .catch(error => {
               console.error('Error while fetching ParseObjects', error);
               this.setState({
-                errorMessage:"Error in connection to db"
-            })     
+                errorMessage:"Error in fetching the user"
+                })     
             });
-        // if does not exsist, do nothing
         
      }
 
