@@ -14,7 +14,8 @@ export default class ShoppingItemComponent extends Component {
                 file: undefined,
                 URL:undefined
             },
-            newCount:0
+            newCount:0,
+            
         };
         this.HandleOkPopup=this.HandleOkPopup.bind(this);
     }
@@ -39,7 +40,25 @@ export default class ShoppingItemComponent extends Component {
     }
 
     /******************************************** */
-    //Popover functions
+    //Popover functions=
+    enterEditingItem=(event)=>{
+        const {item}=this.props;
+        this.setState({
+            newCount:item.count,
+        })
+        if (item.imgFile)
+        {
+            console.log(item);
+            this.setState({
+                fileImg:{
+                    file: item.imgFile,
+                    URL:URL.createObjectURL(item.imgFile.URL.createObjectURL)
+                }
+            })
+        }
+
+    }
+
     HandleClosePopup=(event)=>{
         this.refs.overlay.handleHide();
     
@@ -48,32 +67,37 @@ export default class ShoppingItemComponent extends Component {
    {
         const {fileImg,newCount}=this.state;
         const{item}=this.props;
+        this.setState({
+            wasChanged:false,
+            });
 
         if (item.count!==newCount)
         {
-            await item.UpdateShoppingItemCount(newCount).then(result=>{
+            item.UpdateShoppingItemCount(newCount).then(result=>{
                     item.count=newCount;
+                    this.setState({
+                        wasChanged:true,
+                        });
                 })
                 .catch(error => {
                     console.error("error while updating Shopping item",error);
                 });
-                this.setState({
-                    wasChanged:true,
-                    });
+               
 
         }
         if (item.fileImg!==fileImg.file)
         {
             item.UpdateShoppingItemImage(fileImg.file).then(result=>{
                 item.img=fileImg.file;
+                this.setState({
+                    wasChanged:true,
+                    });
                 })
                 .catch(error => {
                 console.error("error while updating Shopping item",error);
                     
             });
-            this.setState({
-                wasChanged:true,
-                });
+           
 
         }
 
@@ -122,18 +146,23 @@ export default class ShoppingItemComponent extends Component {
 
       
         HandleMouseLeave=(event)=>{         
-            this.setState({showChangeItemIcon:false})
+            this.setState({
+                showChangeItemIcon:false
+                })
         }
 
         handleMouseEnter=(event)=>{
            
-            this.setState({showChangeItemIcon:true})
+            this.setState({
+                showChangeItemIcon:true
+                })
         }
 
         render()
         {
             const { item } = this.props;
-            const {fileImg}=this.state;
+            const {fileImg,showImagetooltip}=this.state;
+ 
             let completedClass = "";
             if (item.isCompleted) {
                 completedClass = "linethrough-text";
@@ -187,10 +216,11 @@ export default class ShoppingItemComponent extends Component {
             return (
             <Container className="main-shopping-item" onMouseOver={this.handleMouseEnter} onMouseLeave={this.HandleMouseLeave}  >
                 <p>
-                <label className={completedClass} onClick={this.HandleDeleteItem.bind(this, item.id)}>
+               
+                <label className={completedClass} onClick={this.HandleDeleteItem.bind(this, item.id)} tooltip={item.id}>
                     {itemText}                
                 </label>
-                <OverlayTrigger trigger="click" placement="bottom" overlay={popover} rootClose ref="overlay">
+                <OverlayTrigger trigger="click" onEnter={this.enterEditingItem} placement="bottom" overlay={popover} rootClose ref="overlay">
                     <button className={deleteButtonClass} onClick={this.HandlePropertiesItem} >
                         <img src={imageAddSource} alt="Add" />
                     </button> 

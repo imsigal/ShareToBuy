@@ -16,42 +16,30 @@ export default class ShoppingItem
     async UpdateShoppingItemCount(newCount)
     {      
         const ShoppingItemParse = Parse.Object.extend('ShoppingItem');
-        const query = await new Parse.Query(ShoppingItemParse);
-         query.get(this.shoppingItemId).then((object) => {  
-            object.set('count', newCount);
-            object.save().then((response) => {           
-            }, 
-            (error) => {       
-                console.error('Error while updating ShoppingItem count', error);
-            });
-        });
+        const query = new Parse.Query(ShoppingItemParse);
+        const object = await query.get(this.shoppingItemId);
+        object.set('count', newCount);
+        const response = await object.save();
+        return response;
+
 
     }
 
     async UpdateShoppingItemImage( newfile)
     {       
         const ShoppingItemParse = Parse.Object.extend('ShoppingItem');
-        const query = await new Parse.Query(ShoppingItemParse);
-         query.get(this.shoppingItemId).then((object) => {  
-            let product=object.get("productItemPointer");
-            var parseFile=(newfile)? new Parse.File(newfile.name,newfile):undefined;
+        const query = new Parse.Query(ShoppingItemParse);
+        const object=await query.get(this.shoppingItemId);
+        let product=object.get("productItemPointer");
+        var parseFile=(newfile)? new Parse.File(newfile.name,newfile):undefined;
             if (parseFile)
             {
                 product.set('productImageSrc',parseFile);
             }
-
-            product.save().then((response) => {           
-                }, 
-                (error) => {       
-                console.error('Error while updating productItem file', error);
-              });
-
-            object.save().then((response) => {           
-            }, 
-                (error) => {       
-                console.error('Error while updating ShoppingItem file', error);
-            });
-        });
+        
+            const response=await  product.save();
+            return response;
+      
 
     }
 
