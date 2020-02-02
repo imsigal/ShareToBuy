@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import './SelectActiveGroupModal.css';
-import Parse from 'parse';
 import ShoppingGroup from '../model/ShoppingGroup';
 
 
@@ -97,10 +96,12 @@ export default class SelectActiveGroupModal extends Component {
     // get from the db the group itself, according to the group name, and send it to app 
     GetGroupByName(theGroupName)
     {
-        const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
-        const query2 = new Parse.Query(ParseShoppingGroup);
-        query2.equalTo("GroupName", theGroupName);
-        query2.first().then(result => {           
+        // const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
+        // const query2 = new Parse.Query(ParseShoppingGroup);
+        // query2.equalTo("GroupName", theGroupName);
+        // query2.first()
+           ShoppingGroup.GetGroupByName(theGroupName)
+           .then(result => {           
             let selectedItem= new ShoppingGroup(result);
             this.props.handleGroupSelection(selectedItem); 
           })
@@ -114,22 +115,17 @@ export default class SelectActiveGroupModal extends Component {
 
     // get the list of the groups that the user is member of
     async GetGroupList()
-    {
-        var currentUser=Parse.User.current();
-        const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
-        const query = new Parse.Query(ParseShoppingGroup);
-        query.equalTo("lstUsers", currentUser.id);
-        query.find().then(results => {         
-            let lstItems=[];
-                results.forEach(
-                    item=>lstItems.push(item.get("GroupName"))
-                )
-                let selected=lstItems.length>0?lstItems[0]:null ;   // set as selected the firzst item
-                this.setState({
+    {        
+        let lstItems=[];
+        ShoppingGroup.GetGroupList().then
+        (lstItems=> {       
+            let selected=lstItems.length>0?lstItems[0]:null ;   // set as selected the firzst item
+            this.setState({
                     lstGroups:lstItems,
                     selectedGroup:selected
                 });
-        },(error) => {
+        })
+        .catch(error => {
             console.error('Error while fetching ShoppingGroup for the current user', error);
         });
         

@@ -30,6 +30,31 @@ export default class ShoppingGroup{
            
     }
 
+    static async GetGroupByName(theGroupName)
+    {
+        const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
+        const query = new Parse.Query(ParseShoppingGroup);
+        query.equalTo("GroupName", theGroupName);
+        const result=await query.first();   
+        return result;        
+    }
+
+
+    static async GetGroupList()
+    {
+        var currentUser=Parse.User.current();
+        const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
+        const query = new Parse.Query(ParseShoppingGroup);
+        query.equalTo("lstUsers", currentUser.id);
+        const groupListResults=await query.find();         
+        let lstItems=[];
+        groupListResults.forEach(
+                    item=>lstItems.push(item.get("GroupName"))
+        )
+        return lstItems;
+             
+    }
+
     
         
        
