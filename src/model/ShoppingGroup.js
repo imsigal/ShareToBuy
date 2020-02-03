@@ -55,10 +55,18 @@ export default class ShoppingGroup{
              
     }
 
-    
-        
-       
+    static async addCategoryToGroup(newCategory,activeGroup)
+    {
 
-         
-    
+        const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
+        const query = new  Parse.Query(ParseShoppingGroup) ; 
+        const currentShoppingGroup=await query.get(activeGroup.id);
+        let exitingCaetgoriesList=currentShoppingGroup.get('lstCategories');
+        exitingCaetgoriesList.push(newCategory);
+        currentShoppingGroup.set('lstCategories', exitingCaetgoriesList);
+        const result=await currentShoppingGroup.save();
+        return result;
+
+    }
+ 
 }

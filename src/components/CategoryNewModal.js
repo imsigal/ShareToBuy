@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Button, Form,Row,Col } from 'react-bootstrap';
-import Parse from 'parse';
+import Category from '../model/Category';
+import ShoppingGroup from '../model/ShoppingGroup';
 
 
 export default class CategoryNewModal extends Component {
@@ -40,32 +41,29 @@ export default class CategoryNewModal extends Component {
             return;
         }
         
-        // create the category in the db
-            const ParseCategory = Parse.Object.extend('Category');
-            const myNewObject = new ParseCategory(); 
-            myNewObject.set('categoryName', name);
-            if (imgFile){
-                var parseFile = new Parse.File(imgFile.name, imgFile);
-                myNewObject.set('categoryImageSrc', parseFile); 
-            }
-            
-                myNewObject.save().then(
-                    (result) => {
-                        if (result)
-                        {  
-                                this.ClearCategoryDialog();
-                                this.props.handleCategoryClose(true);
-                        }
-                    },
-                    (error) => {
-                        console.error('Error while creating ParseObject of category: ', error);
-                        this.setState({
+        // create the category in the db      
+         Category.createNewCategory(name,imgFile)
+            .then(newCategory => {            
+                // add the category to the corrent group
+                ShoppingGroup.addCategoryToGroup(newCategory,this.props.activeGroup)
+                .then(result=>{
+                    this.ClearCategoryDialog();
+                    this.props.handleCategoryClose(true);
+                })
+                .catch(error=>{
+                    console.error('Error while creating connection category to group: ', error);
+                    this.setState({
                             errorMessage:"Error in connection to db"
-                        })     
-                        return null;
-                        
-                    }
-                );
+                    })                   
+                })
+
+            })
+            .catch(error => {
+                console.error('Error while creatingnew category: ', error);
+                this.setState({
+                        errorMessage:"Error in connection to db"
+                })                   
+            });
          }
     
 

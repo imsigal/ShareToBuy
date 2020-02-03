@@ -26,4 +26,22 @@ export default class Category
     return lstItems;
     }
 
+
+    static async createNewCategory(newCategoryName,imgFile)
+    {
+        // create the category in the db
+        const ParseCategory = Parse.Object.extend('Category');
+        const NewCategoryObject = new ParseCategory(); 
+        NewCategoryObject.set('categoryName', newCategoryName);
+        if (imgFile){
+            var parseFile = new Parse.File(imgFile.name, imgFile);
+            NewCategoryObject.set('categoryImageSrc', parseFile); 
+        }
+        
+         const newCategory= await NewCategoryObject.save();
+         return newCategory;
+                
+    }
+
+
 }
