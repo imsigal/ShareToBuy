@@ -29,7 +29,7 @@ export default class SelectActiveGroupModal extends Component {
         this.state = {
             isShowCreateNewGroup:false,
             lstGroups:[],
-            selectedGroup:null,
+            selectedGroup:"",
             errorMessage:""
         }
 
@@ -119,7 +119,7 @@ export default class SelectActiveGroupModal extends Component {
         let lstItems=[];
         ShoppingGroup.GetGroupList().then
         (lstItems=> {       
-            let selected=lstItems.length>0?lstItems[0]:null ;   // set as selected the firzst item
+            let selected=lstItems.length>0?lstItems[0]:"" ;   // set as selected the firzst item
             this.setState({
                     lstGroups:lstItems,
                     selectedGroup:selected
@@ -136,7 +136,7 @@ export default class SelectActiveGroupModal extends Component {
         const {lstGroups,errorMessage,selectedGroup}=this.state
 
          let lstGroupsOption=lstGroups.map((item,index)=>
-         <option>{item} </option>)
+         <option key={index}>{item} </option>)
                
         return (        
             <Modal show={show} className="group-settings"  onHide={handleClose}>
