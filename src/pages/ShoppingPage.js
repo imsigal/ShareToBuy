@@ -5,7 +5,6 @@ import CreateNewGroupModal from '../components/CreateNewGroupModal';
 import {Navbar ,Nav} from 'react-bootstrap';
 import BaseListComponents from '../components/BaseListComponents';
 import CategoryNewModal from '../components/CategoryNewModal';
-import Parse from 'parse';
 import ShoppingItem from '../model/ShoppingItem';
 import ShoppingGroup from '../model/ShoppingGroup';
 
@@ -41,66 +40,48 @@ export default class ShoppingPage extends Component {
 
     //******************************************************************** */
     // Shopping list functions
-    async readShoppingItemList(){
-      const ParseShoppingItem = Parse.Object.extend('ShoppingItem');
-      const query = new Parse.Query(ParseShoppingItem);
-      query.find().then(results => {        
-              results.forEach(
-                  //item=>lstItems.push(new ShoppingItem(item))
-                  
-                  (item,index)=>
-                  {
-                    this.getShoppingItemsParams(item);
-                  }
-              )
+    async readShoppingItemList(){      
+          ShoppingItem.readShoppingItemList()
+            .then(shoppingListResults=>{
+              shoppingListResults.forEach(              
+                (item,index)=>
+                {
+                  this.getShoppingItemsParams(item);
+                }
+            )
 
-        });
+          })
+
   }
-
-  async getShoppingItemsParams(shoppingItem)
+ 
+ async getShoppingItemsParams(shoppingItem)
   {   
-      let count=shoppingItem.get("count");
-      let shoppingItemId=shoppingItem.id;
-      let product=shoppingItem.get("productItemPointer");
-      await product.fetch();
-      let productName=product.get("productName");
-      let productImageSrc=product.get("productImageSrc");
-      let newItem=new ShoppingItem(shoppingItemId,productName,productImageSrc,count);
-      this.setState({
-        shoppingItemsArray:this.state.shoppingItemsArray.concat(newItem)
+      
+      ShoppingItem.getShoppingItemsParams(shoppingItem)
+      .then(newItem=>{
+          this.setState({
+            shoppingItemsArray:this.state.shoppingItemsArray.concat(newItem)
+          });
+        })
+      .catch(error=>{
+          console.error("error while creating New Shopping item",error);
       });
 
   }
 
   addShoppingItem(newShoppingItem)
   {
-    const ShoppingItem=Parse.Object.extend('ShoppingItem');
-    const newShoppingItemObject=new ShoppingItem();
-
-    const ProductItem=Parse.Object.extend('productItem');
-    const newProductItemObject=new ProductItem();
-    newProductItemObject.set('productName',newShoppingItem.name);
-
-    var parseFile=(newShoppingItem.img)? new Parse.File(newShoppingItem.img.name,newShoppingItem.img):undefined;
-    if (parseFile)
-    {
-        newProductItemObject.set('productImageSrc',parseFile);
-    }
-    newShoppingItemObject.set("productItemPointer",newProductItemObject);
-    newShoppingItemObject.set('count',newShoppingItem.count);
-
-    newShoppingItemObject.save().then(
-        (result)=>{
+    
+      ShoppingItem.addShoppingItem(newShoppingItem)
+        .then(result=>{
            newShoppingItem.id=result.id; // update the id
            this.setState({
             shoppingItemsArray:this.state.shoppingItemsArray.concat(newShoppingItem)
-          });
-        },
-        (error)=>{
+            });
+        })
+        .catch(error=>{
             console.error("error while creating New Shopping item",error);
-        }
-    );
-
+        });
   }
 //******************************************************************** */
    
