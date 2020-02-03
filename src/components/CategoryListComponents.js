@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Tabs,Tab,Image} from 'react-bootstrap';
+import {Tabs,Tab} from 'react-bootstrap';
 import './CategoryListComponents.css';
 
 export default class CategoryListComponents extends Component {
@@ -20,27 +20,18 @@ export default class CategoryListComponents extends Component {
         
         if (categoryArray && categoryArray.length>0)
         {
-            // let imgUrl="";
+           
             categoryArray.forEach((element,index) => {
-                // if (element.imgFile)
-                // {
-                //     console.log(element);
-                //     imgUrl=URL.createObjectURL(element.imgFile._url);//element.imgFile._url
-                // }
-                // else{
-                //     imgUrl=""
-                // }
+               
                 itemsLists.push(
                 <Tab className="vertical" eventKey={element.name} title={element.name}>
-                    {/* <Image src={imgUrl}/> */}
-                    {/* <img border="0" alt={element.name} src={imgUrl} width="10" height="10"></img> */}
                 </Tab>)
             });
         }
         else
         {
             itemsLists.push(
-                <Tab ></Tab>);
+                <Tab />);
         }
 
         return (           

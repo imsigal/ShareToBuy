@@ -87,8 +87,8 @@ export default class BaseListComponents extends Component {
         //list
        let filteredArray=this.filterOptions();
         let itemsLists=[];
-        filteredArray.forEach(element => {
-            itemsLists.push(<ShoppingItemComponent item={element} OnCompletedTask={this.CompletedTaskHandler} ></ShoppingItemComponent>)
+        filteredArray.forEach((element,index) => {
+            itemsLists.push(<ShoppingItemComponent item={element} key={index} OnCompletedTask={this.CompletedTaskHandler} ></ShoppingItemComponent>)
          }  );
           
   
