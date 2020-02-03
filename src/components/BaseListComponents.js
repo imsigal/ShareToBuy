@@ -82,7 +82,7 @@ export default class BaseListComponents extends Component {
    
     render() {
         const {newItemText}=this.state;
-        const {categoryArray,selectedCategoryItem}=this.props;
+        const {categoryArray}=this.props;
         
         //list
        let filteredArray=this.filterOptions();
@@ -95,8 +95,7 @@ export default class BaseListComponents extends Component {
         return (
           
             <Container>  
-                <CategoryListComponents categoryArray={categoryArray} 
-                    selectedCategoryItem={selectedCategoryItem}>
+                <CategoryListComponents categoryArray={categoryArray} >
                 </CategoryListComponents>
                 <div className="main-base-list">
                 <ListGroup>

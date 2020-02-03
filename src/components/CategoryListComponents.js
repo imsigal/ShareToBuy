@@ -8,14 +8,27 @@ export default class CategoryListComponents extends Component {
 
         this.state={
             categoryArray:[],
+            selectedTab:""
         }   
     }
+    componentDidMount(){
+        const {categoryArray}=this.state
+        this.setState({
+            selectedTab: categoryArray?categoryArray[0]:""
+        });
+    }
+
+    handleSelect= event =>{
+        this.setState({
+            selectedTab: event
+        });
+      }
 
 
     render() {
-        const {categoryArray,selectedCategoryItem}=this.props;
-      
-        let selected=selectedCategoryItem?selectedCategoryItem.name:""   // currently the first
+        const {categoryArray}=this.props;
+        const {selectedTab}=this.state;
+        
         let itemsLists=[];
         
         if (categoryArray && categoryArray.length>0)
@@ -24,9 +37,10 @@ export default class CategoryListComponents extends Component {
             categoryArray.forEach((element,index) => {
                
                 itemsLists.push(
-                <Tab className="vertical" eventKey={element.name} title={element.name}>
+                <Tab className="vertical" eventKey={element.name} title={element.name} >
                 </Tab>)
             });
+
         }
         else
         {
@@ -36,7 +50,7 @@ export default class CategoryListComponents extends Component {
 
         return (           
             <div className="category-list-main">
-                <Tabs activeKey={selected}>
+                <Tabs activeKey={selectedTab} onSelect={this.handleSelect}>
                     {itemsLists}
                 </Tabs> 
             </div>

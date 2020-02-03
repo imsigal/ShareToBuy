@@ -19,7 +19,6 @@ export default class ShoppingPage extends Component {
           showCreateActiveGroup:false,
           showCategoryNew:false,
           categoryArray:[],
-          selectedCategoryItem:null,
           isNewCategory:false,
           shoppingItemsArray:[]
       }
@@ -90,10 +89,8 @@ export default class ShoppingPage extends Component {
   async readCategoryListbyGroup(){
     ShoppingGroup.readCategoryListbyGroup(this.props.activeGroup)
     .then(lstItems=>{
-        let selected=lstItems && lstItems.length>0?lstItems[0]:null;
           this.setState({
               categoryArray:lstItems,
-              selectedCategoryItem:selected,
           });
 
     })
@@ -101,7 +98,6 @@ export default class ShoppingPage extends Component {
       console.error('error getting the categories', error);
       this.setState({
         categoryArray:[],
-        selectedCategoryItem:null,
               });
   });
     
@@ -163,7 +159,7 @@ export default class ShoppingPage extends Component {
   render() {
       const {activeUser,activeGroup}=this.props;
       const {redirectToLogin,showSelectActiveGroup, showCreateActiveGroup,showCategoryNew,
-        categoryArray,selectedCategoryItem,shoppingItemsArray}=this.state;
+        categoryArray,shoppingItemsArray}=this.state;
 
       const logoutLink = activeUser ? <Nav.Link onClick={this.logout}>יציאה</Nav.Link> : null;  //should not be situation whenre there is no active user
 
@@ -208,7 +204,7 @@ export default class ShoppingPage extends Component {
              <p> קבוצתך היא {activeGroupName}</p>
              <div className="main-shopping-page">           
                 <BaseListComponents categoryArray={categoryArray} 
-                        selectedCategoryItem={selectedCategoryItem} shoppingItemsArray={shoppingItemsArray} addShoppingItem={this.addShoppingItem} >
+                         shoppingItemsArray={shoppingItemsArray} addShoppingItem={this.addShoppingItem} >
                  </BaseListComponents>
                 <SelectActiveGroupModal show={showSelectActiveGroup} handleClose={this.handleClose} handleGroupSelection={this.handleGroupSelection} HandleCreateNewGroup= {this.HandleCreateNewGroup} activeUser={activeUser} activeGroup={activeGroup}/>
                 <CreateNewGroupModal show={showCreateActiveGroup} handleClose={this.handleClose} activeUser={activeUser} activeGroup={activeGroup}  handleGroupSelection={this.handleGroupSelection} />
