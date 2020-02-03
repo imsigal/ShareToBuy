@@ -37,16 +37,16 @@ export default class CategoryListComponents extends Component {
             categoryArray.forEach((element,index) => {
                
                 itemsLists.push(
-                <Tab className="vertical" eventKey={element.name} title={element.name} >
+                <Tab className="vertical" eventKey={element.name} title={element.name} key={index} >
                 </Tab>)
             });
 
         }
-        else
-        {
-            itemsLists.push(
-                <Tab />);
-        }
+        // else
+        // {
+        //     itemsLists.push(
+        //         <Tab />);
+        // }
 
         return (           
             <div className="category-list-main">
