@@ -206,7 +206,7 @@ export default class ShoppingPage extends Component {
 
              <p>שלום {activeUser.email} </p>
              <p> קבוצתך היא {activeGroupName}</p>
-             <div class="main-shopping-page">           
+             <div className="main-shopping-page">           
                 <BaseListComponents categoryArray={categoryArray} 
                         selectedCategoryItem={selectedCategoryItem} shoppingItemsArray={shoppingItemsArray} addShoppingItem={this.addShoppingItem} >
                  </BaseListComponents>
