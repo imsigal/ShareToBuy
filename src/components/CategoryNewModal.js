@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Button, Form,Row,Col } from 'react-bootstrap';
 import Category from '../model/Category';
 import ShoppingGroup from '../model/ShoppingGroup';
+import ShoppingList from '../model/ShoppingList';
 
 
 export default class CategoryNewModal extends Component {
@@ -41,14 +42,41 @@ export default class CategoryNewModal extends Component {
             return;
         }
         
-        // create the category in the db      
+        // create the category in the db
+        // add the new category to the current group
+        /// add a new shopping List to this category
+        // add this shopping List to this group      
          Category.createNewCategory(name,imgFile)
             .then(newCategory => {            
                 // add the category to the corrent group
                 ShoppingGroup.addCategoryToGroup(newCategory,this.props.activeGroup)
                 .then(result=>{
-                    this.ClearCategoryDialog();
-                    this.props.handleCategoryClose(true);
+                    ShoppingList.CreateNewShoppingList(newCategory)
+                    .then
+                    (
+                        newShoppingList=>{
+                         ShoppingGroup.addNewShoppingListToGroup(newShoppingList,this.props.activeGroup)
+                         .then(result=>{
+                            // set this category as selected, and show the content in the tab
+                            // close the dialog
+                            this.ClearCategoryDialog();
+                            this.props.handleCategoryClose(true);
+                         })
+                         .catch(error=>{
+                            console.error('Error while adding the shopping list to group: ', error);
+                            this.setState({
+                                    errorMessage:"Error in connection to db"
+                            })                   
+                        })
+                         
+                    })
+                    .catch(error=>{
+                        console.error('Error while creating new shopping List: ', error);
+                        this.setState({
+                                errorMessage:"Error in connection to db"
+                        })                   
+                    })
+                    
                 })
                 .catch(error=>{
                     console.error('Error while creating connection category to group: ', error);

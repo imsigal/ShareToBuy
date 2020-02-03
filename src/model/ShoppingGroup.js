@@ -57,9 +57,20 @@ export default class ShoppingGroup{
              
     }
 
+    static async addNewShoppingListToGroup(newShoppingList,activeGroup)
+    {
+        const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
+        const query = new  Parse.Query(ParseShoppingGroup) ; 
+        const currentShoppingGroup=await query.get(activeGroup.id);
+        var relation = currentShoppingGroup.relation("shoppingLists");
+        relation.add(newShoppingList);
+        const result=await currentShoppingGroup.save();
+        return result;
+    }
+
+
     static async addCategoryToGroup(newCategory,activeGroup)
     {
-       console.log(newCategory);
         const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
         const query = new  Parse.Query(ParseShoppingGroup) ; 
         const currentShoppingGroup=await query.get(activeGroup.id);
@@ -73,6 +84,7 @@ export default class ShoppingGroup{
 
     }
 
+   
 
     static async readCategoryListbyGroup(activeGroup){
         const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
