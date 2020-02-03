@@ -96,17 +96,13 @@ export default class SelectActiveGroupModal extends Component {
     // get from the db the group itself, according to the group name, and send it to app 
     GetGroupByName(theGroupName)
     {
-        // const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
-        // const query2 = new Parse.Query(ParseShoppingGroup);
-        // query2.equalTo("GroupName", theGroupName);
-        // query2.first()
            ShoppingGroup.GetGroupByName(theGroupName)
            .then(result => {           
             let selectedItem= new ShoppingGroup(result);
             this.props.handleGroupSelection(selectedItem); 
           })
           .catch(function(error){
-            console.log("Error: " + error.code + " " + error.message); 
+            console.log("Error in get group by name: " + error.code + " " + error.message); 
             this.setState({
                 errorMessage:"Error Getting Group"
             })      
@@ -116,7 +112,6 @@ export default class SelectActiveGroupModal extends Component {
     // get the list of the groups that the user is member of
     async GetGroupList()
     {        
-        let lstItems=[];
         ShoppingGroup.GetGroupList().then
         (lstItems=> {       
             let selected=lstItems.length>0?lstItems[0]:"" ;   // set as selected the firzst item
