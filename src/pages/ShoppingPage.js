@@ -6,8 +6,8 @@ import {Navbar ,Nav} from 'react-bootstrap';
 import BaseListComponents from '../components/BaseListComponents';
 import CategoryNewModal from '../components/CategoryNewModal';
 import Parse from 'parse';
-import Category from '../model/Category';
 import ShoppingItem from '../model/ShoppingItem';
+import ShoppingGroup from '../model/ShoppingGroup';
 
 
 export default class ShoppingPage extends Component {
@@ -24,7 +24,7 @@ export default class ShoppingPage extends Component {
           isNewCategory:false,
           shoppingItemsArray:[]
       }
-      this.readCategoryList=this.readCategoryList.bind(this);
+      this.readCategoryListbyGroup=this.readCategoryListbyGroup.bind(this);
       this.getShoppingItemsParams=this.getShoppingItemsParams.bind(this);
       this.addShoppingItem=this.addShoppingItem.bind(this);
     }
@@ -105,24 +105,27 @@ export default class ShoppingPage extends Component {
 //******************************************************************** */
    
 // Category list functions
-    async readCategoryList(){
-      Category.readCategoryList().then(lstItems=>{
+
+  async readCategoryListbyGroup(){
+    ShoppingGroup.readCategoryListbyGroup(this.props.activeGroup)
+    .then(lstItems=>{
         let selected=lstItems && lstItems.length>0?lstItems[0]:null;
-        this.setState({
-            categoryArray:lstItems,
-            selectedCategoryItem:selected,
-        });
-      })
-      .catch(error => {
-        console.error('error getting the categories', error);
-        this.setState({
-          categoryArray:[],
-          selectedCategoryItem:null,
-                });
-    });
-      
+          this.setState({
+              categoryArray:lstItems,
+              selectedCategoryItem:selected,
+          });
+
+    })
+    .catch(error => {
+      console.error('error getting the categories', error);
+      this.setState({
+        categoryArray:[],
+        selectedCategoryItem:null,
+              });
+  });
     
-  }
+  
+ }
     
     handleClose=(isToSelection) =>{
       if (isToSelection){
@@ -145,7 +148,8 @@ export default class ShoppingPage extends Component {
     })
     if (isNewCategory)
     {
-      this.readCategoryList();
+      this.readCategoryListbyGroup();
+
     }
   }
 
@@ -169,7 +173,7 @@ export default class ShoppingPage extends Component {
     // hadle the opening of the select group section
     this.props.setGroup(group);
     // read the lists according to the selected group
-    this.readCategoryList();
+    this.readCategoryListbyGroup();
     this.readShoppingItemList();
   }
 

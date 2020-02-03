@@ -9,24 +9,6 @@ export default class Category
     }
 
 
-    static async readCategoryList(){
-        const ParseCategory = Parse.Object.extend('Category');
-        const query = new Parse.Query(ParseCategory);
-        let lstItems=[];
-        await query.find(lstItems).then(results => {         
-                results.forEach(
-                    item=>lstItems.push(new Category(item))
-                )
-                return lstItems;
-          })
-          .catch(error => {
-            console.error('error getting the categories', error);
-            return null;
-    });
-    return lstItems;
-    }
-
-
     static async createNewCategory(newCategoryName,imgFile)
     {
         // create the category in the db

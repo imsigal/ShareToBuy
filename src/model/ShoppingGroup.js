@@ -1,5 +1,7 @@
 
 import Parse from 'parse';
+import Category from '../model/Category';
+
 export default class ShoppingGroup{
 
     constructor(parseModel) {
@@ -7,9 +9,10 @@ export default class ShoppingGroup{
         
         this.lstUsers = parseModel.get("lstUsers");
         this.lstShoppingLists = parseModel.get("lstShoppingLists");
-        this.lstCategories=parseModel.get("lstCategories"); 
+        this.categories=parseModel.get("categories");
         this.groupName = parseModel.get("GroupName");
         this.id = parseModel.id;
+       // this.shpingGroupParseModel=parseModel
         
         
     }
@@ -24,7 +27,6 @@ export default class ShoppingGroup{
            myNewShoppingGroup.set('GroupName', newGroupName);
            myNewShoppingGroup.set('lstUsers', users);
            myNewShoppingGroup.set('lstShoppingLists', []);   //  create empty list
-           myNewShoppingGroup.set('lstCategories', []);       // create empty list
            const response = await myNewShoppingGroup.save();
             return response;
            
@@ -57,16 +59,35 @@ export default class ShoppingGroup{
 
     static async addCategoryToGroup(newCategory,activeGroup)
     {
-
+       console.log(newCategory);
         const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
         const query = new  Parse.Query(ParseShoppingGroup) ; 
         const currentShoppingGroup=await query.get(activeGroup.id);
-        let exitingCaetgoriesList=currentShoppingGroup.get('lstCategories');
-        exitingCaetgoriesList.push(newCategory);
-        currentShoppingGroup.set('lstCategories', exitingCaetgoriesList);
+       
+        var relation = currentShoppingGroup.relation("categories");
+        relation.add(newCategory);
         const result=await currentShoppingGroup.save();
+
+
         return result;
 
     }
- 
+
+
+    static async readCategoryListbyGroup(activeGroup){
+        const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
+        const queryGroup = new  Parse.Query(ParseShoppingGroup) ; 
+        const currentShoppingGroup=await queryGroup.get(activeGroup.id);
+
+        var relation = currentShoppingGroup.relation("categories");
+        var query = relation.query();
+        const categories=await query.find();
+
+        let lstCategiriesItems=categories.map(item=>new Category(item))
+
+        return lstCategiriesItems;
+        
+    }
+
+   
 }
