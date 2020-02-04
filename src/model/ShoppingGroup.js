@@ -68,6 +68,26 @@ export default class ShoppingGroup{
         return result;
     }
 
+    static async GetShoppingListByCategoryAndGroup(categoryName, activeGroup){
+        
+        const theCatrgoryObject=await Category.getCategory(categoryName);
+        
+        const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
+        const queryGroup = new  Parse.Query(ParseShoppingGroup) ; 
+        const currentShoppingGroup=await queryGroup.get(activeGroup.id);
+
+        var relation = currentShoppingGroup.relation("shoppingLists");
+        var query = relation.query();
+        query.equalTo("category", theCatrgoryObject.id);
+        const shoppingLists=await query.find();
+
+       // let lstCategiriesItems=categories.map(item=>new Category(item))
+
+        return shoppingLists;
+        
+    }
+
+
 
     static async addCategoryToGroup(newCategory,activeGroup)
     {

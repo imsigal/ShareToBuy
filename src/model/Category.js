@@ -25,5 +25,16 @@ export default class Category
                 
     }
 
+    static async getCategory(categoryName)
+    {
+
+        const ParseCategory   = Parse.Object.extend('Category');
+        const query = new Parse.Query(ParseCategory);
+        query.equalTo("categoryName", categoryName);
+        const result=await query.find();
+        return result;
+
+    }
+
 
 }

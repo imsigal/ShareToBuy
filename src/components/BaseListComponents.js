@@ -4,6 +4,8 @@ import ShoppingItemComponent from './ShoppingItemComponent';
 import './BaseListComponents.css';
 import CategoryListComponents from './CategoryListComponents';
 import ShoppingItem from '../model/ShoppingItem';
+import ShoppingGroup from '../model/ShoppingGroup';
+import ShoppingList from '../model/ShoppingList';
 
 export default class BaseListComponents extends Component {
     constructor(props) {
@@ -14,9 +16,13 @@ export default class BaseListComponents extends Component {
             imgFile:undefined,
             FilterOptionIndex:1,
             changeItemCount:false,
+            shoppingItemsArray:[],
+            activeShoppingList:null
            
         }
-       
+        this.getShoppingItemsParams=this.getShoppingItemsParams.bind(this);
+      this.addShoppingItem=this.addShoppingItem.bind(this);
+      this.setActiveShoppingList=this.setActiveShoppingList.bind(this);
     }
 
 
@@ -47,7 +53,9 @@ export default class BaseListComponents extends Component {
         let initialCount=1;
         let newShoppingItem=new ShoppingItem(0,newItemText,imgFile,initialCount);
         // call adding the item
-        this.props.addShoppingItem(newShoppingItem);
+        this.addShoppingItem(newShoppingItem);
+
+
         // clean the fields
         this.setState({
                 newItemText:"",
@@ -55,6 +63,62 @@ export default class BaseListComponents extends Component {
             })
         
     }
+
+
+    addShoppingItem(newShoppingItem)
+    {
+      
+        ShoppingItem.addShoppingItem(newShoppingItem)
+          .then(result=>{
+             newShoppingItem.shoppingItemId=result.id; // update the id
+             // add the new item to the current shoppping list
+             // sigal -to do....
+             ShoppingList.addShoppingItemToList(this.state.activeShoppingList,newShoppingItem)
+             .then(result=>{
+                console.log(result);
+                this.setState({
+                    shoppingItemsArray:this.state.shoppingItemsArray.concat(newShoppingItem)
+                    });
+             })
+             .catch(error=>{
+                    console.error("error while adding New Shopping item to shopping list",error);
+             })
+             
+          })
+          .catch(error=>{
+              console.error("error while creating New Shopping item",error);
+          });
+    }
+
+    async getShoppingItemsParams(shoppingItem)
+  {   
+      
+      ShoppingItem.getShoppingItemsParams(shoppingItem)
+      .then(newItem=>{
+          this.setState({
+            shoppingItemsArray:this.state.shoppingItemsArray.concat(newItem)
+          });
+        })
+      .catch(error=>{
+          console.error("error while creating New Shopping item",error);
+      });
+
+  }
+
+  async readShoppingItemList(){      
+    ShoppingItem.readShoppingItemList()
+      .then(shoppingListResults=>{
+        shoppingListResults.forEach(              
+          (item,index)=>
+          {
+            this.getShoppingItemsParams(item);
+          }
+      )
+
+    })
+
+}
+
 
     // set the index according to the button pressed ( handler to the button click)
     FilterResults=(event)=>{
@@ -75,8 +139,25 @@ export default class BaseListComponents extends Component {
     filterOptions=()=>
     {
         let filteredArray=[];
-        filteredArray= this.props.shoppingItemsArray;  // currently no filter
+        filteredArray= this.state.shoppingItemsArray;  // currently no filter
+        console.log (filteredArray);
         return filteredArray;
+    }
+
+    setActiveShoppingList(categoryName)
+    {   const {activeGroup}=this.props;
+        ShoppingGroup.GetShoppingListByCategoryAndGroup(categoryName,activeGroup)
+        .then(theShoppingList=>{
+           console.log(theShoppingList);
+           // here we need to send the shopping items array insted of the filtered array
+           this.setState({
+            activeShoppingList:theShoppingList
+           })
+         })
+         .catch(error=>{
+             console.error("error while trying to get a shopping list",error);
+         });
+
     }
 
    
@@ -95,7 +176,7 @@ export default class BaseListComponents extends Component {
         return (
           
             <Container>  
-                <CategoryListComponents categoryArray={categoryArray} >
+                <CategoryListComponents categoryArray={categoryArray} setActiveShoppingList={this.setActiveShoppingList}>
                 </CategoryListComponents>
                 <div className="main-base-list">
                 <ListGroup>

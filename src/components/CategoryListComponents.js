@@ -22,6 +22,7 @@ export default class CategoryListComponents extends Component {
         this.setState({
             selectedTab: event
         });
+        this.props.setActiveShoppingList(event); // send the selected category to get its matchd shopping list
       }
 
 

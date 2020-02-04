@@ -5,7 +5,7 @@ import CreateNewGroupModal from '../components/CreateNewGroupModal';
 import {Navbar ,Nav} from 'react-bootstrap';
 import BaseListComponents from '../components/BaseListComponents';
 import CategoryNewModal from '../components/CategoryNewModal';
-import ShoppingItem from '../model/ShoppingItem';
+//import ShoppingItem from '../model/ShoppingItem';
 import ShoppingGroup from '../model/ShoppingGroup';
 
 
@@ -20,11 +20,11 @@ export default class ShoppingPage extends Component {
           showCategoryNew:false,
           categoryArray:[],
           isNewCategory:false,
-          shoppingItemsArray:[]
+          // shoppingItemsArray:[]
       }
       this.readCategoryListbyGroup=this.readCategoryListbyGroup.bind(this);
-      this.getShoppingItemsParams=this.getShoppingItemsParams.bind(this);
-      this.addShoppingItem=this.addShoppingItem.bind(this);
+      //this.getShoppingItemsParams=this.getShoppingItemsParams.bind(this);
+      //this.addShoppingItem=this.addShoppingItem.bind(this);
     }
 
     //************************************************************* */
@@ -39,49 +39,52 @@ export default class ShoppingPage extends Component {
 
     //******************************************************************** */
     // Shopping list functions
-    async readShoppingItemList(){      
-          ShoppingItem.readShoppingItemList()
-            .then(shoppingListResults=>{
-              shoppingListResults.forEach(              
-                (item,index)=>
-                {
-                  this.getShoppingItemsParams(item);
-                }
-            )
+  //   async readShoppingItemList(){      
+  //         ShoppingItem.readShoppingItemList()
+  //           .then(shoppingListResults=>{
+  //             shoppingListResults.forEach(              
+  //               (item,index)=>
+  //               {
+  //                 this.getShoppingItemsParams(item);
+  //               }
+  //           )
 
-          })
+  //         })
 
-  }
+  // }
  
- async getShoppingItemsParams(shoppingItem)
-  {   
+//  async getShoppingItemsParams(shoppingItem)
+//   {   
       
-      ShoppingItem.getShoppingItemsParams(shoppingItem)
-      .then(newItem=>{
-          this.setState({
-            shoppingItemsArray:this.state.shoppingItemsArray.concat(newItem)
-          });
-        })
-      .catch(error=>{
-          console.error("error while creating New Shopping item",error);
-      });
+//       ShoppingItem.getShoppingItemsParams(shoppingItem)
+//       .then(newItem=>{
+//           this.setState({
+//             shoppingItemsArray:this.state.shoppingItemsArray.concat(newItem)
+//           });
+//         })
+//       .catch(error=>{
+//           console.error("error while creating New Shopping item",error);
+//       });
 
-  }
+//   }
 
-  addShoppingItem(newShoppingItem)
-  {
+  // addShoppingItem(newShoppingItem)
+  // {
     
-      ShoppingItem.addShoppingItem(newShoppingItem)
-        .then(result=>{
-           newShoppingItem.id=result.id; // update the id
-           this.setState({
-            shoppingItemsArray:this.state.shoppingItemsArray.concat(newShoppingItem)
-            });
-        })
-        .catch(error=>{
-            console.error("error while creating New Shopping item",error);
-        });
-  }
+  //     ShoppingItem.addShoppingItem(newShoppingItem)
+  //       .then(result=>{
+  //          newShoppingItem.id=result.id; // update the id
+  //          // add the new item to the current shoppping list
+  //          // sigal -to do....
+
+  //          this.setState({
+  //           shoppingItemsArray:this.state.shoppingItemsArray.concat(newShoppingItem)
+  //           });
+  //       })
+  //       .catch(error=>{
+  //           console.error("error while creating New Shopping item",error);
+  //       });
+  // }
 //******************************************************************** */
    
 // Category list functions
@@ -151,7 +154,7 @@ export default class ShoppingPage extends Component {
     this.props.setGroup(group);
     // read the lists according to the selected group
     this.readCategoryListbyGroup();
-    this.readShoppingItemList();
+    //this.readShoppingItemList();
   }
 
 //******************************************************************** */
@@ -159,7 +162,7 @@ export default class ShoppingPage extends Component {
   render() {
       const {activeUser,activeGroup}=this.props;
       const {redirectToLogin,showSelectActiveGroup, showCreateActiveGroup,showCategoryNew,
-        categoryArray,shoppingItemsArray}=this.state;
+        categoryArray}=this.state;
 
       const logoutLink = activeUser ? <Nav.Link onClick={this.logout}>יציאה</Nav.Link> : null;  //should not be situation whenre there is no active user
 
@@ -203,8 +206,7 @@ export default class ShoppingPage extends Component {
              <p>שלום {activeUser.email} </p>
              <p> קבוצתך היא {activeGroupName}</p>
              <div className="main-shopping-page">           
-                <BaseListComponents categoryArray={categoryArray} 
-                         shoppingItemsArray={shoppingItemsArray} addShoppingItem={this.addShoppingItem} >
+                <BaseListComponents activeGroup={activeGroup} categoryArray={categoryArray}  >
                  </BaseListComponents>
                 <SelectActiveGroupModal show={showSelectActiveGroup} handleClose={this.handleClose} handleGroupSelection={this.handleGroupSelection} HandleCreateNewGroup= {this.HandleCreateNewGroup} activeUser={activeUser} activeGroup={activeGroup}/>
                 <CreateNewGroupModal show={showCreateActiveGroup} handleClose={this.handleClose} activeUser={activeUser} activeGroup={activeGroup}  handleGroupSelection={this.handleGroupSelection} />
