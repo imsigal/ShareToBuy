@@ -22,20 +22,9 @@ export default class ShoppingItem
          // get the shopping item
         const ParseShoppingItem = Parse.Object.extend('ShoppingItem');
         const query = new Parse.Query(ParseShoppingItem);
-        query.equalTo("objectId", shoppingItem.shoppingItemId);
-        const theShoppingItem=await query.find();
-        // console.log (theShoppingItem);
+        const theShoppingItem=await query.get (shoppingItem.shoppingItemId);
 
-        // const ParseShoppingList = Parse.Object.extend('ShoppingList');
-        // const queryShoppingList = new  Parse.Query(ParseShoppingList) ; 
-        // const currentShoppingList=await queryShoppingList.get(activeShoppingList.id);
-
-       
-        // var relation = currentShoppingList.relation("shoppingItems");
-        // relation.add(theShoppingItem);
-        // const result=await currentShoppingList.save();
-
-           var relation = activeShoppingList.relation("shoppingItems");
+        var relation = activeShoppingList.relation("shoppingItems");
         relation.add(theShoppingItem);
         const result=await activeShoppingList.save();
 

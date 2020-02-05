@@ -31,7 +31,9 @@ export default class Category
         const ParseCategory   = Parse.Object.extend('Category');
         const query = new Parse.Query(ParseCategory);
         query.equalTo("categoryName", categoryName);
-        const result=await query.find();
+        const result=await query.find();  // we are getting an array
+        if (result && result.length>0)
+            return result[0];
         return result;
 
     }

@@ -71,17 +71,18 @@ export default class ShoppingGroup{
     static async GetShoppingListByCategoryAndGroup(categoryName, activeGroup){
         
         const theCatrgoryObject=await Category.getCategory(categoryName);
-        
+
         const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
         const queryGroup = new  Parse.Query(ParseShoppingGroup) ; 
-        const currentShoppingGroup=await queryGroup.get(activeGroup.id);
+        const currentShoppingGroup=await queryGroup.get (activeGroup.id);
 
         var relation = currentShoppingGroup.relation("shoppingLists");
         var query = relation.query();
-        query.equalTo("category", theCatrgoryObject.id);
+        query.equalTo("category", theCatrgoryObject);
         const shoppingLists=await query.find();
 
-       // let lstCategiriesItems=categories.map(item=>new Category(item))
+       if (shoppingLists && shoppingLists.length>0)
+                return shoppingLists[0];
 
         return shoppingLists;
         
