@@ -171,7 +171,7 @@ export default class BaseListComponents extends Component {
 
    
     render() {
-        const {newItemText,shoppingItemsArray}=this.state;
+        const {newItemText,shoppingItemsArray,activeCategory}=this.state;
         const {categoryArray}=this.props;
         
         //list
@@ -179,6 +179,8 @@ export default class BaseListComponents extends Component {
         shoppingItemsArray.forEach((element,index) => {
             itemsLists.push(<ShoppingItemComponent item={element} key={index} OnCompletedTask={this.CompletedTaskHandler} ></ShoppingItemComponent>)
          }  );
+
+        const isDisablesInput=activeCategory && activeCategory!==""?false:true
           
   
         return (
@@ -191,7 +193,7 @@ export default class BaseListComponents extends Component {
                     {itemsLists}
                 </ListGroup>
               
-                 <InputGroup className="mb-3" size="lg">
+                 <InputGroup className="mb-3" size="lg" >
                     <FormControl className="input"
                         placeholder="הוסף פריט"
                         aria-label="הוסף פריט"
@@ -199,9 +201,10 @@ export default class BaseListComponents extends Component {
                         value={newItemText} 
                          onChange={this.handleInputChange}
                          onKeyDown={this.handleKeyDownEvent}
+                         disabled={isDisablesInput }
                     />
                     <InputGroup.Append>
-                        <Button variant="info"  onClick={this.HandleNewItem}>הוסף</Button>
+                        <Button variant="info"  onClick={this.HandleNewItem} disabled={isDisablesInput }>הוסף</Button>
                        
                     </InputGroup.Append>
                 </InputGroup>
