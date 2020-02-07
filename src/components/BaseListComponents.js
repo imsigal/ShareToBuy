@@ -14,10 +14,10 @@ export default class BaseListComponents extends Component {
         this.state = {
             newItemText: "",
             imgFile:undefined,
-            FilterOptionIndex:1,
             changeItemCount:false,
             shoppingItemsArray:[],
-            activeShoppingList:null
+            activeShoppingList:null,
+            activeCategory:""
            
         }
         this.getShoppingItemsParams=this.getShoppingItemsParams.bind(this);
@@ -65,20 +65,39 @@ export default class BaseListComponents extends Component {
     }
 
 
-    addShoppingItem(newShoppingItem)
+    async addShoppingItem(newShoppingItem)
     {
-      
+       const {activeCategory,activeShoppingList}=this.state;
+       const {activeGroup} =this.props;
         ShoppingItem.addShoppingItem(newShoppingItem)
           .then(result=>{
              newShoppingItem.shoppingItemId=result.id; // update the id
              // add the new item to the current shoppping list
-             // sigal -to do....
-             ShoppingList.addShoppingItemToList(this.state.activeShoppingList,newShoppingItem)
+            // if the activeShopping list is empty, we need to create one 
+            if (!activeShoppingList)
+            {
+                activeGroup.CreateNewShoppingListinGroup(activeCategory)  
+                .then(result=>{        
+                    this.ClearCategoryDialog();
+                    this.props.handleCategoryClose(true);
+                }) 
+                .catch(error=>{
+                    console.error('Error while creating new shopping List: ', error);
+                    this.setState({
+                            errorMessage:"Error in connection to db"
+                    })                     
+                })
+
+            }
+            // add the item to the current shopping list
+            ShoppingList.addShoppingItemToList(activeShoppingList, newShoppingItem)
              .then(result=>{
                 console.log(result);
+
                 this.setState({
                     shoppingItemsArray:this.state.shoppingItemsArray.concat(newShoppingItem)
                     });
+                
              })
              .catch(error=>{
                     console.error("error while adding New Shopping item to shopping list",error);
@@ -105,28 +124,6 @@ export default class BaseListComponents extends Component {
 
   }
 
-  async readShoppingItemList(){      
-    ShoppingItem.readShoppingItemList()
-      .then(shoppingListResults=>{
-        shoppingListResults.forEach(              
-          (item,index)=>
-          {
-            this.getShoppingItemsParams(item);
-          }
-      )
-
-    })
-
-}
-
-
-    // set the index according to the button pressed ( handler to the button click)
-    FilterResults=(event)=>{
-        this.setState({
-            FilterOptionIndex:event
-        })
-            
-    }
     //actions to do when a task is completed
     CompletedTaskHandler=(count)=>{
         this.setState({
@@ -135,25 +132,37 @@ export default class BaseListComponents extends Component {
         
     }
 
-    // Filter the list according to the buttom show all/ show completed/show active
-    filterOptions=()=>
-    {
-        let filteredArray=[];
-        filteredArray= this.state.shoppingItemsArray;  // currently no filter
-        console.log (filteredArray);
-        return filteredArray;
-    }
+ 
+    async setActiveShoppingList(categoryName)
+    {   
+        const {activeGroup}=this.props;
+        // clean the list
+        this.setState({
+            shoppingItemsArray:[],
+            activeCategory:categoryName
+            });
 
-    setActiveShoppingList(categoryName)
-    {   const {activeGroup}=this.props;
-        ShoppingGroup.GetShoppingListByCategoryAndGroup(categoryName,activeGroup)
+         // get the shopping list according to the active group and the selected category     
+         activeGroup.GetShoppingListByCategoryAndGroup(categoryName)
         .then(theShoppingList=>{
-           console.log(theShoppingList);
-           // here we need to send the shopping items array insted of the filtered array
+           // update the active shopping list
            this.setState({
             activeShoppingList:theShoppingList
            })
+           // update the list itself
+           if (theShoppingList)
+           {
+                ShoppingList.GetShoppingItemsByList(theShoppingList).then(shoppingItems=>{
+                    if (shoppingItems.length>0)
+                    {
+                            shoppingItems.forEach(item=>{
+                                this.getShoppingItemsParams(item);
+                            });
+                        }  
+                })
+            }
          })
+        
          .catch(error=>{
              console.error("error while trying to get a shopping list",error);
          });
@@ -162,13 +171,12 @@ export default class BaseListComponents extends Component {
 
    
     render() {
-        const {newItemText}=this.state;
+        const {newItemText,shoppingItemsArray}=this.state;
         const {categoryArray}=this.props;
         
         //list
-       let filteredArray=this.filterOptions();
         let itemsLists=[];
-        filteredArray.forEach((element,index) => {
+        shoppingItemsArray.forEach((element,index) => {
             itemsLists.push(<ShoppingItemComponent item={element} key={index} OnCompletedTask={this.CompletedTaskHandler} ></ShoppingItemComponent>)
          }  );
           

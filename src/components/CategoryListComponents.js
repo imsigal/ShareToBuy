@@ -13,9 +13,20 @@ export default class CategoryListComponents extends Component {
     }
     componentDidMount(){
         const {categoryArray}=this.state
-        this.setState({
-            selectedTab: categoryArray?categoryArray[0]:""
-        });
+        if (categoryArray && categoryArray.length>0)
+        {
+            this.setState({
+                selectedTab:categoryArray[0]
+            });
+            this.props.setActiveShoppingList(categoryArray[0].name);
+        }
+        else
+        {
+            this.setState({
+                selectedTab: ""
+            }); 
+        }
+
     }
 
     handleSelect= event =>{

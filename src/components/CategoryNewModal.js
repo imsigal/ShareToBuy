@@ -30,6 +30,7 @@ export default class CategoryNewModal extends Component {
     //and creates a new group in the db
     createNewCategory=()=>{
         const{name,imgFile}=this.state;
+        const {activeGroup}=this.props;
         this.setState({
             errorMessage:""
         })     
@@ -40,54 +41,39 @@ export default class CategoryNewModal extends Component {
                 errorMessage:"new Category Name is empty"
             })     
             return;
-        }
-        
-        // create the category in the db
-        // add the new category to the current group
-        /// add a new shopping List to this category
-        // add this shopping List to this group      
+        }       
+        // create the category in the db and add the new category to the current group
+        // add a new shopping List to this category and add this shopping List to this group      
          Category.createNewCategory(name,imgFile)
             .then(newCategory => {            
                 // add the category to the corrent group
-                ShoppingGroup.addCategoryToGroup(newCategory,this.props.activeGroup)
+                activeGroup.addCategoryToGroup(newCategory)
                 .then(result=>{
-                    ShoppingList.CreateNewShoppingList(newCategory)
-                    .then
-                    (
-                        newShoppingList=>{
-                         ShoppingGroup.addNewShoppingListToGroup(newShoppingList,this.props.activeGroup)
+                        this.props.activeGroup.CreateNewShoppingListinGroup(newCategory)
                          .then(result=>{
                             // set this category as selected, and show the content in the tab
                             // close the dialog
                             this.ClearCategoryDialog();
                             this.props.handleCategoryClose(true);
                          })
-                         .catch(error=>{
-                            console.error('Error while adding the shopping list to group: ', error);
+                        .catch(error=>{
+                            console.error('Error while creating new shopping List: ', error);
                             this.setState({
                                     errorMessage:"Error in connection to db"
-                            })                   
+                            })                                       
                         })
-                         
                     })
-                    .catch(error=>{
-                        console.error('Error while creating new shopping List: ', error);
+                   
+                .catch(error=>{
+                        console.error('Error while creating connection category to group: ', error);
                         this.setState({
                                 errorMessage:"Error in connection to db"
                         })                   
                     })
-                    
-                })
-                .catch(error=>{
-                    console.error('Error while creating connection category to group: ', error);
-                    this.setState({
-                            errorMessage:"Error in connection to db"
-                    })                   
-                })
 
             })
             .catch(error => {
-                console.error('Error while creatingnew category: ', error);
+                console.error('Error while creating new category: ', error);
                 this.setState({
                         errorMessage:"Error in connection to db"
                 })                   

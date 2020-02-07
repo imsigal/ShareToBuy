@@ -57,24 +57,37 @@ export default class ShoppingGroup{
              
     }
 
-    static async addNewShoppingListToGroup(newShoppingList,activeGroup)
+    async CreateNewShoppingListinGroup(NewCategory)
     {
+         // create the category in the db
+         const ParseShoppingList = Parse.Object.extend('ShoppingList');
+         const NewShoppingListObject = new ParseShoppingList(); 
+
+         NewShoppingListObject.set("category", NewCategory);
+         var relation = NewShoppingListObject.relation("shoppingItems");
+
+        // This will save both myPost and myComment
+        const newShoppingList= await NewShoppingListObject.save();
+        // return newShoppingList;
+
         const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
         const query = new  Parse.Query(ParseShoppingGroup) ; 
-        const currentShoppingGroup=await query.get(activeGroup.id);
+        const currentShoppingGroup=await query.get(this.id);
         var relation = currentShoppingGroup.relation("shoppingLists");
         relation.add(newShoppingList);
         const result=await currentShoppingGroup.save();
         return result;
+
     }
 
-    static async GetShoppingListByCategoryAndGroup(categoryName, activeGroup){
-        
+
+    async GetShoppingListByCategoryAndGroup(categoryName)
+    {    
         const theCatrgoryObject=await Category.getCategory(categoryName);
 
         const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
         const queryGroup = new  Parse.Query(ParseShoppingGroup) ; 
-        const currentShoppingGroup=await queryGroup.get (activeGroup.id);
+        const currentShoppingGroup=await queryGroup.get (this.id);
 
         var relation = currentShoppingGroup.relation("shoppingLists");
         var query = relation.query();
@@ -84,17 +97,16 @@ export default class ShoppingGroup{
        if (shoppingLists && shoppingLists.length>0)
                 return shoppingLists[0];
 
-        return shoppingLists;
+        return null;
         
     }
 
-
-
-    static async addCategoryToGroup(newCategory,activeGroup)
+   
+    async addCategoryToGroup(newCategory)
     {
         const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
         const query = new  Parse.Query(ParseShoppingGroup) ; 
-        const currentShoppingGroup=await query.get(activeGroup.id);
+        const currentShoppingGroup=await query.get(this.id);
        
         var relation = currentShoppingGroup.relation("categories");
         relation.add(newCategory);

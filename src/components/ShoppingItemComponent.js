@@ -28,7 +28,6 @@ export default class ShoppingItemComponent extends Component {
         })
         if (item.imgFile)
         {
-            console.log(item);
             this.setState({
                 fileImg:{
                     file: item.imgFile,
@@ -48,7 +47,6 @@ export default class ShoppingItemComponent extends Component {
         })
         if (item.imgFile)
         {
-            console.log(item);
             this.setState({
                 fileImg:{
                     file: item.imgFile,
