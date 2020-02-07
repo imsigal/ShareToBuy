@@ -16,7 +16,7 @@ export default class CategoryListComponents extends Component {
         if (categoryArray && categoryArray.length>0)
         {
             this.setState({
-                selectedTab:categoryArray[0]
+                selectedTab:categoryArray[0].name
             });
             this.props.setActiveShoppingList(categoryArray[0].name);
         }
