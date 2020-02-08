@@ -1,3 +1,19 @@
 .main-shopping-page{
     display:flex;
 }
+
+.main-header-nav{
+    background-color:  rgb(23,162,184);
+    color: rgb(237,242,242);
+}
+.main-header-nav .navbar
+{
+    flex-wrap: nowrap;
+}
+
+.main-header-nav .navbar .figure-caption{
+    color: rgb(237,242,242);
+    text-align: center;
+}
+
+

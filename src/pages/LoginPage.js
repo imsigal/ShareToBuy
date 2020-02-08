@@ -3,6 +3,7 @@ import { Form, Button, Alert,Container } from 'react-bootstrap';
 import User from '../model/user';
 import './LoginPage.css';
 import { Redirect } from 'react-router-dom';
+import imageMainIcon from '../images/ShareToBuy.png'
 export default  class LoginPage extends Component {
     constructor(props) {
         super(props);
@@ -63,7 +64,8 @@ export default  class LoginPage extends Component {
             <Container>
             <div className="p-login">
                 <div className="main">
-                    <h1>ShareToBuy</h1>
+                    <img src={imageMainIcon} alt="ShareToBuy" />
+                    <span className="header-title">   ShareToBuy</span>
                     {errorAlert}
                     <Form>
                         <Form.Group controlId="formBasicEmail">

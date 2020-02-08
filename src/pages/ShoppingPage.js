@@ -2,11 +2,17 @@ import React,{ Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import SelectActiveGroupModal from '../components/SelectActiveGroupModal';
 import CreateNewGroupModal from '../components/CreateNewGroupModal';
-import {Navbar ,Nav} from 'react-bootstrap';
+import {Navbar ,Nav,Figure} from 'react-bootstrap';
 import BaseListComponents from '../components/BaseListComponents';
 import CategoryNewModal from '../components/CategoryNewModal';
 //import ShoppingItem from '../model/ShoppingItem';
 import ShoppingGroup from '../model/ShoppingGroup';
+import imageMainIcon from '../images/ShareToBuy-white.png'
+import imageCategory from '../images/category-white.png'
+import imageLogout from '../images/logout-white.png'
+import imageGroup from '../images/group-white.png'
+import imageList from '../images/list-white.png'
+import './ShoppingPage.css';
 
 
 export default class ShoppingPage extends Component {
@@ -163,9 +169,22 @@ export default class ShoppingPage extends Component {
       const {activeUser,activeGroup}=this.props;
       const {redirectToLogin,showSelectActiveGroup, showCreateActiveGroup,showCategoryNew,
         categoryArray}=this.state;
-
-      const logoutLink = activeUser ? <Nav.Link onClick={this.logout}>יציאה</Nav.Link> : null;  //should not be situation whenre there is no active user
-
+      
+        // if user exsist, than add logout button
+      const logoutLink = activeUser ? 
+      <Nav.Link  onClick={this.logout} >
+            <Figure>
+            <Figure.Image
+              alt="יציאה"
+              src={imageLogout}
+              onClick={this.logout}
+            />
+            <Figure.Caption>
+              יציאה
+            </Figure.Caption>
+          </Figure>
+       </Nav.Link>
+      : null;  //should not be situation whenre there is no active user
       if (redirectToLogin) {
         return <Redirect to="/"/>
     }
@@ -181,30 +200,45 @@ export default class ShoppingPage extends Component {
 
       return (
           <div>
-            <Navbar expand="lg">
-              <Navbar.Brand href="#home">
-                      <img
-                        alt=""
-                        src="../images/ShareToBuy.png"
-                        width="30"
-                        height="30"
-                        className="d-inline-block align-top"
-                      />{' '}
-                      ShareToBuy
-                    </Navbar.Brand>
-              <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                      <Nav.Link  onClick={this.HandleCategoryOpen}>הוסף קטגוריה</Nav.Link>
-                      <Nav.Link href="#link">בחירת מוצר מרשימה</Nav.Link>   
+            <div className="main-header-nav">
+            <Navbar expand="sm">
+              <Navbar.Brand >
+                        <Figure>
+                          <Figure.Image
+                            alt="ShareToBuy"
+                            src={imageMainIcon}
+                            onClick={this.handleClose}
+                          />
+                          <Figure.Caption>
+                            {activeGroupName}
+                          </Figure.Caption>
+                        </Figure>
+                    </Navbar.Brand>    
+                      <Nav.Link >
+                          <Figure>
+                              <Figure.Image
+                                alt="רשימה"
+                                src={imageList}
+                              />
+                              <Figure.Caption>
+                                רשימה
+                              </Figure.Caption>
+                            </Figure>
+                       </Nav.Link>  
+                       <Nav.Link  onClick={this.HandleCategoryOpen} >
+                          <Figure>
+                              <Figure.Image
+                                alt="הוסף קטגוריה"
+                                src={imageCategory}
+                              />
+                              <Figure.Caption>
+                                קטגוריה
+                              </Figure.Caption>
+                            </Figure>
+                       </Nav.Link>  
                       {logoutLink}          
-                    </Nav>
-              </Navbar.Collapse>
             </Navbar>
-            
-
-             <p>שלום {activeUser.email} </p>
-             <p> קבוצתך היא {activeGroupName}</p>
+            </div>
              <div className="main-shopping-page">           
                 <BaseListComponents activeGroup={activeGroup} categoryArray={categoryArray}  >
                  </BaseListComponents>

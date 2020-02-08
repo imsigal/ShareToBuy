@@ -18,3 +18,8 @@
     border:2px solid rgb(23,162,184);
     border-radius: 10px;
 } 
+span.header-title{
+    font-weight: bold;
+    font-size: larger;
+    color: rgb(23,162,184);
+}
