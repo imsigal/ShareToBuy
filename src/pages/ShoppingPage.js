@@ -2,7 +2,7 @@ import React,{ Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import SelectActiveGroupModal from '../components/SelectActiveGroupModal';
 import CreateNewGroupModal from '../components/CreateNewGroupModal';
-import {Navbar ,Nav,Figure} from 'react-bootstrap';
+import {Navbar ,Nav,Figure,NavDropdown} from 'react-bootstrap';
 import BaseListComponents from '../components/BaseListComponents';
 import CategoryNewModal from '../components/CategoryNewModal';
 //import ShoppingItem from '../model/ShoppingItem';
@@ -110,6 +110,11 @@ export default class ShoppingPage extends Component {
     // read the lists according to the selected group
     this.readCategoryListbyGroup();
   }
+ //******************************************************************** */
+  handleDeleteList=()=>
+  {
+    window.alert("delete was chosen");
+  }
 
 //******************************************************************** */
     // render
@@ -169,9 +174,13 @@ export default class ShoppingPage extends Component {
                                 src={imageList}
                               />
                               <Figure.Caption>
-                                רשימה
+                                <NavDropdown title="רשימה" id="basic-nav-dropdown">
+                                <NavDropdown.Item onClick={this.handleDeleteList} >מחק  רשימה</NavDropdown.Item>
+                                <NavDropdown.Item href="#">בחר מרשימה</NavDropdown.Item>
+                            </NavDropdown>
                               </Figure.Caption>
                             </Figure>
+                           
                        </Nav.Link>  
                        <Nav.Link  onClick={this.HandleCategoryOpen} >
                           <Figure>
