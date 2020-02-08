@@ -15,6 +15,7 @@ export default class ShoppingItemComponent extends Component {
                 URL:undefined
             },
             newCount:0,
+            showImagetooltip:false
             
         };
         this.HandleOkPopup=this.HandleOkPopup.bind(this);
@@ -145,16 +146,28 @@ export default class ShoppingItemComponent extends Component {
       
         HandleMouseLeave=(event)=>{         
             this.setState({
-                showChangeItemIcon:false
+                showChangeItemIcon:false,
                 })
         }
 
         handleMouseEnter=(event)=>{
            
             this.setState({
-                showChangeItemIcon:true
+                showChangeItemIcon:true,
                 })
         }
+
+        HandleShowImage=(listItem)=>{
+            this.setState({
+                showImagetooltip:true
+                })
+        }
+        HandleHideImage=(listItem)=>{
+            this.setState({
+                showImagetooltip:false
+                })
+        }
+
 
         render()
         {
@@ -169,7 +182,18 @@ export default class ShoppingItemComponent extends Component {
                 completedClass = "regular-text";
             }
             let itemText=item.count + ' '+ item.name;
-           
+
+            const tooltipImage =item.img && showImagetooltip?
+              <Popover placement={'bottom'}>
+                    <Popover.Content> 
+                        <img src={item.img._url}></img>  
+                    </Popover.Content>
+                </Popover>
+                :"";
+
+
+
+            // for update item
             const popover = 
             (
                 <Popover id="popover-basic" >
@@ -210,14 +234,15 @@ export default class ShoppingItemComponent extends Component {
               );
 
             let deleteButtonClass=this.state.showChangeItemIcon===true?"side-left":"hidden"
-           
+            
             return (
             <Container className="main-shopping-item" onMouseOver={this.handleMouseEnter} onMouseLeave={this.HandleMouseLeave}  >
                 <p>
                
-                <label className={completedClass} onClick={this.HandleDeleteItem.bind(this, item.id)} tooltip={item.id}>
+                <label className={completedClass} onClick={this.HandleDeleteItem.bind(this, item.id)} onMouseEnter={this.HandleShowImage.bind(this, item.id)}  onMouseLeave={this.HandleHideImage.bind(this, item.id)}  tooltip={item.id}>
                     {itemText}                
                 </label>
+                {tooltipImage}
                 <OverlayTrigger trigger="click" onEnter={this.enterEditingItem} placement="bottom" overlay={popover} rootClose ref="overlay">
                     <button className={deleteButtonClass} onClick={this.HandlePropertiesItem} >
                         <img src={imageAddSource} alt="Add" />
