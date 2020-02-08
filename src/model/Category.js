@@ -11,6 +11,12 @@ export default class Category
 
     static async createNewCategory(newCategoryName,imgFile)
     {
+        //find if there already such category- use it
+        const theCatrgoryObject=await Category.getCategory(newCategoryName);
+        if (theCatrgoryObject)
+            return theCatrgoryObject; // already exsist, return the exsisting 
+                                        // curently do not check the image existance
+
         // create the category in the db
         const ParseCategory = Parse.Object.extend('Category');
         const NewCategoryObject = new ParseCategory(); 

@@ -8,11 +8,9 @@ export default class ShoppingGroup{
            
         
         this.lstUsers = parseModel.get("lstUsers");
-        this.lstShoppingLists = parseModel.get("lstShoppingLists");
         this.categories=parseModel.get("categories");
         this.groupName = parseModel.get("GroupName");
         this.id = parseModel.id;
-       // this.shpingGroupParseModel=parseModel
         
         
     }
@@ -26,7 +24,6 @@ export default class ShoppingGroup{
            const myNewShoppingGroup = new ParseShoppingGroup(); 
            myNewShoppingGroup.set('GroupName', newGroupName);
            myNewShoppingGroup.set('lstUsers', users);
-           myNewShoppingGroup.set('lstShoppingLists', []);   //  create empty list
            const response = await myNewShoppingGroup.save();
             return response;
            

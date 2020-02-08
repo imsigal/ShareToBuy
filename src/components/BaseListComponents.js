@@ -69,35 +69,35 @@ export default class BaseListComponents extends Component {
     {
        const {activeCategory,activeShoppingList}=this.state;
        const {activeGroup} =this.props;
+        // if there is no shopping list , create one
+       if (!activeShoppingList)
+       {
+            // active category is a string, must turn it to object..s
+           activeGroup.CreateNewShoppingListinGroup(activeCategory)  
+           .then(result=>{        
+               this.ClearCategoryDialog();
+               this.props.handleCategoryClose(true);
+           }) 
+           .catch(error=>{
+               console.error('Error while creating new shopping List: ', error);
+               this.setState({
+                       errorMessage:"Error in connection to db"
+               })                     
+           })
+
+       }
+
+       // create shopping item
         ShoppingItem.addShoppingItem(newShoppingItem)
           .then(result=>{
-             newShoppingItem.shoppingItemId=result.id; // update the id
-             // add the new item to the current shoppping list
-            // if the activeShopping list is empty, we need to create one 
-            if (!activeShoppingList)
-            {
-                activeGroup.CreateNewShoppingListinGroup(activeCategory)  
-                .then(result=>{        
-                    this.ClearCategoryDialog();
-                    this.props.handleCategoryClose(true);
-                }) 
-                .catch(error=>{
-                    console.error('Error while creating new shopping List: ', error);
-                    this.setState({
-                            errorMessage:"Error in connection to db"
-                    })                     
-                })
-
-            }
+             newShoppingItem.shoppingItemId=result.id; // update the id          
             // add the item to the current shopping list
             ShoppingList.addShoppingItemToList(activeShoppingList, newShoppingItem)
              .then(result=>{
                 console.log(result);
-
                 this.setState({
                     shoppingItemsArray:this.state.shoppingItemsArray.concat(newShoppingItem)
-                    });
-                
+                    });              
              })
              .catch(error=>{
                     console.error("error while adding New Shopping item to shopping list",error);
