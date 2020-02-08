@@ -26,11 +26,8 @@ export default class ShoppingPage extends Component {
           showCategoryNew:false,
           categoryArray:[],
           isNewCategory:false,
-          // shoppingItemsArray:[]
       }
       this.readCategoryListbyGroup=this.readCategoryListbyGroup.bind(this);
-      //this.getShoppingItemsParams=this.getShoppingItemsParams.bind(this);
-      //this.addShoppingItem=this.addShoppingItem.bind(this);
     }
 
     //************************************************************* */
@@ -43,58 +40,10 @@ export default class ShoppingPage extends Component {
       })
   }
 
-    //******************************************************************** */
-    // Shopping list functions
-  //   async readShoppingItemList(){      
-  //         ShoppingItem.readShoppingItemList()
-  //           .then(shoppingListResults=>{
-  //             shoppingListResults.forEach(              
-  //               (item,index)=>
-  //               {
-  //                 this.getShoppingItemsParams(item);
-  //               }
-  //           )
 
-  //         })
-
-  // }
- 
-//  async getShoppingItemsParams(shoppingItem)
-//   {   
-      
-//       ShoppingItem.getShoppingItemsParams(shoppingItem)
-//       .then(newItem=>{
-//           this.setState({
-//             shoppingItemsArray:this.state.shoppingItemsArray.concat(newItem)
-//           });
-//         })
-//       .catch(error=>{
-//           console.error("error while creating New Shopping item",error);
-//       });
-
-//   }
-
-  // addShoppingItem(newShoppingItem)
-  // {
-    
-  //     ShoppingItem.addShoppingItem(newShoppingItem)
-  //       .then(result=>{
-  //          newShoppingItem.id=result.id; // update the id
-  //          // add the new item to the current shoppping list
-  //          // sigal -to do....
-
-  //          this.setState({
-  //           shoppingItemsArray:this.state.shoppingItemsArray.concat(newShoppingItem)
-  //           });
-  //       })
-  //       .catch(error=>{
-  //           console.error("error while creating New Shopping item",error);
-  //       });
-  // }
 //******************************************************************** */
    
 // Category list functions
-
   async readCategoryListbyGroup(){
     ShoppingGroup.readCategoryListbyGroup(this.props.activeGroup)
     .then(lstItems=>{
@@ -160,7 +109,6 @@ export default class ShoppingPage extends Component {
     this.props.setGroup(group);
     // read the lists according to the selected group
     this.readCategoryListbyGroup();
-    //this.readShoppingItemList();
   }
 
 //******************************************************************** */
