@@ -13,10 +13,11 @@ export default class Category
     {
         //find if there already such category- use it
         const theCatrgoryObject=await Category.getCategory(newCategoryName);
-        if (theCatrgoryObject)
+        if (theCatrgoryObject &&  theCatrgoryObject.className ==="Category")
+        {
             return theCatrgoryObject; // already exsist, return the exsisting 
                                         // curently do not check the image existance
-
+        }
         // create the category in the db
         const ParseCategory = Parse.Object.extend('Category');
         const NewCategoryObject = new ParseCategory(); 
