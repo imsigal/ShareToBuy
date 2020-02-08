@@ -94,7 +94,6 @@ export default class BaseListComponents extends Component {
             // add the item to the current shopping list
             ShoppingList.addShoppingItemToList(activeShoppingList, newShoppingItem)
              .then(result=>{
-                console.log(result);
                 this.setState({
                     shoppingItemsArray:this.state.shoppingItemsArray.concat(newShoppingItem)
                     });              
