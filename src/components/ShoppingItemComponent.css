@@ -37,7 +37,7 @@
 .hidden { 
     display:none; 
 }
-.popover-header{
+ .popover-header{
     background-color: rgb(23,162,184);
     color: rgb(237,242,242);
     display: flex;
@@ -54,12 +54,12 @@
     border-radius: 5px;
 } 
 
- img.preview{
+.main-shopping-item img.preview{
  width: 100%;
  height: 30px;
 }
 
-img.big-preview
+.main-shopping-item img.big-preview
 {
     width: 100%;
 }
