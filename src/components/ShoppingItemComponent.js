@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './ShoppingItemComponent.css';
-import { Container ,Popover,OverlayTrigger,Image,Form,Row,Col} from 'react-bootstrap';
+import { Container ,Popover,OverlayTrigger,Image,Form,Row,Col,Modal} from 'react-bootstrap';
 import imageAddSource from '../images/Add.png'
+import closeImage from '../images/delete.png'
 
 export default class ShoppingItemComponent extends Component {
     constructor(props) {
@@ -157,12 +158,14 @@ export default class ShoppingItemComponent extends Component {
                 })
         }
 
-        HandleShowImage=(listItem)=>{
+        handleShowImage=()=>
+        {
             this.setState({
                 showImagetooltip:true
                 })
         }
-        HandleHideImage=(listItem)=>{
+        handleHideImage=()=>
+        {
             this.setState({
                 showImagetooltip:false
                 })
@@ -184,14 +187,20 @@ export default class ShoppingItemComponent extends Component {
             let itemText=item.count + ' '+ item.name;
 
             const tooltipImage =item.img && showImagetooltip?
-              <Popover placement={'bottom'}>
+              <Popover >
+                    <Popover.Title as="h3">
+                        <button onClick={this.handleHideImage}>
+                            <img src={closeImage} ></img>
+                        </button>
+                    </Popover.Title>
                     <Popover.Content> 
-                        <img src={item.img._url}></img>  
+                        <img className="big-preview" src={item.img._url}></img>  
                     </Popover.Content>
                 </Popover>
                 :"";
 
-
+            const itemImagepreview=item.img ?
+            <Image className="preview" src={item.img._url}  onClick={this.handleShowImage} thumbnail />:<Image  />
 
             // for update item
             const popover = 
@@ -238,18 +247,21 @@ export default class ShoppingItemComponent extends Component {
             return (
             <Container className="main-shopping-item" onMouseOver={this.handleMouseEnter} onMouseLeave={this.HandleMouseLeave}  >
                 <p>
-               
-                <label className={completedClass} onClick={this.HandleDeleteItem.bind(this, item.id)} onMouseEnter={this.HandleShowImage.bind(this, item.id)}  onMouseLeave={this.HandleHideImage.bind(this, item.id)}  tooltip={item.id}>
-                    {itemText}                
-                </label>
-                {tooltipImage}
-                <OverlayTrigger trigger="click" onEnter={this.enterEditingItem} placement="bottom" overlay={popover} rootClose ref="overlay">
-                    <button className={deleteButtonClass} onClick={this.HandlePropertiesItem} >
-                        <img src={imageAddSource} alt="Add" />
-                    </button> 
-                </OverlayTrigger>
+                <Row>
+                    <Col  xs={2} >
+                        {itemImagepreview}                 
+                    </Col>
+                        <label className={completedClass} onClick={this.HandleDeleteItem.bind(this, item.id)} tooltip={item.id}>
+                        {itemText}                
+                        </label>
+                    {tooltipImage}
+                    <OverlayTrigger trigger="click" onEnter={this.enterEditingItem} placement="bottom" overlay={popover} rootClose ref="overlay">
+                        <button className={deleteButtonClass} onClick={this.HandlePropertiesItem} >
+                            <img src={imageAddSource} alt="Add" />
+                        </button> 
+                    </OverlayTrigger>
+                </Row>
                 </p>
-
             </Container>
            
             );

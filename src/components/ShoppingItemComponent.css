@@ -54,3 +54,12 @@
     border-radius: 5px;
 } 
 
+ img.preview{
+ width: 100%;
+ height: 30px;
+}
+
+img.big-preview
+{
+    width: 100%;
+}
