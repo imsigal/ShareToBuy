@@ -66,7 +66,6 @@ export default class ShoppingPage extends Component {
       var selectedCategory=""
       if (lstItems &&lstItems.length>0)
       {
-        console.log ("selected category:",lstItems[0] );
         selectedCategory=lstItems[0].name;
       }
           this.setState({
