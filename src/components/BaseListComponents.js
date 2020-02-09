@@ -17,13 +17,22 @@ export default class BaseListComponents extends Component {
             changeItemCount:false,
             shoppingItemsArray:[],
             activeShoppingList:null,
-            activeCategory:""
            
         }
         this.getShoppingItemsParams=this.getShoppingItemsParams.bind(this);
       this.addShoppingItem=this.addShoppingItem.bind(this);
-      this.setActiveShoppingList=this.setActiveShoppingList.bind(this);
+      this.setActiveCategoryAndShoppingList=this.setActiveCategoryAndShoppingList.bind(this);
     }
+
+
+    componentDidUpdate(prevProps) {   
+         if (this.props.categoryActive !== prevProps.categoryActive) {
+            // clear the list
+            this.setState({
+            shoppingItemsArray:[]
+            })
+         }
+      }
 
 
     // handle input text change
@@ -55,7 +64,6 @@ export default class BaseListComponents extends Component {
         // call adding the item
         this.addShoppingItem(newShoppingItem);
 
-
         // clean the fields
         this.setState({
                 newItemText:"",
@@ -67,16 +75,17 @@ export default class BaseListComponents extends Component {
 
     async addShoppingItem(newShoppingItem)
     {
-       const {activeCategory,activeShoppingList}=this.state;
-       const {activeGroup} =this.props;
+       const {activeShoppingList}=this.state;
+       const {activeGroup,categoryActive} =this.props;
         // if there is no shopping list , create one
        if (!activeShoppingList)
        {
             // active category is a string, must turn it to object..s
-           activeGroup.CreateNewShoppingListinGroup(activeCategory)  
+           activeGroup.CreateNewShoppingListinGroup(categoryActive)  
            .then(result=>{        
                this.ClearCategoryDialog();
-               this.props.handleCategoryClose(true);
+               console.log ("addShoppingItem: ",categoryActive);
+               this.props.handleCategoryClose(true,categoryActive);
            }) 
            .catch(error=>{
                console.error('Error while creating new shopping List: ', error);
@@ -132,14 +141,16 @@ export default class BaseListComponents extends Component {
     }
 
  
-    async setActiveShoppingList(categoryName)
+    async setActiveCategoryAndShoppingList(categoryName)
     {   
         const {activeGroup}=this.props;
         // clean the list
         this.setState({
             shoppingItemsArray:[],
-            activeCategory:categoryName
             });
+
+            //set Category
+            this.props.setNewActiveCategory(categoryName);
 
          // get the shopping list according to the active group and the selected category     
          activeGroup.GetShoppingListByCategoryAndGroup(categoryName)
@@ -170,8 +181,8 @@ export default class BaseListComponents extends Component {
 
    
     render() {
-        const {newItemText,shoppingItemsArray,activeCategory}=this.state;
-        const {categoryArray}=this.props;
+        const {newItemText,shoppingItemsArray}=this.state;
+        const {categoryArray,categoryActive}=this.props;
         
         //list
         let itemsLists=[];
@@ -179,13 +190,13 @@ export default class BaseListComponents extends Component {
             itemsLists.push(<ShoppingItemComponent item={element} key={index} OnCompletedTask={this.CompletedTaskHandler} ></ShoppingItemComponent>)
          }  );
 
-        const isDisablesInput=activeCategory && activeCategory!==""?false:true
+        const isDisablesInput=categoryActive && categoryActive!==""?false:true
           
   
         return (
           
             <Container>  
-                <CategoryListComponents categoryArray={categoryArray} setActiveShoppingList={this.setActiveShoppingList}>
+                <CategoryListComponents categoryArray={categoryArray} categoryActive={categoryActive} setActiveCategoryAndShoppingList={this.setActiveCategoryAndShoppingList}>
                 </CategoryListComponents>
                 <div className="main-base-list">
                 <ListGroup>

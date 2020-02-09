@@ -11,20 +11,14 @@ export default class CategoryListComponents extends Component {
             selectedTab:""
         }   
     }
-    componentDidMount(){
+    componentDidUpdate(prevProps){
         const {categoryArray}=this.state
-        if (categoryArray && categoryArray.length>0)
-        {
+
+        
+        if (prevProps.categoryActive !== this.props.categoryActive) {
             this.setState({
-                selectedTab:categoryArray[0].name
-            });
-            this.props.setActiveShoppingList(categoryArray[0].name);
-        }
-        else
-        {
-            this.setState({
-                selectedTab: ""
-            }); 
+                        selectedTab:this.props.categoryActive
+                    });
         }
 
     }
@@ -33,7 +27,8 @@ export default class CategoryListComponents extends Component {
         this.setState({
             selectedTab: event
         });
-        this.props.setActiveShoppingList(event); // send the selected category to get its matchd shopping list
+        
+        this.props.setActiveCategoryAndShoppingList(event); // send the selected category to get its matchd shopping list
       }
 
 
@@ -54,11 +49,6 @@ export default class CategoryListComponents extends Component {
             });
 
         }
-        // else
-        // {
-        //     itemsLists.push(
-        //         <Tab />);
-        // }
 
         return (           
             <div className="category-list-main">

@@ -54,7 +54,7 @@ export default class CategoryNewModal extends Component {
                             // set this category as selected, and show the content in the tab
                             // close the dialog
                             this.ClearCategoryDialog();
-                            this.props.handleCategoryClose(true);
+                            this.props.handleCategoryClose(true,name);
                          })
                         .catch(error=>{
                             console.error('Error while creating new shopping List: ', error);

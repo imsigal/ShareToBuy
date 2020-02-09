@@ -26,6 +26,7 @@ export default class ShoppingPage extends Component {
           showCategoryNew:false,
           categoryArray:[],
           isNewCategory:false,
+          categoryActive:""
       }
       this.readCategoryListbyGroup=this.readCategoryListbyGroup.bind(this);
     }
@@ -47,8 +48,15 @@ export default class ShoppingPage extends Component {
   async readCategoryListbyGroup(){
     ShoppingGroup.readCategoryListbyGroup(this.props.activeGroup)
     .then(lstItems=>{
+      var selectedCategory=""
+      if (lstItems &&lstItems.length>0)
+      {
+        console.log ("selected category:",lstItems[0] );
+        selectedCategory=lstItems[0].name;
+      }
           this.setState({
               categoryArray:lstItems,
+              categoryActive:selectedCategory
           });
 
     })
@@ -56,6 +64,7 @@ export default class ShoppingPage extends Component {
       console.error('error getting the categories', error);
       this.setState({
         categoryArray:[],
+        categoryActive:""
               });
   });
     
@@ -77,13 +86,16 @@ export default class ShoppingPage extends Component {
       } 
   }
 
-  handleCategoryClose=(isNewCategory)=>{
+  handleCategoryClose=(isNewCategory,newCategoryName)=>{
     this.setState({
         showCategoryNew:false,
     })
     if (isNewCategory)
     {
       this.readCategoryListbyGroup();
+      this.setState({
+        categoryActive:newCategoryName
+      })
 
     }
   }
@@ -91,6 +103,12 @@ export default class ShoppingPage extends Component {
   HandleCategoryOpen=()=>{
     this.setState({
       showCategoryNew:true
+     })
+  }
+
+  setNewActiveCategory=(newCategory)=>{
+    this.setState({
+      categoryActive:newCategory
      })
   }
   //******************************************************************** */
@@ -105,6 +123,11 @@ export default class ShoppingPage extends Component {
 
   handleGroupSelection=(group)=>
   {
+     // clear the previous group items
+     this.setState({
+      categoryArray:[],
+      categoryActive:""
+    })
     // hadle the opening of the select group section
     this.props.setGroup(group);
     // read the lists according to the selected group
@@ -121,7 +144,7 @@ export default class ShoppingPage extends Component {
   render() {
       const {activeUser,activeGroup}=this.props;
       const {redirectToLogin,showSelectActiveGroup, showCreateActiveGroup,showCategoryNew,
-        categoryArray}=this.state;
+        categoryArray,categoryActive}=this.state;
       
         // if user exsist, than add logout button
       const logoutLink = activeUser ? 
@@ -197,7 +220,7 @@ export default class ShoppingPage extends Component {
             </Navbar>
             </div>
              <div className="main-shopping-page">           
-                <BaseListComponents activeGroup={activeGroup} categoryArray={categoryArray}  >
+                <BaseListComponents activeGroup={activeGroup} categoryArray={categoryArray} categoryActive={categoryActive} setNewActiveCategory={this.setNewActiveCategory } >
                  </BaseListComponents>
                 <SelectActiveGroupModal show={showSelectActiveGroup} handleClose={this.handleClose} handleGroupSelection={this.handleGroupSelection} HandleCreateNewGroup= {this.HandleCreateNewGroup} activeUser={activeUser} activeGroup={activeGroup}/>
                 <CreateNewGroupModal show={showCreateActiveGroup} handleClose={this.handleClose} activeUser={activeUser} activeGroup={activeGroup}  handleGroupSelection={this.handleGroupSelection} />
