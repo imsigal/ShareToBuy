@@ -4,6 +4,17 @@ import User from '../model/user';
 import './LoginPage.css';
 import { Redirect } from 'react-router-dom';
 import imageMainIcon from '../images/ShareToBuy.png'
+
+//LoginPage
+// this is the first page the user sees, 
+//sign in the the system and the db
+// states:
+//  -email:user email adress,
+//  -pwd:user password,
+//  -showInvalidLoginError: true - will show the text area saved for the error message
+//  -redirectToNextPage: true- will redirect to the next pag
+//properties:
+//  handleLogin-the pointer to the function that actualy preform the login
 export default  class LoginPage extends Component {
     constructor(props) {
         super(props);
@@ -18,7 +29,7 @@ export default  class LoginPage extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.login = this.login.bind(this);
     }
-
+   // handle the changes in the form fields
     handleInputChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -31,26 +42,26 @@ export default  class LoginPage extends Component {
     
     }
 
+    // this function is the one that actually tries to loggin the db
+    login() {
+        const { handleLogin } = this.props;
+        const { email, pwd } = this.state;
 
-         login() {
-            const { handleLogin } = this.props;
-            const { email, pwd } = this.state;
-
-            User.login(email, pwd).then(user => {
-                handleLogin(user);
-                this.setState({
-                    redirectToNextPage: true
-                });
-            })
-            .catch(error => {
-                console.error('Error while logging in user', error);
-                this.setState({
-                            showInvalidLoginError: true,
-                            pwd: ""
-                        });
+        User.login(email, pwd).then(user => {
+            handleLogin(user);
+            this.setState({
+                redirectToNextPage: true
             });
+        })
+        .catch(error => {
+            console.error('Error while logging in user', error);
+            this.setState({
+                        showInvalidLoginError: true,
+                        pwd: ""
+                    });
+        });
 
-    }
+}
 
     render() {
         const { email, pwd, showInvalidLoginError, redirectToNextPage } = this.state;

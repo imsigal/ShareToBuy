@@ -49,7 +49,7 @@ export default class App extends React.Component {
          <HashRouter>
             <Switch>
                 <Route exact path="/">
-                  <LoginPage  handleLogin={this.handleLogin} getGroup={this.getGroup}></LoginPage>
+                  <LoginPage  handleLogin={this.handleLogin} ></LoginPage>
                 </Route>
                 <Route exact path="/shopping">
                   <ShoppingPage handleLogout={this.handleLogout} activeUser={activeUser} activeGroup={activeGroup} setGroup={this.setGroup} ></ShoppingPage>

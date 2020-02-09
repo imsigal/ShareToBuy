@@ -14,7 +14,22 @@ import imageGroup from '../images/group-white.png'
 import imageList from '../images/list-white.png'
 import './ShoppingPage.css';
 
-
+// Shopping page
+// this is the main page, containing all the components concent the shopping list action
+//states
+//  -redirectToLogin:true redirect this page back to the login page
+//  -showSelectActiveGroup/showCreateActiveGroup: true is showing the modal window accordingly,
+//                select group from thr groups defined for the current user,
+//                create group is used to create new group
+//   -showCategoryNew:true shows a modal window concerning creating new caegory
+//   -categoryArray:filled with the category items (object)
+//   -categoryActive: the name of the currnt active category
+//   -isNewCategory; if new category was selected. used for closing the modal and updating the data
+// properties:
+//    -handleLogout - pointer to the return function that does loaout from the db
+//    -activeUser - the active use name( the one that is loginlogin) 
+//    -activeGroup- the active ( selected) group
+//     -setGroup- pointer to the function that sets the activr group 
 export default class ShoppingPage extends Component {
 
     constructor(props) {
@@ -66,9 +81,7 @@ export default class ShoppingPage extends Component {
         categoryArray:[],
         categoryActive:""
               });
-  });
-    
-  
+  });   
  }
     
     handleClose=(isToSelection) =>{
