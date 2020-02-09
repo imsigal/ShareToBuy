@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './ShoppingItemComponent.css';
-import { Container ,Popover,OverlayTrigger,Image,Form,Row,Col,Modal} from 'react-bootstrap';
+import { Container ,Popover,OverlayTrigger,Image,Form,Row,Col} from 'react-bootstrap';
 import imageAddSource from '../images/Add.png'
 import closeImage from '../images/delete.png'
 
