@@ -70,8 +70,8 @@ export default class ShoppingGroup{
         const ParseShoppingGroup = Parse.Object.extend('ShoppingGroup');
         const query = new  Parse.Query(ParseShoppingGroup) ; 
         const currentShoppingGroup=await query.get(this.id);
-        var relation = currentShoppingGroup.relation("shoppingLists");
-        relation.add(newShoppingList);
+        var relation2 = currentShoppingGroup.relation("shoppingLists");
+        relation2.add(newShoppingList);
         const result=await currentShoppingGroup.save();
         return result;
 
