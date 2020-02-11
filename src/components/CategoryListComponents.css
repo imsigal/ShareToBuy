@@ -6,16 +6,16 @@
 
 .category-list-main .nav-tabs>a{
     text-decoration: none; 
-    color: inherit;
+    color:rgb(41,80,109);
   }
 
   .category-list-main .nav-tabs>a:hover{
-    color:rgb(23,162,184);
-    background-color: rgb(237,242,242);
+    color:rgb(41,80,109);
+    background-color: rgb(241,241,230);
   }
 
   .category-list-main .nav-tabs>a.active{
-    background-color:rgb(23,162,184);
-    color: rgb(237,242,242);
+    background-color:rgb(41,80,109);
+    color: rgb(241,241,230);
 
   }

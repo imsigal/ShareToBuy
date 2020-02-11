@@ -2,6 +2,7 @@
     margin: 40px ;
     text-align: left;
     direction: ltr;
+    color: rgb(41,80,109);
 }
 
 .p-login  {
@@ -15,11 +16,11 @@
 
 
 .p-login{
-    border:2px solid rgb(23,162,184);
+    border:2px solid rgb(41,80,109);
     border-radius: 10px;
 } 
 span.header-title{
     font-weight: bold;
     font-size: larger;
-    color: rgb(23,162,184);
+    color: rgb(41,80,109);
 }

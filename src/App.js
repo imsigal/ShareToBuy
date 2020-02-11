@@ -1,3 +1,4 @@
+import './custom.scss';
 import React from 'react';
 import './App.css';
 import { Switch, Route,HashRouter  } from 'react-router-dom'

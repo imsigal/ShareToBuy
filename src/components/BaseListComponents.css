@@ -1,5 +1,5 @@
 .main-base-list{
-    border-right: 2px solid rgb(23,162,184);
+    border-right: 2px solid rgb(41,80,109);
     flex-grow: 10000;
     padding: 10px;
     
@@ -10,19 +10,21 @@
 }
 
 .main-base-list h5.left-items{
-    color: rgb(23,162,184);
+    color: rgb(41,80,109);
     padding: 5px;
    text-decoration: underline;
 }
 
 .main-base-list .input
 {
-    background-color: rgb(237,242,242);
+    background-color: rgb(241,241,230);
+    color: rgb(41,80,109);
+    border-color: rgb(113,142,164);
 }
 
 .main-base-list .form-control:focus
 {
-    background-color: rgb(237,242,242);
+    background-color: rgb(241,241,230);
 }
 .container{
     margin:0px;

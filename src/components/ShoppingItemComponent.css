@@ -1,6 +1,6 @@
 .main-shopping-item{
     font-size: larger;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid rgb(113,142,164);
     padding: 5px 20px;
     position: relative;;
 }
@@ -8,13 +8,13 @@
 .linethrough-text
 {
     text-decoration: line-through;
-    color: gray;
+    color: rgb(41,80,109);
 }
 
 .regular-text
 {
     text-decoration: none;
-    color:black;
+    color:rgb(41,80,109);
 }
 
 .side-right
@@ -38,8 +38,8 @@
     display:none; 
 }
  .popover-header{
-    background-color: rgb(23,162,184);
-    color: rgb(237,242,242);
+    background-color: rgb(41,80,109);
+    color: rgb(241,241,230);
     display: flex;
 } 
 .popover-header>button{
@@ -49,8 +49,8 @@
 } 
 
 .popover-body button{
-    background-color: rgb(23,162,184);
-    color: rgb(237,242,242);
+    background-color: rgb(41,80,109);
+    color: rgb(241,241,230);
     border-radius: 5px;
 } 
 
@@ -63,4 +63,19 @@
 .main-shopping-item img.big-preview
 {
     width: 100%;
+}
+
+.popover .dark-button
+{
+    background-color: rgb(41,80,109);
+    border-style: none;
+    margin:1px;
+}
+
+.popover .light-button
+{
+    background-color: rgb(241,241,230);
+    border-style: none;
+    color: rgb(41,80,109);
+    border-radius: 5px;
 }

@@ -207,7 +207,7 @@ export default class ShoppingItemComponent extends Component {
             (
                 <Popover id="popover-basic" >
                   <Popover.Title as="h3">{item.name} : עדכון    
-                        <button onClick={this.HandleClosePopup}>X</button>
+                        <button className="light-button" onClick={this.HandleClosePopup}>X</button>
                   </Popover.Title>
                   <Popover.Content>
                         <Form.Group>
@@ -235,8 +235,8 @@ export default class ShoppingItemComponent extends Component {
 
                         </Form.Group>
 
-                        <button variant="info" onClick={this.HandleOkPopup}>שנה</button>
-                        <button onClick={this.HandleClosePopup}>סגור</button>
+                        <button className="dark-button" variant="info" onClick={this.HandleOkPopup}>שנה</button>
+                        <button className="dark-button" onClick={this.HandleClosePopup}>סגור</button>
                   </Popover.Content>
           
                 </Popover>
