@@ -3,12 +3,13 @@ export default class ShoppingItem
 {
     // img is optional
     // shoppingItemId is the id of the object from the db
-    constructor(shoppingItemId,name,img,count)
+    constructor(shoppingItemId,name,img,count,isDeleted)
     {
         this.shoppingItemId=shoppingItemId;
         this.name=name;
         this.img=img;  // optional
         this.count=count;
+        this.isDeleted=isDeleted;
           
     }
 
@@ -18,16 +19,13 @@ export default class ShoppingItem
     const ShoppingItem=Parse.Object.extend('ShoppingItem');
     const newShoppingItemObject=new ShoppingItem();
 
-    const ProductItem=Parse.Object.extend('productItem');
-    const newProductItemObject=new ProductItem();
-    newProductItemObject.set('productName',newShoppingItem.name);
+    newShoppingItemObject.set('productName',newShoppingItem.name);
 
     var parseFile=(newShoppingItem.img)? new Parse.File(newShoppingItem.img.name,newShoppingItem.img):undefined;
     if (parseFile)
     {
-        newProductItemObject.set('productImageSrc',parseFile);
+        newShoppingItemObject.set('productImageSrc',parseFile);
     }
-    newShoppingItemObject.set("productItemPointer",newProductItemObject);
     newShoppingItemObject.set('count',newShoppingItem.count);
 
     let newObject=await newShoppingItemObject.save();
@@ -47,11 +45,11 @@ static async getShoppingItemsParams(shoppingItem)  // shopping item is parse obj
   {   
       let count=shoppingItem.get("count");
       let shoppingItemId=shoppingItem.id;
-      let product=shoppingItem.get("productItemPointer");
-      await product.fetch();
-      let productName=product.get("productName");
-      let productImageSrc=product.get("productImageSrc");
-      return new ShoppingItem(shoppingItemId,productName,productImageSrc,count);
+
+      let productName=shoppingItem.get("productName");
+      let productImageSrc=shoppingItem.get("productImageSrc");
+      let isDeleted=shoppingItem.get("isDeleted");
+      return new ShoppingItem(shoppingItemId,productName,productImageSrc,count,isDeleted);
 
   }
     async UpdateShoppingItemCount(newCount)
@@ -70,17 +68,27 @@ static async getShoppingItemsParams(shoppingItem)  // shopping item is parse obj
     {       
         const ShoppingItemParse = Parse.Object.extend('ShoppingItem');
         const query = new Parse.Query(ShoppingItemParse);
-        const object=await query.get(this.shoppingItemId);
-        let product=object.get("productItemPointer");
+        const shoppingItemObject=await query.get(this.shoppingItemId);
         var parseFile=(newfile)? new Parse.File(newfile.name,newfile):undefined;
             if (parseFile)
             {
-                product.set('productImageSrc',parseFile);
+                shoppingItemObject.set('productImageSrc',parseFile);
             }
         
-            const response=await  product.save();
+            const response=await  shoppingItemObject.save();
             return response;
       
+    }
+
+    async UpdateShoppingItemDeleted(isDeleted)
+    {      
+        const ShoppingItemParse = Parse.Object.extend('ShoppingItem');
+        const query = new Parse.Query(ShoppingItemParse);
+        const shoppingItemObject = await query.get(this.shoppingItemId);
+        shoppingItemObject.set('isDeleted', isDeleted);
+        const response = await shoppingItemObject.save();
+        return response;
+
 
     }
 
