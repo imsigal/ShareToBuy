@@ -60,7 +60,8 @@ export default class BaseListComponents extends Component {
             return;
         }
         let initialCount=1;
-        let newShoppingItem=new ShoppingItem(0,newItemText,imgFile,initialCount);
+        // last false is for the deleted , when we enter item is is not deleted yet
+        let newShoppingItem=new ShoppingItem(0,newItemText,imgFile,initialCount,false);
         // call adding the item
         this.addShoppingItem(newShoppingItem);
 
@@ -84,7 +85,6 @@ export default class BaseListComponents extends Component {
            activeGroup.CreateNewShoppingListinGroup(categoryActive)  
            .then(result=>{        
                this.ClearCategoryDialog();
-               console.log ("addShoppingItem: ",categoryActive);
                this.props.handleCategoryClose(true,categoryActive);
            }) 
            .catch(error=>{

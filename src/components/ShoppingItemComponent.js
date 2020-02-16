@@ -16,7 +16,7 @@ export default class ShoppingItemComponent extends Component {
                 URL:undefined
             },
             newCount:0,
-            showImagetooltip:false
+            showImagetooltip:false,
             
         };
         this.HandleOkPopup=this.HandleOkPopup.bind(this);
@@ -138,9 +138,13 @@ export default class ShoppingItemComponent extends Component {
     /******************************************** */
     //component functions
         HandleDeleteItem=(index)=>{
-            this.props.item.isCompleted=!this.props.item.isCompleted;
+            // write in the db, not checking success
+            let isDeleted=!this.props.item.isDeleted;
+            this.props.item.isDeleted=isDeleted;  // update the props
+            this.props.item.UpdateShoppingItemDeleted(isDeleted);
+            // update screen
                 this.setState({
-                    wasChanged:true,
+                     wasChanged:true,
                     });
         }
 
@@ -177,12 +181,12 @@ export default class ShoppingItemComponent extends Component {
             const { item } = this.props;
             const {fileImg,showImagetooltip}=this.state;
  
-            let completedClass = "";
-            if (item.isCompleted) {
-                completedClass = "linethrough-text";
+            let deletedClass = "";
+            if (item.isDeleted) {
+                deletedClass = "linethrough-text";
             }
             else {
-                completedClass = "regular-text";
+                deletedClass = "regular-text";
             }
             let itemText=item.count + ' '+ item.name;
 
@@ -251,7 +255,7 @@ export default class ShoppingItemComponent extends Component {
                     <Col  xs={2} >
                         {itemImagepreview}                 
                     </Col>
-                        <label className={completedClass} onClick={this.HandleDeleteItem.bind(this, item.id)} tooltip={item.id}>
+                        <label className={deletedClass} onClick={this.HandleDeleteItem.bind(this, item.id)} tooltip={item.id}>
                         {itemText}                
                         </label>
                     {tooltipImage}

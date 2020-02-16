@@ -27,6 +27,7 @@ export default class ShoppingItem
         newShoppingItemObject.set('productImageSrc',parseFile);
     }
     newShoppingItemObject.set('count',newShoppingItem.count);
+    newShoppingItemObject.set('isDeleted',newShoppingItem.isDeleted);
 
     let newObject=await newShoppingItemObject.save();
     return newObject;
