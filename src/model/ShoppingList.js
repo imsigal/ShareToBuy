@@ -24,7 +24,26 @@ export default class ShoppingItem
         const shoppingItems=await queryItems.find();
         return shoppingItems;
     
-}
+   }
+
+   static async DeleteAllDeletedShoppingItemsInTheList(ShoppingList){
+      var result=true;
+      var itemsRelation = ShoppingList.relation("shoppingItems");
+      var queryItems = itemsRelation.query();
+      queryItems.equalTo("isDeleted", true);
+      const shoppingItems=await queryItems.find();
+      shoppingItems.forEach(shoppingItemObject => {
+         shoppingItemObject.destroy().then((response) => {
+            console.log('Deleted ShoppingGroup', response);
+          }, (error) => {
+            console.error('Error while deleting ShoppingGroup', error);
+            result=false;
+          });
+      });   
+
+      return result;
+  
+ }
 
     
 }

@@ -86,12 +86,40 @@ static async getShoppingItemsParams(shoppingItem)  // shopping item is parse obj
         const ShoppingItemParse = Parse.Object.extend('ShoppingItem');
         const query = new Parse.Query(ShoppingItemParse);
         const shoppingItemObject = await query.get(this.shoppingItemId);
-        shoppingItemObject.set('isDeleted', isDeleted);
+          shoppingItemObject.set('isDeleted', isDeleted);
         const response = await shoppingItemObject.save();
         return response;
 
 
     }
+
+    // alow to delete only if isDeleted is true
+    async DeleteShoppingItem()
+    {      
+        const ShoppingItemParse = Parse.Object.extend('ShoppingItem');
+        const query = new Parse.Query(ShoppingItemParse);
+        const shoppingItemObject = await query.get(this.shoppingItemId);
+        if (shoppingItemObject.get('isDeleted'))
+        {
+            const response=await shoppingItemObject.destroy();
+            console.log (response);
+            if (response==200)
+            {
+                return true;
+            }
+            else
+            {
+                console.error('Error while deleting ShoppingItem', response);
+                return false;
+            }
+            
+        }
+        console.error('Error while deleting ShoppingItem');
+        return false;
+    }
+
+
+   
 
 
    

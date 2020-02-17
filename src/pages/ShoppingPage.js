@@ -5,7 +5,7 @@ import CreateNewGroupModal from '../components/CreateNewGroupModal';
 import {Navbar ,Nav,Figure,NavDropdown} from 'react-bootstrap';
 import BaseListComponents from '../components/BaseListComponents';
 import CategoryNewModal from '../components/CategoryNewModal';
-//import ShoppingItem from '../model/ShoppingItem';
+import ShoppingList from '../model/ShoppingList';
 import ShoppingGroup from '../model/ShoppingGroup';
 import imageMainIcon from '../images/ShareToBuy-white.png'
 import imageCategory from '../images/category-white.png'
@@ -41,7 +41,8 @@ export default class ShoppingPage extends Component {
           showCategoryNew:false,
           categoryArray:[],
           isNewCategory:false,
-          categoryActive:""
+          categoryActive:"",
+          activeRefresh:false
       }
       this.readCategoryListbyGroup=this.readCategoryListbyGroup.bind(this);
     }
@@ -148,7 +149,30 @@ export default class ShoppingPage extends Component {
  //******************************************************************** */
   handleDeleteList=()=>
   {
-    window.alert("delete was chosen");
+    this.deleteAllDeletedItems();
+    // must call rephresh
+  }
+
+   deleteAllDeletedItems=(activeCategory)=>
+  {
+   const{categoryActive}=this.state;
+   const {activeGroup}=this.props;
+    if (categoryActive)
+    {
+      // get the shopping list according to the active group and the selected category     
+      activeGroup.GetShoppingListByCategoryAndGroup(categoryActive)
+      .then(theShoppingList=>{
+       if (theShoppingList)
+       {
+          ShoppingList.DeleteAllDeletedShoppingItemsInTheList(theShoppingList).then(result=>
+          {
+                this.setState({
+                  activeRefresh:!this.state.activeRefresh
+                })
+          });
+        }
+      });
+    }
   }
 
 //******************************************************************** */
@@ -156,8 +180,8 @@ export default class ShoppingPage extends Component {
   render() {
       const {activeUser,activeGroup}=this.props;
       const {redirectToLogin,showSelectActiveGroup, showCreateActiveGroup,showCategoryNew,
-        categoryArray,categoryActive}=this.state;
-      
+        categoryArray,categoryActive,activeRefresh}=this.state;
+        //activeRefresh is a dummy that causes the BaseListComponents redraw after item removal
         // if user exsist, than add logout button
       const logoutLink = activeUser ? 
       <Nav.Link  onClick={this.logout} >
@@ -210,7 +234,7 @@ export default class ShoppingPage extends Component {
                               />
                               <Figure.Caption>
                                 <NavDropdown title="רשימה" id="basic-nav-dropdown">
-                                <NavDropdown.Item onClick={this.handleDeleteList} >מחק  רשימה</NavDropdown.Item>
+                                <NavDropdown.Item onClick={this.handleDeleteList} >מחק  מהרשימה</NavDropdown.Item>
                                 <NavDropdown.Item href="#">בחר מרשימה</NavDropdown.Item>
                             </NavDropdown>
                               </Figure.Caption>
@@ -232,7 +256,7 @@ export default class ShoppingPage extends Component {
             </Navbar>
             </div>
              <div className="main-shopping-page">           
-                <BaseListComponents activeGroup={activeGroup} categoryArray={categoryArray} categoryActive={categoryActive} setNewActiveCategory={this.setNewActiveCategory } >
+                <BaseListComponents activeGroup={activeGroup} categoryArray={categoryArray} categoryActive={categoryActive} setNewActiveCategory={this.setNewActiveCategory } activateRefresh={activeRefresh} >
                  </BaseListComponents>
                 <SelectActiveGroupModal show={showSelectActiveGroup} handleClose={this.handleClose} handleGroupSelection={this.handleGroupSelection} HandleCreateNewGroup= {this.HandleCreateNewGroup} activeUser={activeUser} activeGroup={activeGroup}/>
                 <CreateNewGroupModal show={showCreateActiveGroup} handleClose={this.handleClose} activeUser={activeUser} activeGroup={activeGroup}  handleGroupSelection={this.handleGroupSelection} />
