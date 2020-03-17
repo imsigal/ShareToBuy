@@ -25,7 +25,8 @@ import './ShoppingPage.css';
 //   -categoryArray:filled with the category items (object)
 //   -categoryActive: the name of the currnt active category
 //   -isNewCategory; if new category was selected. used for closing the modal and updating the data
-// properties:
+//    -toggleUpdateAfterDeleteFlag - is changes after delete. signals to the list to refresh itself
+//properties:
 //    -handleLogout - pointer to the return function that does loaout from the db
 //    -activeUser - the active use name( the one that is loginlogin) 
 //    -activeGroup- the active ( selected) group
@@ -42,10 +43,11 @@ export default class ShoppingPage extends Component {
           categoryArray:[],
           isNewCategory:false,
           categoryActive:"",
-          activeRefresh:false
+          toggleUpdateAfterDeleteFlag:false
       }
       this.readCategoryListbyGroup=this.readCategoryListbyGroup.bind(this);
     }
+
 
     //************************************************************* */
     logout=()=> {
@@ -141,7 +143,7 @@ export default class ShoppingPage extends Component {
       categoryArray:[],
       categoryActive:""
     })
-    // hadle the opening of the select group section
+    // handle the opening of the select group section
     this.props.setGroup(group);
     // read the lists according to the selected group
     this.readCategoryListbyGroup();
@@ -167,7 +169,7 @@ export default class ShoppingPage extends Component {
           ShoppingList.DeleteAllDeletedShoppingItemsInTheList(theShoppingList).then(result=>
           {
                 this.setState({
-                  activeRefresh:!this.state.activeRefresh
+                  toggleUpdateAfterDeleteFlag:!this.state.toggleUpdateAfterDeleteFlag
                 })
           });
         }
@@ -180,8 +182,8 @@ export default class ShoppingPage extends Component {
   render() {
       const {activeUser,activeGroup}=this.props;
       const {redirectToLogin,showSelectActiveGroup, showCreateActiveGroup,showCategoryNew,
-        categoryArray,categoryActive,activeRefresh}=this.state;
-        //activeRefresh is a dummy that causes the BaseListComponents redraw after item removal
+        categoryArray,categoryActive,toggleUpdateAfterDeleteFlag}=this.state;
+        //toggleUpdateAfterDeleteFlag is a dummy that causes the BaseListComponents redraw after item removal
         // if user exsist, than add logout button
       const logoutLink = activeUser ? 
       <Nav.Link  onClick={this.logout} >
@@ -256,7 +258,7 @@ export default class ShoppingPage extends Component {
             </Navbar>
             </div>
              <div className="main-shopping-page">           
-                <BaseListComponents activeGroup={activeGroup} categoryArray={categoryArray} categoryActive={categoryActive} setNewActiveCategory={this.setNewActiveCategory } activateRefresh={activeRefresh} >
+                <BaseListComponents activeGroup={activeGroup} categoryArray={categoryArray} categoryActive={categoryActive} setNewActiveCategory={this.setNewActiveCategory } UpdateAfterDelete={toggleUpdateAfterDeleteFlag} >
                  </BaseListComponents>
                 <SelectActiveGroupModal show={showSelectActiveGroup} handleClose={this.handleClose} handleGroupSelection={this.handleGroupSelection} HandleCreateNewGroup= {this.HandleCreateNewGroup} activeUser={activeUser} activeGroup={activeGroup}/>
                 <CreateNewGroupModal show={showCreateActiveGroup} handleClose={this.handleClose} activeUser={activeUser} activeGroup={activeGroup}  handleGroupSelection={this.handleGroupSelection} />

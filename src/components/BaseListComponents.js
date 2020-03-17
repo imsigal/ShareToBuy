@@ -31,6 +31,14 @@ export default class BaseListComponents extends Component {
             this.setState({
             shoppingItemsArray:[]
             })
+            return;
+         }
+
+         //refresh list in case of delete
+         if (this.props.UpdateAfterDelete==!prevProps.UpdateAfterDelete)
+         {
+             //do actual refresh
+             this.setActiveCategoryAndShoppingList(this.props.categoryActive);
          }
       }
 
