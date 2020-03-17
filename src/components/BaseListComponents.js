@@ -7,6 +7,20 @@ import ShoppingItem from '../model/ShoppingItem';
 import ShoppingGroup from '../model/ShoppingGroup';
 import ShoppingList from '../model/ShoppingList';
 
+// BaseListComponents
+// this is the component the holds the shopping items
+//states
+//  -newItemText:contains the text for a new item
+//  -imgFile: contains the image for a new item,image is optional
+//   -changeItemCount:if the count was changes the value is changes to true, to signal that the list needs to update
+//   -shoppingItemsArray:contains the shopping items.
+//   -activeShoppingList: the object of the active shopping list as appear in the database 
+//properties:
+//    -activeGroup- the active ( selected) group
+//    -categoryArray-filled with the category items (object)
+//    -categoryActive-the name of the currnt active category
+//    -setNewActiveCategory- pointer to function that set a new active category
+//     -UpdateAfterDelete- toggle boolean item, if changed, then the list is refreshed.
 export default class BaseListComponents extends Component {
     constructor(props) {
         super(props);
