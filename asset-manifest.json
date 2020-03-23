@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/ShareToBuy/static/css/main.0b4c7509.chunk.css",
-    "main.js": "/ShareToBuy/static/js/main.8a22058c.chunk.js",
-    "main.js.map": "/ShareToBuy/static/js/main.8a22058c.chunk.js.map",
+    "main.css": "/ShareToBuy/static/css/main.e79218eb.chunk.css",
+    "main.js": "/ShareToBuy/static/js/main.c67e124e.chunk.js",
+    "main.js.map": "/ShareToBuy/static/js/main.c67e124e.chunk.js.map",
     "runtime-main.js": "/ShareToBuy/static/js/runtime-main.16cc1433.js",
     "runtime-main.js.map": "/ShareToBuy/static/js/runtime-main.16cc1433.js.map",
-    "static/js/2.b3faf828.chunk.js": "/ShareToBuy/static/js/2.b3faf828.chunk.js",
-    "static/js/2.b3faf828.chunk.js.map": "/ShareToBuy/static/js/2.b3faf828.chunk.js.map",
+    "static/js/2.180a0c6d.chunk.js": "/ShareToBuy/static/js/2.180a0c6d.chunk.js",
+    "static/js/2.180a0c6d.chunk.js.map": "/ShareToBuy/static/js/2.180a0c6d.chunk.js.map",
     "index.html": "/ShareToBuy/index.html",
-    "precache-manifest.4a5395a6b4d785f6a0595ef54c9be89d.js": "/ShareToBuy/precache-manifest.4a5395a6b4d785f6a0595ef54c9be89d.js",
+    "precache-manifest.af3b78ac951ff63514d8daff3d3386f2.js": "/ShareToBuy/precache-manifest.af3b78ac951ff63514d8daff3d3386f2.js",
     "service-worker.js": "/ShareToBuy/service-worker.js",
-    "static/css/main.0b4c7509.chunk.css.map": "/ShareToBuy/static/css/main.0b4c7509.chunk.css.map",
-    "static/js/2.b3faf828.chunk.js.LICENSE": "/ShareToBuy/static/js/2.b3faf828.chunk.js.LICENSE"
+    "static/css/main.e79218eb.chunk.css.map": "/ShareToBuy/static/css/main.e79218eb.chunk.css.map",
+    "static/js/2.180a0c6d.chunk.js.LICENSE": "/ShareToBuy/static/js/2.180a0c6d.chunk.js.LICENSE"
   },
   "entrypoints": [
     "static/js/runtime-main.16cc1433.js",
-    "static/js/2.b3faf828.chunk.js",
-    "static/css/main.0b4c7509.chunk.css",
-    "static/js/main.8a22058c.chunk.js"
+    "static/js/2.180a0c6d.chunk.js",
+    "static/css/main.e79218eb.chunk.css",
+    "static/js/main.c67e124e.chunk.js"
   ]
 }
