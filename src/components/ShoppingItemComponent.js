@@ -28,17 +28,18 @@ export default class ShoppingItemComponent extends Component {
         this.setState({
             newCount:item.count,
         })
-        if (item.imgFile)
+        if (item.img)
         {
             this.setState({
                 fileImg:{
-                    file: item.imgFile,
-                    URL:URL.createObjectURL(item.imgFile.URL.createObjectURL)
+                    file:item.img,   //need to convert the ParseFile to file
+                    URL:item.img._url
                 }
             })
         }
         
     }
+
 
     /******************************************** */
     //Popover functions=
@@ -47,12 +48,12 @@ export default class ShoppingItemComponent extends Component {
         this.setState({
             newCount:item.count,
         })
-        if (item.imgFile)
+        if (item.img)
         {
             this.setState({
                 fileImg:{
-                    file: item.imgFile,
-                    URL:URL.createObjectURL(item.imgFile.URL.createObjectURL)
+                    file: item.img,  //need to convert the ParseFile to file
+                    URL:item.img._url
                 }
             })
         }
@@ -85,14 +86,15 @@ export default class ShoppingItemComponent extends Component {
                
 
         }
-        if (item.fileImg!==fileImg.file)
+        if (item.img!==fileImg.file)
         {
             item.UpdateShoppingItemImage(fileImg.file).then(result=>{
-                item.img=fileImg.file;
+                item.img=result.get("productImageSrc");
+ 
                 this.setState({
-                    wasChanged:true,
-                    });
-                })
+                   wasChanged:true
+               });
+            })
                 .catch(error => {
                 console.error("error while updating Shopping item",error);
                     
@@ -194,17 +196,20 @@ export default class ShoppingItemComponent extends Component {
               <Popover >
                     <Popover.Title as="h3">
                         <button onClick={this.handleHideImage}>
-                            <img src={closeImage} ></img>
+                            <img src={closeImage}  alt="close"></img>
                         </button>
                     </Popover.Title>
                     <Popover.Content> 
-                        <img className="big-preview" src={item.img._url}></img>  
+                        <img className="big-preview" src={item.img._url} alt={item.img._name}></img>  
                     </Popover.Content>
                 </Popover>
                 :"";
 
+            // const itemImagepreview=item.img ?
+            // <Image className="preview" src={item.img._url}  onClick={this.handleShowImage} thumbnail />:<Image  />
             const itemImagepreview=item.img ?
-            <Image className="preview" src={item.img._url}  onClick={this.handleShowImage} thumbnail />:<Image  />
+            <Image className="preview" src={fileImg.URL}  onClick={this.handleShowImage} thumbnail />:<Image  />
+
 
             // for update item
             const popover = 
