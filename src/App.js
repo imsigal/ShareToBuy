@@ -10,16 +10,36 @@ export default class App extends React.Component {
   
   constructor(props) {
     super(props);
-    
-    //saving the  objects from the model
+    //getFromStorage();
+    const loggedInUser = localStorage.getItem("user");
+    const currentGroup = localStorage.getItem("Group");
+    // save state
     this.state = {
-      activeUser: Parse.User.current(),
-      activeGroup:null
-    }
+         activeUser: loggedInUser,
+         activeGroup:currentGroup
+       }
 
     this.handleLogout = this.handleLogout.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
   }
+
+  // getFromStorage()
+  // {
+  //    // get from local storage
+  //    const loggedInUser = localStorage.getItem("user");
+  //    // if (loggedInUser) {
+  //    //   const foundUser = JSON.parse(loggedInUser);
+  //    //   //setUser(foundUser);
+  //    // }
+ 
+  //    const currentGroup = localStorage.getItem("Group");
+  //    // save state
+  //    this.state = {
+  //         activeUser: loggedInUser,
+  //         activeGroup:currentGroup
+  //       }
+
+  // }
 
   handleLogin(user) {
     this.setState({

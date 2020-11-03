@@ -52,6 +52,7 @@ export default  class LoginPage extends Component {
             this.setState({
                 redirectToNextPage: true
             });
+            localStorage.setItem('user', user)
         })
         .catch(error => {
             console.error('Error while logging in user', error);

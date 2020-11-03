@@ -54,9 +54,13 @@ export default class ShoppingPage extends Component {
       // This eventually calls the handleLogout method of the App component
       this.props.handleLogout();
 
+      // update user 
+      localStorage.setItem('user', null)
+
       this.setState({
           redirectToLogin: true
       })
+
   }
 
 
@@ -145,6 +149,8 @@ export default class ShoppingPage extends Component {
     })
     // handle the opening of the select group section
     this.props.setGroup(group);
+    localStorage.setItem('Group', group);
+    
     // read the lists according to the selected group
     this.readCategoryListbyGroup();
   }
