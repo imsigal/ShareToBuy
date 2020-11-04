@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/ShareToBuy/static/css/main.e79218eb.chunk.css",
-    "main.js": "/ShareToBuy/static/js/main.c67e124e.chunk.js",
-    "main.js.map": "/ShareToBuy/static/js/main.c67e124e.chunk.js.map",
+    "main.js": "/ShareToBuy/static/js/main.eb4aebae.chunk.js",
+    "main.js.map": "/ShareToBuy/static/js/main.eb4aebae.chunk.js.map",
     "runtime-main.js": "/ShareToBuy/static/js/runtime-main.16cc1433.js",
     "runtime-main.js.map": "/ShareToBuy/static/js/runtime-main.16cc1433.js.map",
     "static/js/2.180a0c6d.chunk.js": "/ShareToBuy/static/js/2.180a0c6d.chunk.js",
     "static/js/2.180a0c6d.chunk.js.map": "/ShareToBuy/static/js/2.180a0c6d.chunk.js.map",
     "index.html": "/ShareToBuy/index.html",
-    "precache-manifest.af3b78ac951ff63514d8daff3d3386f2.js": "/ShareToBuy/precache-manifest.af3b78ac951ff63514d8daff3d3386f2.js",
+    "precache-manifest.05657c2461db29f332f57a7fc663fa4c.js": "/ShareToBuy/precache-manifest.05657c2461db29f332f57a7fc663fa4c.js",
     "service-worker.js": "/ShareToBuy/service-worker.js",
     "static/css/main.e79218eb.chunk.css.map": "/ShareToBuy/static/css/main.e79218eb.chunk.css.map",
     "static/js/2.180a0c6d.chunk.js.LICENSE": "/ShareToBuy/static/js/2.180a0c6d.chunk.js.LICENSE"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.16cc1433.js",
     "static/js/2.180a0c6d.chunk.js",
     "static/css/main.e79218eb.chunk.css",
-    "static/js/main.c67e124e.chunk.js"
+    "static/js/main.eb4aebae.chunk.js"
   ]
 }
